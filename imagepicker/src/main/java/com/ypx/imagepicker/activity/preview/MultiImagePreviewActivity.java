@@ -177,7 +177,7 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
             if (mSelectList.size()==0){
                 for(int i=0;i<mIgnoreSelectList.size();i++){
                     //如果是脱敏照片就直接删除
-                    if (mIgnoreSelectList.get(i).path.contains("photo_edit")){
+                    if (mIgnoreSelectList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
                         FileUtil.deletePic(getApplication(),mIgnoreSelectList.get(i).path);
                     }
                 }
@@ -186,7 +186,7 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
                 if (mIgnoreSelectList.size()>0){
                     for(int i=0;i<mIgnoreSelectList.size();i++){
                         //如果是脱敏照片就直接删除
-                        if (mIgnoreSelectList.get(i).path.contains("photo_edit")){
+                        if (mIgnoreSelectList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
                             FileUtil.deletePic(getApplication(),mIgnoreSelectList.get(i).path);
                         }
                     }

@@ -541,8 +541,13 @@ public class IMGImage {
         // 裁剪区域
         canvas.clipRect(mClipWin.isClipping() ? mFrame : mClipFrame);
 
-        // 绘制图片
-        canvas.drawBitmap(mImage, null, mFrame, null);
+        try {
+            // 绘制图片
+            canvas.drawBitmap(mImage, null, mFrame, null);
+        }catch (Exception e){
+
+        }
+
 
         if (DEBUG) {
             // Clip 区域

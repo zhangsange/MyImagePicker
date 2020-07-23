@@ -38,6 +38,11 @@ public class MultiPreviewEditAdapter extends RecyclerView.Adapter<MultiPreviewEd
         this.lastSelectPos = 0;
         this.previewList = previewList;
     }
+    public void  setListData(List<Bitmap> previewList){
+        this.lastSelectPos = 0;
+        this.previewList = previewList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -72,7 +77,7 @@ public class MultiPreviewEditAdapter extends RecyclerView.Adapter<MultiPreviewEd
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((IMGEditBaseActivity) context).setmImgView(lastSelectPos, position);
+                ((MYIMGEditActivity) context).setmImgView(lastSelectPos, position);
                 lastSelectPos = position;
                 notifyDataSetChanged();
             }

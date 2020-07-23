@@ -31,12 +31,12 @@ import java.io.OutputStream;
 public class FileUtil {
     private static final File parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private static String storagePath = "";
-    private static String DST_FOLDER_NAME = "JCamera";
+    public static String PIC_EDIT_FOLDER_NAME = "imagePicker_Edit";
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static String initPath() {
         if (storagePath.equals("")) {
-            storagePath = parentPath.getAbsolutePath() + File.separator + DST_FOLDER_NAME;
+            storagePath = parentPath.getAbsolutePath() + File.separator + PIC_EDIT_FOLDER_NAME;
             File f = new File(storagePath);
             if (!f.exists()) {
                 f.mkdir();
@@ -46,7 +46,7 @@ public class FileUtil {
     }
 
     public static String saveBitmap(String dir, Bitmap b) {
-        DST_FOLDER_NAME = dir;
+        PIC_EDIT_FOLDER_NAME = dir;
         String path = initPath();
         long dataTake = System.currentTimeMillis();
         String jpegName = path + File.separator + "IMG_" + dataTake + ".jpg";
