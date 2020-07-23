@@ -34,6 +34,7 @@ import com.ypx.imagepicker.bean.MimeType;
 import com.ypx.imagepicker.bean.PickerError;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
+import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private WeChatPresenter weChatPresenter;
     private RedBookPresenter redBookPresenter;
     private CustomImgPickerPresenter customImgPickerPresenter;
-    final int maxCount = 9;
+    final int maxCount = 30;
     private ArrayList<ImageItem> picList = new ArrayList<>();
     public static boolean isAutoJumpAlohaActivity;
     private GridLayout mGridLayout;
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         checkEdit = findViewById(R.id.isEdit);
-        checkEdit.setVisibility(View.GONE);
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,8 +129,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                // if (picList.get(pos).path.contains("photo_edit")) {
-                  //  deletePic(picList.get(pos).path);
-                updateFileFromDatabase(MainActivity.this,picList.get(pos).path);
+                    deletePic(picList.get(pos).path);
+                FileUtil.deletePic(MainActivity.this,picList.get(pos).path);
+                //updateFileFromDatabase(MainActivity.this,picList.get(pos).path);
                // }
                 picList.remove(pos);
                 refreshGridLayout();
@@ -144,34 +145,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //删除文件后更新数据库  通知媒体库更新文件夹,！！！！！filepath（文件夹路径）要求尽量精确，以防删错
-    public static void updateFileFromDatabase(Context context, String filepath){
 
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        ContentResolver mContentResolver = context.getContentResolver();
-        String where = MediaStore.Images.Media.DATA + "='" + filepath + "'";
-//删除图片
-      int i=   mContentResolver.delete(uri, where, null);
-        updateMediaStore(context,filepath);
-
-    }
-    public static void updateMediaStore(final  Context context, final String path) {
-        //版本号的判断  4.4为分水岭，发送广播更新媒体库
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            MediaScannerConnection.scanFile(context, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
-                public void onScanCompleted(String path, Uri uri) {
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaScanIntent.setData(uri);
-                    context.sendBroadcast(mediaScanIntent);
-                }
-            });
-        } else {
-            File file = new File(path);
-            String relationDir = file.getParent();
-            File file1 = new File(relationDir);
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(file1.getAbsoluteFile())));
-        }
-    }
     private void deletePic(String path) {
         File file = new File(path);
         //删除系统缩略图
@@ -228,9 +202,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onImagePickComplete(ArrayList<ImageItem> items) {
                 //图片编辑回调，主线程
-                for (int i = 0; i < items.size(); i++) {
-                    Log.i("ddd", "粗来哈哈哈哈222 = " + items.get(i).path);
-                }
+//                for (int i = 0; i < items.size(); i++) {
+//                    Log.i("ddd", "粗来哈哈哈哈222 = " + items.get(i).path);
+//                }
                 resultList.clear();
                 //图片选择回调，主线程
                 picList.clear();

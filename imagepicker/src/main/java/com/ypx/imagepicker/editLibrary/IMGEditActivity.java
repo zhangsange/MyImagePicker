@@ -140,7 +140,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
         imageItemList=  ImagePicker.transitArray(this, imageItemList);
 
-        ImagePicker.closePickerWithCallback((ArrayList<ImageItem>) imageItemList);
+        ImagePicker.closePickerWithCallback(imageItemList);
         finish();
         return;
 

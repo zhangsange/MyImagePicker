@@ -3,9 +3,12 @@ package com.ypx.imagepicker.editLibrary.utils;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
@@ -111,13 +114,43 @@ public class FileUtil {
             }
         }
     }
-    public static void deletePic(Context context,String path) {
-        File file = new File(path);
-        //删除系统缩略图
-        context.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA + "=?", new String[]{path});
-        //删除手机中图片
-        file.delete();
+
+    //删除文件后更新数据库  通知媒体库更新文件夹,！！！！！filepath（文件夹路径）要求尽量精确，以防删错
+    public static void deletePic(Context context, String filepath){
+
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver mContentResolver = context.getContentResolver();
+        String where = MediaStore.Images.Media.DATA + "='" + filepath + "'";
+//删除图片
+        int i=   mContentResolver.delete(uri, where, null);
+        updateMediaStore(context,filepath);
+
     }
+    public static void updateMediaStore(final  Context context, final String path) {
+        //版本号的判断  4.4为分水岭，发送广播更新媒体库
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            MediaScannerConnection.scanFile(context, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(uri);
+                    context.sendBroadcast(mediaScanIntent);
+                }
+            });
+        } else {
+            File file = new File(path);
+            String relationDir = file.getParent();
+            File file1 = new File(relationDir);
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(file1.getAbsoluteFile())));
+        }
+    }
+
+//    public static void deletePic(Context context,String path) {
+//        File file = new File(path);
+//        //删除系统缩略图
+//        context.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA + "=?", new String[]{path});
+//        //删除手机中图片
+//        file.delete();
+//    }
     public static String copy2DCIMAndroidQ(Context context, String path, String saveDirName) {
         String[] splits = path.split("/");
         String fileName = splits[splits.length - 1];

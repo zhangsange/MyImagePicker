@@ -87,15 +87,15 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
                     mImgView.addStickerText(new IMGText(getNumber(), Color.RED), true);
                 }
             }
-            if (bitmapList.size()==1){
-                btnContent = "完成";
-                setBtnTextView(btnContent);
-            }else{
-                btnContent = "下一张";
-                setBtnTextView(btnContent);
-            }
+//            if (bitmapList.size()==1){
+//                btnContent = "完成";
+//                setBtnTextView(btnContent);
+//            }else{
+//                btnContent = "下一张";
+//                setBtnTextView(btnContent);
+//            }
 //            onCreated();
-        } else finish();
+        }
     }
 
     protected abstract String getNumber();
@@ -107,9 +107,8 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
         if (lastSelectPos == selectPos) {
             return;
         }
-       this. lastSelectPos = lastSelectPos;
+   //    this. lastSelectPos = lastSelectPos;
        this. newSelectPos = selectPos;
-        Log.i("仅仅","Adapter哈哈哈哈= "+lastSelectPos+"   "+selectPos);
         bitmapList.set(lastSelectPos, mImgView.saveBitmap());
         mImgView.setClearCanvas();
         mImgView.setImageBitmap(bitmapList.get(selectPos));
@@ -122,14 +121,14 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
             selectPosList.add(selectPos);
         }
 
-        if (bitmapList.size()==newSelectPos){
-            btnContent = "完成";
-            setBtnTextView(btnContent);
-        }else{
-            btnContent = "下一张";
-            setBtnTextView(btnContent);
-        }
-        this. lastSelectPos = newSelectPos;
+//        if (bitmapList.size()==newSelectPos){
+//            btnContent = "完成";
+//            setBtnTextView(btnContent);
+//        }else{
+//            btnContent = "下一张";
+//            setBtnTextView(btnContent);
+//        }
+//        this. lastSelectPos = newSelectPos;
 
     }
 
@@ -182,24 +181,25 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
 //            if (isFastDoubleClick()) {
 //                return;
 //            }
-            if (newSelectPos == bitmapList.size()-1) {
+           // if (newSelectPos == bitmapList.size()-1) {
                 //保存时候 把最后选中的图片保存一下
                 bitmapList.set(newSelectPos, mImgView.saveBitmap());
                 onDoneClick();
-            } else {
-                newSelectPos++;
-                previewAdapter.setSelectPos(newSelectPos);
-                setmImgView(lastSelectPos,newSelectPos);
-                lastSelectPos =  newSelectPos;
 
-                if (bitmapList.size()-1==newSelectPos){
-                    btnContent = "完成";
-                    setBtnTextView(btnContent);
-                }else{
-                    btnContent = "下一张";
-                    setBtnTextView(btnContent);
-                }
-            }
+//            } else {
+//                newSelectPos++;
+//                previewAdapter.setSelectPos(newSelectPos);
+//                setmImgView(lastSelectPos,newSelectPos);
+//                lastSelectPos =  newSelectPos;
+//
+//                if (bitmapList.size()-1==newSelectPos){
+//                    btnContent = "完成";
+//                    setBtnTextView(btnContent);
+//                }else{
+//                    btnContent = "下一张";
+//                    setBtnTextView(btnContent);
+//                }
+//            }
 
 
         } else if (vid == R.id.tv_cancel) {
@@ -216,7 +216,7 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
     }
 
 
-    private long lastClickTime;
+    private long lastClickTime = 0;
 
     public boolean isFastDoubleClick() {
         long time = System.currentTimeMillis();
