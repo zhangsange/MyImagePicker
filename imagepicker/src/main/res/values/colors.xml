@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white_F5">#F5F5F5</color>
+
+    <color name="titleBar">#617ECC</color>
+    <color name="tab_bg_color">#F3F5F4</color>
+    <color name="tab_normal_color">#515151</color>
+    <color name="tab_selected_color">@color/titleBar</color>
+
+
+    <!--画笔-->
+    <color name="translucent_40">#66000000</color>
+    <color name="black_radio">#000000</color>
+    <color name="red_radio">#FF0000</color>
+    <color name="yellow_radio">#ffe300</color>
+    <color name="green_radio">#2fea00</color>
+    <color name="orange_radio">#fe7f1f</color>
+    <color name="blue_radio">#0990f4</color>
+    <color name="white_radio">#FFFFFF</color>
+
+    <color name="image_color_primary">#FFFFFF</color>
+    <color name="image_color_accent">#4CA1FB</color>
+    <color name="image_color_white">#FFFFFF</color>
+    <color name="image_color_black">#2B2B2B</color>
+    <color name="image_color_red">#FF5151</color>
+    <color name="image_color_cyan">#20FFCD</color>
+    <color name="image_color_yellow">#FFCC00</color>
+    <color name="image_color_blue">#0078FF</color>
+</resources>
