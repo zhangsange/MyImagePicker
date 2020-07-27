@@ -4,19 +4,16 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.annotation.Nullable;
@@ -35,8 +32,8 @@ import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
 import com.ypx.imagepicker.helper.recyclerviewitemhelper.SimpleItemTouchHelperCallback;
+import com.ypx.imagepicker.utils.ToastUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ import ren.perry.perry.LoadingDialog;
  * author：pachy1990
  * 描述：
  */
-public class MYIMGEditActivity extends Activity implements View.OnClickListener,
+public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         IMGTextEditDialog.Callback, RadioGroup.OnCheckedChangeListener,
         DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
 
@@ -78,6 +75,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
     private MultiPreviewEditAdapter previewAdapter;
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
     public List<Bitmap> bitmapList = new ArrayList<>();
+    public List<Integer> noCompleteList = new ArrayList<>();
     private int lastSelectPos = 0;
     private List<Integer> selectPosList;
     private FrameLayout frameLayout;
@@ -98,6 +96,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
         showLoading("正在加载图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
+
             @Override
             public void run() {
                 bitmapList = getBitmapList();
@@ -144,6 +143,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
             if (!TextUtils.isEmpty(number)) {
                 if (!imageItemList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageItemList.get(0).path.startsWith("http")) {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                    noCompleteList.add(0);
                 }
             }
 
@@ -158,7 +158,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
     }
 
     public void showLoading(String tip) {
-        dialog = new LoadingDialog(MYIMGEditActivity.this);
+        dialog = new LoadingDialog(MyIMGEditActivity.this);
         dialog.setMsg(tip);
         dialog.setNotCancel();  //设置dialog不自动消失
         dialog.setCancelable(false);
@@ -173,7 +173,6 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
 
 
     public List<Bitmap> getBitmapList() {
-
         if (imageItemList != null && imageItemList.size() > 0) {
             for (int i = 0; i < imageItemList.size(); i++) {
                 Bitmap bitmap = null;
@@ -196,6 +195,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
 
     /**
      * 选中的图片添加到自定义控件中等待编辑操作
+     *
      * @param lastSelectPos
      * @param selectPos
      */
@@ -206,6 +206,9 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
         //    this. lastSelectPos = lastSelectPos;
         this.newSelectPos = selectPos;
         bitmapList.set(lastSelectPos, mImgView.saveBitmap());
+        if (!noCompleteList.contains(newSelectPos)) {
+            noCompleteList.add(newSelectPos);
+        }
         mImgView.setClearCanvas();
         mImgView.setImageBitmap(bitmapList.get(selectPos));
         if (!selectPosList.contains(selectPos)) {
@@ -303,7 +306,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
             onModeClick(IMGMode.CLIP);
         } else if (vid == R.id.btn_undo) {
             onUndoClick();
-        } else if (vid == R.id.tv_done) {
+        } else if (vid == R.id.tv_done) {//完成
 //            if (isFastDoubleClick()) {
 //                return;
 //            }
@@ -312,6 +315,7 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
 
             //保存时候 把最后选中的图片保存一下
             bitmapList.set(newSelectPos, mImgView.saveBitmap());
+
             onDoneClick();
 
 //            } else {
@@ -389,6 +393,14 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
     }
 
     public void onDoneClick() {
+        for (int i = 0; i < imageItemList.size(); i++) {
+            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
+                int postion = i+1;
+                ToastUtils.showToastError(getApplicationContext(), "请编辑第" +postion + "张图片!");
+                return;
+            }
+        }
+
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
@@ -408,11 +420,13 @@ public class MYIMGEditActivity extends Activity implements View.OnClickListener,
      * 删除原图片 保存编辑后的图片
      */
     private void saveImageItem() {
+
         for (int i = 0; i < imageItemList.size(); i++) {
             if (!imageItemList.get(i).path.startsWith("http")) {
                 FileUtil.deletePic(getApplication(), imageItemList.get(i).path);
             }
         }
+
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
                 imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));

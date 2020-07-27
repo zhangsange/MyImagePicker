@@ -111,6 +111,8 @@
         android:padding="20dp">
 
         <RadioButton
+            android:textSize="@dimen/sp_16"
+            android:text=" 涂抹"
             android:id="@+id/rb_shade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -136,16 +138,17 @@
             android:layout_width="@dimen/image_mode_space"
             android:layout_height="wrap_content" />
 
-        <ImageButton
+        <RadioButton
+            android:textSize="@dimen/sp_16"
+            android:text=" 输入"
             android:id="@+id/btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:contentDescription="@string/image_text"
+            android:button="@drawable/image_btn_text"
             android:gravity="center"
             android:onClick="onClick"
-            android:src="@drawable/image_btn_text"
             android:textColor="#FFF" />
+
 
 <!--        <Space-->
 <!--            android:layout_width="@dimen/image_mode_space"-->

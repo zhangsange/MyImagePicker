@@ -160,9 +160,9 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
      * @param isClickComplete 是否是选中
      */
     private void notifyCallBack(boolean isClickComplete) {
-        if (selectConfig.isSeePreview()){//仅仅是查看预览时取消选中就将图片删除,  添加图片,选择预览时不删除
-            deleteEidtPic();
-        }
+//        if (selectConfig.isSeePreview()){//仅仅是查看预览时取消选中就将图片删除,  添加图片,选择预览时不删除
+//            deleteEidtPic();
+//        }
         Intent intent = new Intent();
         intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, mSelectList);
         setResult(isClickComplete ? ImagePicker.REQ_PICKER_RESULT_CODE : RESULT_CANCELED, intent);

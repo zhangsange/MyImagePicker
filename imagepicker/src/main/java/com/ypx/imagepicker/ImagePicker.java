@@ -209,14 +209,13 @@ public class ImagePicker {
      * @param <T>       String or ImageItem
      */
     public static <T> void preview(Activity context, final IPickerPresenter presenter, ArrayList<T> imageList,
-                                   int pos,boolean isCanEidt,boolean isPreview, final OnImagePickCompleteListener listener) {
+                                   int pos,boolean isCanEidt,final OnImagePickCompleteListener listener) {
         if (imageList == null || imageList.size() == 0) {
             return;
         }
         MultiSelectConfig selectConfig = new MultiSelectConfig();
         selectConfig.setMaxCount(imageList.size());
         selectConfig.setCanEditPic(isCanEidt);
-        selectConfig.setSeePreview(true);
         MultiImagePreviewActivity.intent(context, null, transitArray(context, imageList),
                 selectConfig, presenter, pos, new MultiImagePreviewActivity.PreviewResult() {
                     @Override

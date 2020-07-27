@@ -77,7 +77,7 @@ public class MultiPreviewEditAdapter extends RecyclerView.Adapter<MultiPreviewEd
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MYIMGEditActivity) context).setmImgView(lastSelectPos, position);
+                ((MyIMGEditActivity) context).setmImgView(lastSelectPos, position);
                 lastSelectPos = position;
                 notifyDataSetChanged();
             }

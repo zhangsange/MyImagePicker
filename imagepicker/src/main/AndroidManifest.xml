@@ -58,7 +58,7 @@
                 android:resource="@xml/picker_file_paths" />
         </provider>
         <activity android:name=".editLibrary.IMGEditActivity" />
-        <activity android:name=".editLibrary.MYIMGEditActivity" />
+        <activity android:name=".editLibrary.MyIMGEditActivity" />
 
     </application>
 

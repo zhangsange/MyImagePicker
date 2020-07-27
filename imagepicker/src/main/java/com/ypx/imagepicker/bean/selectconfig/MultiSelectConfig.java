@@ -17,16 +17,16 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isCanEditPic;
     private boolean isCanPreviewVideo = true;
     private boolean isPreview = true;
-    private boolean isSeePreview = false;//仅仅为查看预览
-
-    public boolean isSeePreview() {
-        return isSeePreview;
-    }
-
-    public void setSeePreview(boolean seePreview) {
-        isSeePreview = seePreview;
-    }
-
+//    private boolean isSeePreview = false;//仅仅为查看预览
+//
+//    public boolean isSeePreview() {
+//        return isSeePreview;
+//    }
+//
+//    public void setSeePreview(boolean seePreview) {
+//        isSeePreview = seePreview;
+//    }
+//
 
     public String getNumber() {
         return number;

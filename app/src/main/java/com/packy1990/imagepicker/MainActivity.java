@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void preview(int pos) {
-        ImagePicker.preview(this, weChatPresenter, picList, pos, isCanEdit,true,new OnImagePickCompleteListener() {
+        ImagePicker.preview(this, weChatPresenter, picList, pos, isCanEdit,new OnImagePickCompleteListener() {
             @Override
             public void onImagePickComplete(ArrayList<ImageItem> items) {
                 //图片选择回调，主线程

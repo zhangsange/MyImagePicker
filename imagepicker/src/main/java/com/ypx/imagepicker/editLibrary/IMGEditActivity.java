@@ -123,7 +123,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
         for (int i = 0 ; i<imageItemList.size();i++){
             if (!imageItemList.get(i).path.startsWith("http")){
-                Log.i("看看","哈哈哈哈哈== "+imageItemList.get(i).path);
                 FileUtil.deletePic(getApplication(),imageItemList.get(i).path);
             }
 //            if (imageItemList.get(i).path.contains("photo_edit")){
