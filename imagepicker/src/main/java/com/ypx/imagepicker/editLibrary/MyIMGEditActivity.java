@@ -143,10 +143,10 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (!TextUtils.isEmpty(number)) {
                 if (!imageItemList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageItemList.get(0).path.startsWith("http")) {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
-                    noCompleteList.add(0);
+
                 }
             }
-
+            noCompleteList.add(0);
 //            if (bitmapList.size()==1){
 //                btnContent = "完成";
 //                setBtnTextView(btnContent);
