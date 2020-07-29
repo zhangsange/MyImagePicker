@@ -143,10 +143,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (!TextUtils.isEmpty(number)) {
                 if (!imageItemList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageItemList.get(0).path.startsWith("http")) {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
-
+                    noCompleteList.add(0);
                 }
             }
-            noCompleteList.add(0);
 //            if (bitmapList.size()==1){
 //                btnContent = "完成";
 //                setBtnTextView(btnContent);
@@ -393,17 +392,20 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     }
 
     public void onDoneClick() {
-        for (int i = 0; i < imageItemList.size(); i++) {
-            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
-                int postion = i+1;
-                ToastUtils.showToastError(getApplicationContext(), "请编辑第" +postion + "张图片!");
-                return;
+        if (!TextUtils.isEmpty(number)) {
+            for (int i = 0; i < imageItemList.size(); i++) {
+                if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
+                    int postion = i + 1;
+                    ToastUtils.showToastError(getApplicationContext(), "请编辑第" + postion + "张图片!");
+                    return;
+                }
             }
         }
 
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
+
             @Override
             public void run() {
                 saveImageItem();
