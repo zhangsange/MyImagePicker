@@ -74,6 +74,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private RecyclerView mPreviewRecyclerView;
     private MultiPreviewEditAdapter previewAdapter;
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
+    public ArrayList<ImageItem> imageLocList = new ArrayList<>();
+    public ArrayList<ImageItem> imageHttpList = new ArrayList<>();
     public List<Bitmap> bitmapList = new ArrayList<>();
     public List<Integer> noCompleteList = new ArrayList<>();
     private int lastSelectPos = 0;
@@ -92,6 +94,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
         number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
         setContentView(R.layout.image_edit_activity);
+        initImage();
         initViews();
         showLoading("正在加载图片中,请稍等...");
         new Thread(new Runnable() {
@@ -106,6 +109,19 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                 }
             }
         }).start();
+    }
+
+    /**
+     * 处理排除网络图片
+     */
+    private void initImage() {
+        for (ImageItem imageItem : imageItemList) {
+            if (imageItem.path.startsWith("http")) {
+                imageHttpList.add(imageItem);
+            } else {
+                imageLocList.add(imageItem);
+            }
+        }
     }
 
     Handler mHandler = new Handler(new Handler.Callback() {
@@ -141,7 +157,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             mImgView.setImageBitmap(bitmapList.get(lastSelectPos));
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(number)) {
-                if (!imageItemList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageItemList.get(0).path.startsWith("http")) {
+                if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageLocList.get(0).path.startsWith("http")) {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
                     noCompleteList.add(0);
                 }
@@ -172,15 +188,17 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
 
 
     public List<Bitmap> getBitmapList() {
-        if (imageItemList != null && imageItemList.size() > 0) {
-            for (int i = 0; i < imageItemList.size(); i++) {
-                Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if (imageLocList != null && imageLocList.size() > 0) {
+            for (int i = 0; i < imageLocList.size(); i++) {
+                if (!imageLocList.get(i).path.startsWith("http")) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    bitmapList.add(bitmap);
                 }
-                bitmapList.add(bitmap);
             }
 
             return bitmapList;
@@ -213,8 +231,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (!selectPosList.contains(selectPos)) {
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
             if (!TextUtils.isEmpty(number)
-                    && !imageItemList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)
-                    && !imageItemList.get(selectPos).path.startsWith("http")) {
+                    && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)
+                    && !imageLocList.get(selectPos).path.startsWith("http")) {
                 mImgView.addStickerText(new IMGText(number, Color.RED), true);
             }
             selectPosList.add(selectPos);
@@ -393,8 +411,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
 
     public void onDoneClick() {
         if (!TextUtils.isEmpty(number)) {
-            for (int i = 0; i < imageItemList.size(); i++) {
-                if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
+            for (int i = 0; i < imageLocList.size(); i++) {
+                if (!imageLocList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
                     int postion = i + 1;
                     ToastUtils.showToastError(getApplicationContext(), "请编辑第" + postion + "张图片!");
                     return;
@@ -405,7 +423,6 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
-
             @Override
             public void run() {
                 saveImageItem();
@@ -423,10 +440,10 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
      */
     private void saveImageItem() {
 
-        for (int i = 0; i < imageItemList.size(); i++) {
-            if (!imageItemList.get(i).path.startsWith("http")) {
-                FileUtil.deletePic(getApplication(), imageItemList.get(i).path);
-            }
+        for (int i = 0; i < imageLocList.size(); i++) {
+//            if (!imageItemList.get(i).path.startsWith("http")) {
+                FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
+//            }
         }
 
         for (int i = 0; i < bitmapList.size(); i++) {
@@ -436,6 +453,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                 imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }
         }
+        imageItemList.clear();
+        imageItemList.addAll(imageHttpList);
+        imageItemList.addAll(imageLocList);
         imageItemList = ImagePicker.transitArray(this, imageItemList);
     }
 
