@@ -157,7 +157,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             mImgView.setImageBitmap(bitmapList.get(lastSelectPos));
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(number)) {
-                if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageLocList.get(0).path.startsWith("http")) {
+                if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
                     noCompleteList.add(0);
                 }
@@ -190,15 +190,13 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     public List<Bitmap> getBitmapList() {
         if (imageLocList != null && imageLocList.size() > 0) {
             for (int i = 0; i < imageLocList.size(); i++) {
-                if (!imageLocList.get(i).path.startsWith("http")) {
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    bitmapList.add(bitmap);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                bitmapList.add(bitmap);
             }
 
             return bitmapList;
@@ -230,9 +228,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         mImgView.setImageBitmap(bitmapList.get(selectPos));
         if (!selectPosList.contains(selectPos)) {
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
-            if (!TextUtils.isEmpty(number)
-                    && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)
-                    && !imageLocList.get(selectPos).path.startsWith("http")) {
+            if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                 mImgView.addStickerText(new IMGText(number, Color.RED), true);
             }
             selectPosList.add(selectPos);
@@ -324,32 +320,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         } else if (vid == R.id.btn_undo) {
             onUndoClick();
         } else if (vid == R.id.tv_done) {//完成
-//            if (isFastDoubleClick()) {
-//                return;
-//            }
-            // if (newSelectPos == bitmapList.size()-1) {
-
-
             //保存时候 把最后选中的图片保存一下
             bitmapList.set(newSelectPos, mImgView.saveBitmap());
-
             onDoneClick();
-
-//            } else {
-//                newSelectPos++;
-//                previewAdapter.setSelectPos(newSelectPos);
-//                setmImgView(lastSelectPos,newSelectPos);
-//                lastSelectPos =  newSelectPos;
-//
-//                if (bitmapList.size()-1==newSelectPos){
-//                    btnContent = "完成";
-//                    setBtnTextView(btnContent);
-//                }else{
-//                    btnContent = "下一张";
-//                    setBtnTextView(btnContent);
-//                }
-//            }
-
 
         } else if (vid == R.id.tv_cancel) {
             onCancelClick();
@@ -423,6 +396,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
+
             @Override
             public void run() {
                 saveImageItem();
@@ -441,9 +415,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private void saveImageItem() {
 
         for (int i = 0; i < imageLocList.size(); i++) {
-//            if (!imageItemList.get(i).path.startsWith("http")) {
-                FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
-//            }
+            FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
         }
 
         for (int i = 0; i < bitmapList.size(); i++) {
