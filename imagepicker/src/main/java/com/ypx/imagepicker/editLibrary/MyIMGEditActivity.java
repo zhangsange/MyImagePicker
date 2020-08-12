@@ -448,9 +448,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
 
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
-                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             } else {
-                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }
         }
         imageItemList.clear();
