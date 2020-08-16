@@ -415,7 +415,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private void saveImageItem() {
 
         for (int i = 0; i < imageLocList.size(); i++) {
-            FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
+            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
+                FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
+            }
         }
 
         for (int i = 0; i < bitmapList.size(); i++) {
