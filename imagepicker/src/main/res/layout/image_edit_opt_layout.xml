@@ -112,7 +112,7 @@
 
         <RadioButton
             android:textSize="@dimen/sp_16"
-            android:text=" 涂抹"
+            android:text=" 脱敏"
             android:id="@+id/rb_shade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
