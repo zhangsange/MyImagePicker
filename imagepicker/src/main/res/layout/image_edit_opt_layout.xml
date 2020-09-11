@@ -119,7 +119,7 @@
             android:button="@drawable/image_btn_doodle"
             android:gravity="center"
             android:onClick="onClick"
-            android:textColor="#FFF" />
+            android:textColor="@drawable/image_btn_doodle_text_color" />
 
         <Space
             android:layout_width="@dimen/image_mode_space"
@@ -147,7 +147,7 @@
             android:button="@drawable/image_btn_text"
             android:gravity="center"
             android:onClick="onClick"
-            android:textColor="#FFF" />
+            android:textColor="@drawable/image_btn_doodle_text_color" />
 
 
 <!--        <Space-->

@@ -278,7 +278,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         switch (mode) {
             case SHADE:
                 mModeGroup.check(R.id.rb_shade);
-                setOpSubDisplay(OP_SUB_SHADE);
+              //  setOpSubDisplay(OP_SUB_SHADE);
                 break;
             case DOODLE:
                 mModeGroup.check(R.id.rb_doodle);

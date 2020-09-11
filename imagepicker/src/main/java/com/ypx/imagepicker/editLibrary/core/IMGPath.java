@@ -14,7 +14,7 @@ public class IMGPath {
 
     protected Path path;
 
-    private int color = Color.RED;
+    private int color = Color.GRAY;
 
     private float width = BASE_MOSAIC_WIDTH;
 
@@ -33,7 +33,7 @@ public class IMGPath {
     }
 
     public IMGPath(Path path, IMGMode mode) {
-        this(path, mode, Color.RED);
+        this(path, mode, Color.GRAY);
     }
 
     public IMGPath(Path path, IMGMode mode, int color) {
