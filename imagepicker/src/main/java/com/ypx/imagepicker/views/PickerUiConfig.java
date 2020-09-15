@@ -47,6 +47,9 @@ public class PickerUiConfig {
      */
     private int themeColor;
 
+    private static int editPicPenColor = Color.WHITE;
+
+
     public PickerUiProvider getPickerUiProvider() {
         if (pickerUiProvider == null) {
             return new PickerUiProvider();
@@ -195,4 +198,15 @@ public class PickerUiConfig {
         this.themeColor = themeColor;
         ImagePicker.setThemeColor(themeColor);
     }
+
+
+    public  int getEditPicPenColor() {
+        return editPicPenColor;
+    }
+
+    public  void setEditPicPenColor(int penColor) {
+        this.editPicPenColor = penColor;
+        ImagePicker.setEditPicPenColor(themeColor);
+    }
+
 }

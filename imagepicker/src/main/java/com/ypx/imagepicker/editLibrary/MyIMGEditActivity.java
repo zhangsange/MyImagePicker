@@ -278,7 +278,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         switch (mode) {
             case SHADE:
                 mModeGroup.check(R.id.rb_shade);
-                mImgView.setPenColor(getResources().getColor(R.color.pen_color));
+                mImgView.setPenColor(ImagePicker.getEditPicPenColor());
+                //mImgView.setPenColor(getResources().getColor(R.color.pen_color));
               //  setOpSubDisplay(OP_SUB_SHADE);
                 break;
             case DOODLE:

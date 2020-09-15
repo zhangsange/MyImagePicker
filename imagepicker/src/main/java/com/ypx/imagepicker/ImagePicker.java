@@ -56,6 +56,7 @@ public class ImagePicker {
     public static boolean isOriginalImage = false;
 
     private static int themeColor = Color.RED;
+    private static int editPicPenColor = Color.WHITE;
 
     private static boolean previewWithHighQuality = false;
 
@@ -379,4 +380,16 @@ public class ImagePicker {
     public static void setThemeColor(int themeColor) {
         ImagePicker.themeColor = themeColor;
     }
+
+
+       public static int getEditPicPenColor() {
+        return editPicPenColor;
+    }
+
+    public static void setEditPicPenColor(int penColor) {
+        ImagePicker.editPicPenColor = penColor;
+    }
+
+
+
 }
