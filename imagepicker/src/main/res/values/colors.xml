@@ -26,6 +26,7 @@
     <color name="image_color_cyan">#20FFCD</color>
     <color name="image_color_yellow">#FFCC00</color>
     <color name="image_color_blue">#0078FF</color>
+    <color name="pen_color">#F5F5F5</color>
 
 
     <color name="active_edit">#EE5E7B</color>
