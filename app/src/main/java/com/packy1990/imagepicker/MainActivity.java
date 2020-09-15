@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOriginal(true)
                 .setCanEditPic(isCanEdit)//是否脱敏
                 .setNumber("编号1245")
+                .setOriginal(false)
                 .mimeTypes(MimeType.ofImage())
                 .filterMimeTypes(MimeType.GIF)
                 .showCamera(true)
