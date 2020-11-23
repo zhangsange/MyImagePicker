@@ -38,6 +38,17 @@ public class MultiSelectConfig extends CropConfig {
 
     private String number = "";
 
+
+    public String getNumberColor() {
+        return numberColor;
+    }
+
+    public void setNumberColor(String numberColor) {
+        this.numberColor = numberColor;
+    }
+
+    private String numberColor = "";
+
     private int selectMode = SelectMode.MODE_MULTI;
     private ArrayList<ImageItem> lastImageList = new ArrayList<>();
 

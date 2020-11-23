@@ -218,6 +218,7 @@ public class WeChatPresenter implements IPickerPresenter {
 //            Intent intent = new Intent(activity, IMGEditActivity.class);
             Intent intent = new Intent(activity, MyIMGEditActivity.class);
             intent.putExtra(Config.CONGIG_SHOW_NUMBER, ((MultiSelectConfig)selectConfig).getNumber());
+            intent.putExtra(Config.CONGIG_NUMBER_COLOR, ((MultiSelectConfig)selectConfig).getNumberColor());
             intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, selectedList);
             activity.startActivity(intent);
             return true;

@@ -202,6 +202,13 @@ public class MultiPickerBuilder {
         selectConfig.setNumber(num);
         return this;
     }
+ /**
+     * @param numColor 编码字体颜色
+     */
+    public MultiPickerBuilder setNumberColor(String numColor) {
+        selectConfig.setNumberColor(numColor);
+        return this;
+    }
 
     /**
      * @param isOriginal 设置是否支持原图选项

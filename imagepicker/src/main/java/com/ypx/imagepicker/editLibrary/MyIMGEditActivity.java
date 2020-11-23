@@ -86,6 +86,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private String btnContent;
     private String number;
     private LoadingDialog dialog;
+    private String numberColor;
+    private int umberColorInt;
 
 
     @Override
@@ -93,6 +95,11 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
         number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
+        numberColor = getIntent().getStringExtra(Config.CONGIG_NUMBER_COLOR);
+        if (!TextUtils.isEmpty(numberColor))
+        {
+            umberColorInt = Color.parseColor(numberColor);
+        }
         setContentView(R.layout.image_edit_activity);
         initImage();
         initViews();
@@ -158,7 +165,11 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(number)) {
                 if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
-                    mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                    if (!TextUtils.isEmpty(numberColor)){
+                        mImgView.addStickerText(new IMGText(number,umberColorInt), true);
+                    }else{
+                        mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                    }
                     noCompleteList.add(0);
                 }
             }
@@ -229,7 +240,12 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (!selectPosList.contains(selectPos)) {
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
             if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
-                mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                if (!TextUtils.isEmpty(numberColor)){
+                    mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                }else{
+                    mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                }
+//                mImgView.addStickerText(new IMGText(number, Color.RED), true);
             }
             selectPosList.add(selectPos);
         }
