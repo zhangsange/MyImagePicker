@@ -457,10 +457,10 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         }
         for (int i = 0; i < imageSelectList.size(); i++) {//删除原来图片
             if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteOriginalPic()) {
-                FileUtil.deletePic(getApplication(), imageSelectList.get(i));
+                FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
             }
             if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteBeforeEditlPic()){
-                FileUtil.deletePic(getApplication(), imageSelectList.get(i));
+                FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
             }
 
         }
