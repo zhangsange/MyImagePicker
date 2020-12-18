@@ -75,6 +75,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private MultiPreviewEditAdapter previewAdapter;
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
     public ArrayList<ImageItem> imageLocList = new ArrayList<>();
+    public ArrayList<String> imageSelectList = new ArrayList<>();
     public ArrayList<ImageItem> imageHttpList = new ArrayList<>();
     public List<Bitmap> bitmapList = new ArrayList<>();
     public List<Integer> noCompleteList = new ArrayList<>();
@@ -435,13 +436,14 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
      * 删除原图片 保存编辑后的图片
      */
     private void saveImageItem() {
-
+        imageItemList.clear();
+        imageSelectList.clear();
         for (int i = 0; i < imageLocList.size(); i++) {
-            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
-                FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
-            }
+            imageSelectList.add(imageLocList.get(i).path);
+//            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+//                FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
+//            }
         }
-
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
                 imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
@@ -449,7 +451,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                 imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }
         }
-        imageItemList.clear();
+        for (String path: imageSelectList){//删除原来图片
+            FileUtil.deletePic(getApplication(), path);
+        }
         imageItemList.addAll(imageHttpList);
         imageItemList.addAll(imageLocList);
         imageItemList = ImagePicker.transitArray(this, imageItemList);
