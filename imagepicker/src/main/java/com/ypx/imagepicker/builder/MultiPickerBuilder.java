@@ -188,6 +188,18 @@ public class MultiPickerBuilder {
     public MultiPickerBuilder setPreview(boolean isPreview) {
         selectConfig.setPreview(isPreview);
         return this;
+    } /**
+     * @param isDelete 是否删除原图
+     */
+    public MultiPickerBuilder setDeleteOriginalPic(boolean isDelete) {
+        selectConfig.setDeleteOriginalPic(isDelete);
+        return this;
+    } /**
+     * @param isDelete 是否删除(非原图(曾被编辑过的图片))图片
+     */
+    public MultiPickerBuilder setDeleteBeforeEditlPic(boolean isDelete) {
+        selectConfig.setDeleteBeforeEditlPic(isDelete);
+        return this;
     }
     /**
      * @param isEdit 是否开启脱敏处理

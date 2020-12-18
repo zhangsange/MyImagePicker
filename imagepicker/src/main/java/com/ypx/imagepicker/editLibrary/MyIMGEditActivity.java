@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
 import com.ypx.imagepicker.bean.ImageItem;
+import com.ypx.imagepicker.bean.selectconfig.BaseSelectConfig;
+import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.editLibrary.core.IMGMode;
 import com.ypx.imagepicker.editLibrary.core.IMGText;
@@ -89,6 +91,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private LoadingDialog dialog;
     private String numberColor;
     private int umberColorInt;
+    private MultiSelectConfig selectConfig;
 
 
     @Override
@@ -97,6 +100,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
         number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
         numberColor = getIntent().getStringExtra(Config.CONGIG_NUMBER_COLOR);
+        selectConfig = (MultiSelectConfig) getIntent().getSerializableExtra(Config.CONGIG);
         if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
         }
@@ -451,8 +455,14 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                 imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }
         }
-        for (String path: imageSelectList){//删除原来图片
-            FileUtil.deletePic(getApplication(), path);
+        for (int i = 0; i < imageSelectList.size(); i++) {//删除原来图片
+            if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteOriginalPic()) {
+                FileUtil.deletePic(getApplication(), imageSelectList.get(i));
+            }
+            if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteBeforeEditlPic()){
+                FileUtil.deletePic(getApplication(), imageSelectList.get(i));
+            }
+
         }
         imageItemList.addAll(imageHttpList);
         imageItemList.addAll(imageLocList);
