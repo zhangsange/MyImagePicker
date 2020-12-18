@@ -6,19 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 /**
  * =====================================
@@ -45,7 +50,7 @@ public class FileUtil {
         return storagePath;
     }
 
-    public static String saveBitmap(String dir, Bitmap b) {
+    public static String saveBitmap(String dir, Bitmap b, Context context) {
         PIC_EDIT_FOLDER_NAME = dir;
         String path = initPath();
         long dataTake = System.currentTimeMillis();
@@ -56,12 +61,34 @@ public class FileUtil {
             b.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + jpegName)));
             return jpegName;
         } catch (IOException e) {
             e.printStackTrace();
             return "";
         }
     }
+
+    /**
+     * 将本地图片转成Bitmap
+     * @param path 已有图片的路径
+     * @return
+     */
+    public static Bitmap getBitmap(String path){
+            Bitmap bitmap = null;
+            try {
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+                bitmap = BitmapFactory.decodeStream(bis);
+                bis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+
+    }
+
 
     public static String saveBitmapAndroidQ(Context context, String dir, Bitmap b) {
         long dataTake = System.currentTimeMillis();

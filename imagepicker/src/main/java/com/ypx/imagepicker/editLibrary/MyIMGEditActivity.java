@@ -96,8 +96,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
         number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
         numberColor = getIntent().getStringExtra(Config.CONGIG_NUMBER_COLOR);
-        if (!TextUtils.isEmpty(numberColor))
-        {
+        if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
         }
         setContentView(R.layout.image_edit_activity);
@@ -165,9 +164,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(number)) {
                 if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
-                    if (!TextUtils.isEmpty(numberColor)){
-                        mImgView.addStickerText(new IMGText(number,umberColorInt), true);
-                    }else{
+                    if (!TextUtils.isEmpty(numberColor)) {
+                        mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                    } else {
                         mImgView.addStickerText(new IMGText(number, Color.RED), true);
                     }
                     noCompleteList.add(0);
@@ -202,11 +201,16 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (imageLocList != null && imageLocList.size() > 0) {
             for (int i = 0; i < imageLocList.size(); i++) {
                 Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (SystemUtils.beforeAndroidTen()) {
+                    bitmap = FileUtil.getBitmap(imageLocList.get(i).path);
+                } else {
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 bitmapList.add(bitmap);
             }
 
@@ -240,9 +244,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (!selectPosList.contains(selectPos)) {
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
             if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
-                if (!TextUtils.isEmpty(numberColor)){
+                if (!TextUtils.isEmpty(numberColor)) {
                     mImgView.addStickerText(new IMGText(number, umberColorInt), true);
-                }else{
+                } else {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
                 }
 //                mImgView.addStickerText(new IMGText(number, Color.RED), true);
@@ -296,7 +300,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                 mModeGroup.check(R.id.rb_shade);
                 mImgView.setPenColor(ImagePicker.getEditPicPenColor());
                 //mImgView.setPenColor(getResources().getColor(R.color.pen_color));
-              //  setOpSubDisplay(OP_SUB_SHADE);
+                //  setOpSubDisplay(OP_SUB_SHADE);
                 break;
             case DOODLE:
                 mModeGroup.check(R.id.rb_doodle);
@@ -433,14 +437,14 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private void saveImageItem() {
 
         for (int i = 0; i < imageLocList.size(); i++) {
-            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
+            if (!imageItemList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                 FileUtil.deletePic(getApplication(), imageLocList.get(i).path);
             }
         }
 
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
-                imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
             } else {
                 imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }

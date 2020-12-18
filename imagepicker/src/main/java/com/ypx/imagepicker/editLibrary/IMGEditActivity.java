@@ -131,7 +131,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         }
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
-                imageItemList.get(i).path = FileUtil.saveBitmap("", bitmapList.get(i));
+                imageItemList.get(i).path = FileUtil.saveBitmap("", bitmapList.get(i),this);
             } else {
                 imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, "", bitmapList.get(i));
             }
