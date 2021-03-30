@@ -2,6 +2,7 @@ package com.ypx.imagepicker.editLibrary;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -92,6 +93,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private String numberColor;
     private int umberColorInt;
     private MultiSelectConfig selectConfig;
+    private boolean isDeleteOriginalPic = false; //是否删除原图
+    private boolean isDeleteBeforeEditlPic = false;//是否删除编辑后的图片
 
 
     @Override
@@ -101,6 +104,10 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
         numberColor = getIntent().getStringExtra(Config.CONGIG_NUMBER_COLOR);
         selectConfig = (MultiSelectConfig) getIntent().getSerializableExtra(Config.CONGIG);
+        if (selectConfig != null) {
+            isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
+            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
+        }
         if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
         }
@@ -142,8 +149,12 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (msg.what == 0x101) {
                 initData();
             } else if (msg.what == 0x102) {
-                ImagePicker.closePickerWithCallback(imageItemList);
+                Intent intent = new Intent();
+                intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
+                setResult(ImagePicker.REQ_PICKER_RESULT_CODE, intent);
                 finish();
+//                ImagePicker.closePickerWithCallback(imageItemList);
+//                finish();
             }
 
             return false;
@@ -453,10 +464,10 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             }
         }
         for (int i = 0; i < imageSelectList.size(); i++) {//删除原来图片
-            if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteOriginalPic()) {
+            if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
                 FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
             }
-            if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME)&&selectConfig.isDeleteBeforeEditlPic()){
+            if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
                 FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
             }
 
