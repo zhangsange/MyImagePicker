@@ -95,6 +95,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private MultiSelectConfig selectConfig;
     private boolean isDeleteOriginalPic = false; //是否删除原图
     private boolean isDeleteBeforeEditlPic = false;//是否删除编辑后的图片
+    private boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
 
 
     @Override
@@ -107,6 +108,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (selectConfig != null) {
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
             isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
+            isSingleTakePhoto = selectConfig.isSingleTakePhoto();
         }
         if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
@@ -149,12 +151,14 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (msg.what == 0x101) {
                 initData();
             } else if (msg.what == 0x102) {
-                Intent intent = new Intent();
-                intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
-                setResult(ImagePicker.REQ_PICKER_RESULT_CODE, intent);
+                if (isSingleTakePhoto){
+                    Intent intent = new Intent();
+                    intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
+                    setResult(ImagePicker.REQ_PICKER_RESULT_CODE, intent);
+                }else{
+                    ImagePicker.closePickerWithCallback(imageItemList);
+                }
                 finish();
-//                ImagePicker.closePickerWithCallback(imageItemList);
-//                finish();
             }
 
             return false;

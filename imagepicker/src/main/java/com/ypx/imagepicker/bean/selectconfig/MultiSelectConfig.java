@@ -19,6 +19,7 @@ public class MultiSelectConfig extends CropConfig {
     private boolean isPreview = true;
     private boolean isDeleteOriginalPic = true;//是否删除原图
     private boolean isDeleteBeforeEditlPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
+    private boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
 
 
     public boolean isDeleteOriginalPic() {
@@ -35,6 +36,14 @@ public class MultiSelectConfig extends CropConfig {
 
     public void setDeleteBeforeEditlPic(boolean deleteBeforeEditlPic) {
         isDeleteBeforeEditlPic = deleteBeforeEditlPic;
+    }
+
+    public boolean isSingleTakePhoto() {
+        return isSingleTakePhoto;
+    }
+
+    public void setSingleTakePhoto(boolean singleTakePhoto) {
+        isSingleTakePhoto = singleTakePhoto;
     }
 
 
