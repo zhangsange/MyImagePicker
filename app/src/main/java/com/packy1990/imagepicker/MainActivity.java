@@ -32,14 +32,22 @@ import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.MimeType;
 import com.ypx.imagepicker.bean.PickerError;
+import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
+import com.ypx.imagepicker.cameralibrary.EasyCameraActivity;
+import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
+import com.ypx.imagepicker.data.PickerActivityCallBack;
+import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
+import com.ypx.imagepicker.helper.launcher.PLauncher;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static com.ypx.imagepicker.bean.SelectMode.MODE_SINGLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,15 +60,13 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isAutoJumpAlohaActivity;
     private GridLayout mGridLayout;
     private CheckBox checkEdit;
-    private boolean isCanEdit = true;
+    private boolean isCanEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_1);
         mGridLayout = findViewById(R.id.gridLayout);
-
-
         checkEdit = findViewById(R.id.isEdit);
         checkEdit.setVisibility(View.GONE);
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -107,7 +113,48 @@ public class MainActivity extends AppCompatActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    weChatPick(maxCount - picList.size());
+                    MultiSelectConfig selectConfig = new MultiSelectConfig();
+                    selectConfig.setDeleteOriginalPic(true);
+                    selectConfig.setDeleteBeforeEditlPic(false);
+                    selectConfig.setSingleTakePhoto(true);
+                    selectConfig.setImgMaxNum(50);
+                    selectConfig.setCompress(false);
+                    selectConfig.setMaxSize(1000);
+                    selectConfig.setCanEditPic(true);
+                    selectConfig.setWaterMark("编号122921");
+                    selectConfig.setWaterMarkColor("#80FF0000");
+                    Intent intent = new Intent(MainActivity.this, EasyCameraActivity.class);
+                    intent.putExtra(Config.CONGIG, selectConfig);
+                   // intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, items);
+                    PLauncher.init(MainActivity.this).startActivityForResult(intent, PickerActivityCallBack.create(new OnImagePickCompleteListener() {
+                        @Override
+                        public void onImagePickComplete(ArrayList<ImageItem> items) {
+                            picList.addAll(items);
+                            for (ImageItem imageItem : picList) {
+                                Log.i("看看看 ", "哈哈哈哈 ==  " + imageItem.path);
+                            }
+                            refreshGridLayout();
+                        }
+                    }));
+
+
+//                    intent.putExtra(Config.CONGIG_SHOW_NUMBER, ((MultiSelectConfig)selectConfig).getNumber());
+//                    intent.putExtra(Config.CONGIG_NUMBER_COLOR, ((MultiSelectConfig)selectConfig).getNumberColor());
+//                    intent.putExtra(Config.CONGIG, selectConfig);
+                    // intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, selectedList);
+                    //  activity.startActivity(intent);
+
+//                    openTakePhoto(MainActivity.this, new OnImagePickCompleteListener() {
+//                        @Override
+//                        public void onImagePickComplete(ArrayList<ImageItem> items) {
+//                            picList.addAll(items);
+//                            for (ImageItem imageItem : picList) {
+//                                Log.i("看看看 ", "哈哈哈哈 ==  " + imageItem.path);
+//                            }
+//                            refreshGridLayout();
+//                        }
+//                    });
+                    // weChatPick(maxCount - picList.size());
                 }
             });
             for (int i = 0; i < num; i++) {
@@ -128,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileUtil.deletePic(MainActivity.this,picList.get(pos).path);
+                FileUtil.deletePic(MainActivity.this, picList.get(pos).path);
                 picList.remove(pos);
                 refreshGridLayout();
             }
@@ -136,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         iv_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 preview(pos);
             }
         });
@@ -181,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void preview(int pos) {
-        ImagePicker.preview(this, weChatPresenter, picList, pos, isCanEdit,new OnImagePickCompleteListener() {
+        ImagePicker.preview(this, weChatPresenter, picList, pos, isCanEdit, new OnImagePickCompleteListener() {
             @Override
             public void onImagePickComplete(ArrayList<ImageItem> items) {
                 //图片选择回调，主线程
@@ -194,15 +240,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param context 开启编辑预览
+     */
+    public static void openTakePhoto(final Activity context, final OnImagePickCompleteListener listener) {
+        String imageName = System.currentTimeMillis() + "";
+        boolean isCopyInDCIM = true;
+        ImagePicker.takePhoto(context, imageName, isCopyInDCIM, new OnImagePickCompleteListener() {
+            @Override
+            public void onImagePickComplete(ArrayList<ImageItem> items) {
+                if (items != null && items.size() > 0) {
+                    MultiSelectConfig selectConfig = new MultiSelectConfig();
+                    selectConfig.setDeleteOriginalPic(true);
+                    selectConfig.setDeleteBeforeEditlPic(false);
+                    selectConfig.setSingleTakePhoto(true);
+                    if (true) {//
+                        Intent intent = new Intent(context, MyIMGEditActivity.class);
+                        intent.putExtra(Config.CONGIG_SHOW_NUMBER, "ipInfo.waterMark");
+                        intent.putExtra(Config.CONGIG_NUMBER_COLOR, "#80FF0000");
+                        intent.putExtra(Config.CONGIG, selectConfig);
+                        intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, items);
+                        //    context.startActivity(intent);
+                        PLauncher.init(context).startActivityForResult(intent, PickerActivityCallBack.create(listener));
+                    }
+                }
+            }
+        });
+    }
 
     public void weChatPick(int count) {
         WeChatPresenter weChatPresenter = new WeChatPresenter();
         ImagePicker.withMulti(weChatPresenter)
                 .setMaxCount(maxCount)
+                .setSelectMode(MODE_SINGLE)
                 .setColumnCount(4)
-                .setOriginal(true)
+                .setOriginal(false)
                 .setCanEditPic(isCanEdit)//是否脱敏
                 .setNumber("编号1245")
+                .setNumberColor("#80FF0000")
+                .setDeleteOriginalPic(false)
+                .setDeleteBeforeEditlPic(false)
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage())
                 .filterMimeTypes(MimeType.GIF)
@@ -221,8 +298,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onImagePickComplete(ArrayList<ImageItem> items) {
                         picList.clear();
                         picList.addAll(items);
-                        for (ImageItem imageItem : picList){
-                            Log.i("看看看 ","哈哈哈哈 ==  "+imageItem.path);
+                        for (ImageItem imageItem : picList) {
+                            Log.i("看看看 ", "哈哈哈哈 ==  " + imageItem.path);
                         }
                         refreshGridLayout();
                     }

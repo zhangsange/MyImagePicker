@@ -15,11 +15,60 @@ public class MultiSelectConfig extends CropConfig {
     private boolean isShowOriginalCheckBox;
     private boolean isDefaultOriginal;
     public boolean isCanEditPic;
-    private boolean isCanPreviewVideo = true;
-    private boolean isPreview = true;
-    private boolean isDeleteOriginalPic = true;//是否删除原图
-    private boolean isDeleteBeforeEditlPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
-    private boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
+    public boolean isCanPreviewVideo = true;
+    public boolean isPreview = true;
+    public boolean isDeleteOriginalPic = true;//是否删除原图
+    public boolean isDeleteBeforeEditlPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
+    public boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
+
+    public boolean isCompress() {
+        return isCompress;
+    }
+
+    public void setCompress(boolean compress) {
+        isCompress = compress;
+    }
+
+    public boolean isCompress= false;//是否压缩
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    public int maxSize ;//bitmap压缩 大小 kb
+
+    public String getWaterMark() {
+        return waterMark;
+    }
+
+    public void setWaterMark(String waterMark) {
+        this.waterMark = waterMark;
+    }
+
+    public String getWaterMarkColor() {
+        return waterMarkColor;
+    }
+
+    public void setWaterMarkColor(String waterMarkColor) {
+        this.waterMarkColor = waterMarkColor;
+    }
+
+    public String waterMark ="";//是水印
+    public String waterMarkColor ="#80FF0000";//是水印颜色
+
+    public void setImgMaxNum(int imgMaxNum) {
+        this.imgMaxNum = imgMaxNum;
+    }
+
+    public int getImgMaxNum() {
+        return imgMaxNum;
+    }
+
+    public int imgMaxNum =50;//添加图片最大数量
 
 
     public boolean isDeleteOriginalPic() {

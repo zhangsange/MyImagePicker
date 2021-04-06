@@ -69,6 +69,9 @@ public class ImageItem implements Serializable, Parcelable {
 
     public ImageItem() {
     }
+ public ImageItem(String path) {
+     this.path = path;
+    }
 
     public static ImageItem withPath(Context context, String path) {
         ImageItem imageItem = new ImageItem();

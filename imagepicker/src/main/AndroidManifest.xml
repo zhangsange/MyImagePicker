@@ -59,6 +59,7 @@
         </provider>
         <activity android:name=".editLibrary.IMGEditActivity" />
         <activity android:name=".editLibrary.MyIMGEditActivity" />
+        <activity android:name=".cameralibrary.EasyCameraActivity" />
 
     </application>
 

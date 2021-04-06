@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_margin="@dimen/dp_10"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="80dp"
+        android:background="@color/black_radio"
+        android:scaleType="centerCrop"
+        android:id="@+id/iv_image"
+        />
+    <ImageView
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
+        android:src="@mipmap/icon_img_del"
+        android:layout_gravity="right"
+        android:id="@+id/iv_del"
+
+        />
+</FrameLayout>

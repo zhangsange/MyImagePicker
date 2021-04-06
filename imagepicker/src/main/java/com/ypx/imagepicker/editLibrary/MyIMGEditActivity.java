@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
+import com.ypx.imagepicker.activity.MyAppActivity;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.selectconfig.BaseSelectConfig;
 import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.config.Config;
+import com.ypx.imagepicker.constant.Code;
 import com.ypx.imagepicker.editLibrary.core.IMGMode;
 import com.ypx.imagepicker.editLibrary.core.IMGText;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
@@ -35,8 +38,10 @@ import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
 import com.ypx.imagepicker.helper.recyclerviewitemhelper.SimpleItemTouchHelperCallback;
+import com.ypx.imagepicker.utils.BitmapUtils;
 import com.ypx.imagepicker.utils.ToastUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +88,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     public List<Bitmap> bitmapList = new ArrayList<>();
     public List<Integer> noCompleteList = new ArrayList<>();
     private int lastSelectPos = 0;
-    private List<Integer> selectPosList;
+    private List<Integer> selectPosList = new ArrayList<>();
     private FrameLayout frameLayout;
     private int newSelectPos = 0;
     private TextView tvDone;
@@ -101,34 +106,52 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
-        number = getIntent().getStringExtra(Config.CONGIG_SHOW_NUMBER);
-        numberColor = getIntent().getStringExtra(Config.CONGIG_NUMBER_COLOR);
+        setContentView(R.layout.image_edit_activity);
         selectConfig = (MultiSelectConfig) getIntent().getSerializableExtra(Config.CONGIG);
         if (selectConfig != null) {
+            isSingleTakePhoto = selectConfig.isSingleTakePhoto();
+            number = selectConfig.getWaterMark();
+            numberColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
             isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
-            isSingleTakePhoto = selectConfig.isSingleTakePhoto();
         }
         if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
         }
-        setContentView(R.layout.image_edit_activity);
-        initImage();
         initViews();
-        showLoading("正在加载图片中,请稍等...");
-        new Thread(new Runnable() {
-            Message msg = Message.obtain();
+        if (!isSingleTakePhoto) {
+            imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
+            initImage();
+            showLoading("正在加载图片中,请稍等...");
+            new Thread(new Runnable() {
+                Message msg = Message.obtain();
 
-            @Override
-            public void run() {
-                bitmapList = getBitmapList();
-                msg.what = 0x101;
-                if (mHandler != null) {
-                    mHandler.sendMessage(msg);
+                @Override
+                public void run() {
+                    bitmapList = getBitmapList();
+                    msg.what = 0x101;
+                    if (mHandler != null) {
+                        mHandler.sendMessage(msg);
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        } else {
+            imageItemList = new ArrayList<>();
+            bitmapList = MyAppActivity.getBitmapList();
+            initImageBitmap();
+            initData();
+        }
+
+    }
+
+
+    /**
+     * 处理排除网络图片
+     */
+    private void initImageBitmap() {
+        for (Bitmap imageItem : bitmapList) {
+            imageLocList.add(new ImageItem(""));
+        }
     }
 
     /**
@@ -151,11 +174,12 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (msg.what == 0x101) {
                 initData();
             } else if (msg.what == 0x102) {
-                if (isSingleTakePhoto){
+                if (isSingleTakePhoto) {
                     Intent intent = new Intent();
                     intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
-                    setResult(ImagePicker.REQ_PICKER_RESULT_CODE, intent);
-                }else{
+                    setResult(Code.REQUEST_EDIT, intent);
+                    finish();
+                } else {
                     ImagePicker.closePickerWithCallback(imageItemList);
                 }
                 finish();
@@ -183,7 +207,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             mImgView.setImageBitmap(bitmapList.get(lastSelectPos));
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(number)) {
-                if (!imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+                if (imageLocList == null || imageLocList.size() == 0 || !imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                     if (!TextUtils.isEmpty(numberColor)) {
                         mImgView.addStickerText(new IMGText(number, umberColorInt), true);
                     } else {
@@ -192,13 +216,8 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                     noCompleteList.add(0);
                 }
             }
-//            if (bitmapList.size()==1){
-//                btnContent = "完成";
-//                setBtnTextView(btnContent);
-//            }else{
-//                btnContent = "下一张";
-//                setBtnTextView(btnContent);
-//            }
+        } else {
+            ToastUtils.showToastError(this, "抱歉没有图片");
         }
     }
 
@@ -225,7 +244,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
                     bitmap = FileUtil.getBitmap(imageLocList.get(i).path);
                 } else {
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+                        bitmap = BitmapUtils.imageZoom(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri()), selectConfig.maxSize);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -263,26 +282,24 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         mImgView.setImageBitmap(bitmapList.get(selectPos));
         if (!selectPosList.contains(selectPos)) {
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
-            if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+            if (isSingleTakePhoto) {
                 if (!TextUtils.isEmpty(numberColor)) {
                     mImgView.addStickerText(new IMGText(number, umberColorInt), true);
                 } else {
                     mImgView.addStickerText(new IMGText(number, Color.RED), true);
                 }
-//                mImgView.addStickerText(new IMGText(number, Color.RED), true);
+            } else {
+                if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+                    if (!TextUtils.isEmpty(numberColor)) {
+                        mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                    } else {
+                        mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                    }
+                }
             }
+
             selectPosList.add(selectPos);
         }
-
-//        if (bitmapList.size()==newSelectPos){
-//            btnContent = "完成";
-//            setBtnTextView(btnContent);
-//        }else{
-//            btnContent = "下一张";
-//            setBtnTextView(btnContent);
-//        }
-//        this. lastSelectPos = newSelectPos;
-
     }
 
 
@@ -427,7 +444,11 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     public void onDoneClick() {
         if (!TextUtils.isEmpty(number)) {
             for (int i = 0; i < imageLocList.size(); i++) {
-                if (!imageLocList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
+                if (isSingleTakePhoto && !noCompleteList.contains(i)) {
+                    int postion = i + 1;
+                    ToastUtils.showToastError(getApplicationContext(), "请编辑第" + postion + "张图片!");
+                    return;
+                } else if (!imageLocList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !noCompleteList.contains(i)) {
                     int postion = i + 1;
                     ToastUtils.showToastError(getApplicationContext(), "请编辑第" + postion + "张图片!");
                     return;
@@ -455,28 +476,44 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
      * 删除原图片 保存编辑后的图片
      */
     private void saveImageItem() {
-        imageItemList.clear();
         imageSelectList.clear();
-        for (int i = 0; i < imageLocList.size(); i++) {
-            imageSelectList.add(imageLocList.get(i).path);
-        }
-        for (int i = 0; i < bitmapList.size(); i++) {
-            if (SystemUtils.beforeAndroidTen()) {
-                imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
-            } else {
-                imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+        if (isSingleTakePhoto) {
+            for (int i = 0; i < bitmapList.size(); i++) {
+                if (SystemUtils.beforeAndroidTen()) {
+                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                } else {
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                }
+                if (selectConfig.isCompress) {//进行压缩
+                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
+                }
             }
-        }
-        for (int i = 0; i < imageSelectList.size(); i++) {//删除原来图片
-            if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
-                FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
+        } else {
+            imageItemList.clear();
+            for (int i = 0; i < imageLocList.size(); i++) {
+                imageSelectList.add(imageLocList.get(i).path);
             }
-            if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
-                FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
+            for (int i = 0; i < bitmapList.size(); i++) {
+                if (SystemUtils.beforeAndroidTen()) {
+                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                } else {
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                }
+                if (selectConfig.isCompress) {//进行压缩
+                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
+                }
             }
+            for (int i = 0; i < imageSelectList.size(); i++) {//删除原来图片
+                if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
+                    FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
+                }
+                if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
+                    FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
+                }
 
+            }
+            imageItemList.addAll(imageHttpList);
         }
-        imageItemList.addAll(imageHttpList);
         imageItemList.addAll(imageLocList);
         imageItemList = ImagePicker.transitArray(this, imageItemList);
     }
