@@ -255,7 +255,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         iv_back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPhoto.setVisibility(INVISIBLE);
+                leftClickListener.onClick();
             }
         });
         tv_confirm.setOnClickListener(new OnClickListener() {
