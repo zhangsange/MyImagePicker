@@ -531,7 +531,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
     public void showPicture(Bitmap bitmap, boolean isVertical) {
 
 //        captureBitmap = BitmapUtils.imageZoom(bitmap,200*1024);
-        logBitmapInfo(bitmap);
+       // logBitmapInfo(bitmap);
         iv_takePhoto.setEnabled(true);
         isVerticalList.add(isVertical);
         if (selectConfig.isCompress) {
