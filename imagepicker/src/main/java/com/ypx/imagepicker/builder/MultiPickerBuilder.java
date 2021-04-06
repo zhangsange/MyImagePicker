@@ -220,6 +220,18 @@ public class MultiPickerBuilder {
     public MultiPickerBuilder setNumberColor(String numColor) {
         selectConfig.setNumberColor(numColor);
         return this;
+    } /**
+     * @param compress 是否压缩bitmap
+     */
+    public MultiPickerBuilder setCompress(boolean compress) {
+        selectConfig.setCompress(compress);
+        return this;
+    } /**
+     * @param maxSize 压缩bitmap maxSize  kb 以下
+     */
+    public MultiPickerBuilder setMaxSize(int  maxSize) {
+        selectConfig.setMaxSize(maxSize);
+        return this;
     }
 
     /**
