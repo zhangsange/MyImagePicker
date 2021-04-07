@@ -223,19 +223,20 @@ public class EasyCameraActivity extends AppCompatActivity {
             return false;
         }
     });
+
     /**
      * 删除原图片 保存编辑后的图片
      */
     private void saveImageItem() {
         imageItemList = new ArrayList<>();
         initImageBitmap();
-            for (int i = 0; i < bitmapList.size(); i++) {
-                if (SystemUtils.beforeAndroidTen()) {
-                    imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
-                } else {
-                    imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
-                }
+        for (int i = 0; i < bitmapList.size(); i++) {
+            if (SystemUtils.beforeAndroidTen()) {
+                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+            } else {
+                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
             }
+        }
         imageItemList = ImagePicker.transitArray(this, imageItemList);
     }
 
@@ -322,9 +323,9 @@ public class EasyCameraActivity extends AppCompatActivity {
         super.onResume();
         // if (!Setting.useSystemCamera) {
         jCameraView.onResume();
-        if (bitmapList != null && bitmapList.size() > 0) {
-            jCameraView.resetBitmap(bitmapList);
-        }
+//        if (MyAppActivity.getBitmapList() != null) {
+//            jCameraView.resetBitmap(MyAppActivity.getBitmapList());
+        //}
         //}
     }
 

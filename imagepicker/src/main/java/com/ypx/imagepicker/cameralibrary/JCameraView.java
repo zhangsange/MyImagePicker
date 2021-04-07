@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ypx.imagepicker.R;
+import com.ypx.imagepicker.activity.MyAppActivity;
 import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.cameralibrary.listener.ClickListener;
 import com.ypx.imagepicker.cameralibrary.listener.ErrorListener;
@@ -367,6 +368,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         CameraInterface.getInstance().registerSensorManager(getContext());
         CameraInterface.getInstance().setSwitchView(mSwitchCamera, mFlashLamp);
         machine.start(mVideoView.getHolder(), screenProp);
+        resetBitmap();
     }
 
     //生命周期onPause
@@ -539,6 +541,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         }
         bitmapList.add(bitmap);
         tv_confirm.setText("确认(" + bitmapList.size() + ")");
+        tv_confirm.setVisibility(VISIBLE);
         imagesAdapter.setListData(bitmapList);
         resetState(TYPE_DEFAULT); //重置状态
         machine.cancel(mVideoView.getHolder(), screenProp);
@@ -552,10 +555,17 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
 
     }
 
-    public void resetBitmap(List<Bitmap> bitmaps) {
-        bitmapList.clear();
-        bitmapList.addAll(bitmaps);
-        imagesAdapter.setListData(bitmapList);
+    public void resetBitmap() {
+        if(MyAppActivity.getBitmapList()!=null &&MyAppActivity.getBitmapList().size()>0){
+            bitmapList.clear();
+           // bitmapList.addAll(MyAppActivity.getBitmapList());
+            imagesAdapter.setListData(bitmapList);
+            tv_confirm.setText("确认(" + bitmapList.size() + ")");
+            if (bitmapList.size()==0){
+                tv_confirm.setVisibility(GONE);
+            }
+        }
+
     }
 
     public void setSelectConfig(MultiSelectConfig config) {
@@ -587,11 +597,12 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                 @Override
                 public void onClick(View v) {
                     mVideoView.setLayoutParams(new LayoutParams(width, (int) height));
-                    if (isVerticalList.get(position)) {
-                        mPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
-                    } else {
+                    if (!isVerticalList.get(position)) {
                         mPhoto.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    } else {
+                        mPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
                     }
+                    logBitmapInfo(data.get(position));
                     mPhoto.setImageBitmap(data.get(position));
                     mPhoto.setVisibility(VISIBLE);
                     mFoucsView.setEnabled(false);
@@ -605,6 +616,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     //  data.remove(position);
                     bitmapList.remove(position);
                     tv_confirm.setText("确认(" + bitmapList.size() + ")");
+                    if (bitmapList.size()==0){
+                        tv_confirm.setVisibility(GONE);
+                    }
                     mPhoto.setVisibility(INVISIBLE);
                     notifyDataSetChanged();
                 }
