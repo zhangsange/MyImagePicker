@@ -1,31 +1,21 @@
 package com.ypx.imagepicker.cameralibrary;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.ypx.imagepicker.ImagePicker;
@@ -38,8 +28,6 @@ import com.ypx.imagepicker.cameralibrary.listener.ErrorListener;
 import com.ypx.imagepicker.cameralibrary.listener.JCameraListener;
 import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.constant.Code;
-import com.ypx.imagepicker.constant.Key;
-import com.ypx.imagepicker.editLibrary.IMGEditActivity;
 import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
@@ -47,11 +35,11 @@ import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ren.perry.perry.LoadingDialog;
+
 
 public class EasyCameraActivity extends AppCompatActivity {
 
