@@ -37,6 +37,7 @@ public class FileUtil {
     private static final File parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private static String storagePath = "";
     public static String PIC_EDIT_FOLDER_NAME = "imagePicker_Edit";
+    public static String PIC_FOLDER_NAME = "imagePicker";
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static String initPath() {

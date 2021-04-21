@@ -104,7 +104,7 @@ public class ImagePicker {
                                  boolean isCopyInDCIM,
                                  OnImagePickCompleteListener listener) {
         if (imageName == null || imageName.length() == 0) {
-            imageName = "Img_" + System.currentTimeMillis();
+            imageName = DEFAULT_FILE_NAME+"Img_" + System.currentTimeMillis();
         }
         CameraCompat.takePhoto(activity, imageName, isCopyInDCIM, listener);
     }
