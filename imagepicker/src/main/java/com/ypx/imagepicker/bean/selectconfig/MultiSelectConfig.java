@@ -49,6 +49,14 @@ public class MultiSelectConfig extends CropConfig {
         this.waterMark = waterMark;
     }
 
+    public float getWaterMarkTextSize() {
+        return waterMarkTextSize;
+    }
+
+    public void setWaterMarkTextSize(float waterMarkTextSize) {
+        this.waterMarkTextSize = waterMarkTextSize;
+    }
+
     public String getWaterMarkColor() {
         return waterMarkColor;
     }
@@ -58,6 +66,8 @@ public class MultiSelectConfig extends CropConfig {
     }
 
     public String waterMark ="";//是水印
+
+    public float waterMarkTextSize=12f;//水印文字默认大小
     public String waterMarkColor ="#80FF0000";//是水印颜色
 
     public void setImgMaxNum(int imgMaxNum) {

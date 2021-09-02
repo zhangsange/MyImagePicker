@@ -210,17 +210,25 @@ public class MultiPickerBuilder {
     }   /**
      * @param num 编码
      */
-    public MultiPickerBuilder setNumber(String num) {
-        selectConfig.setNumber(num);
+    public MultiPickerBuilder setWaterMark(String num) {
+        selectConfig.setWaterMark(num);
         return this;
     }
  /**
      * @param numColor 编码字体颜色
      */
-    public MultiPickerBuilder setNumberColor(String numColor) {
-        selectConfig.setNumberColor(numColor);
+    public MultiPickerBuilder setWaterMarkColor(String numColor) {
+        selectConfig.setWaterMarkColor(numColor);
         return this;
     } /**
+     * @param textSize 水印文字大小
+     */
+    public MultiPickerBuilder setWaterMarkTextSize(float textSize) {
+        selectConfig.setWaterMarkTextSize(textSize);
+        return this;
+    }
+
+    /**
      * @param compress 是否压缩bitmap
      */
     public MultiPickerBuilder setCompress(boolean compress) {

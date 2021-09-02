@@ -13,9 +13,16 @@ public class IMGText {
 
     private int color = Color.WHITE;
 
+    private float textSize = 12f;
+
     public IMGText(String text, int color) {
         this.text = text;
         this.color = color;
+    }
+    public IMGText(String text, int color, float size) {
+        this.text = text;
+        this.color = color;
+        this.textSize = size;
     }
 
     public String getText() {
@@ -33,6 +40,17 @@ public class IMGText {
     public void setColor(int color) {
         this.color = color;
     }
+
+
+
+    public float getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(float textSize) {
+        this.textSize = textSize;
+    }
+
 
     public boolean isEmpty() {
         return TextUtils.isEmpty(text);

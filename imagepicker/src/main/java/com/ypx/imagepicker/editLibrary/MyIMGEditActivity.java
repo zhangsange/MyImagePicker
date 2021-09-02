@@ -101,6 +101,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
     private boolean isDeleteOriginalPic = false; //是否删除原图
     private boolean isDeleteBeforeEditlPic = false;//是否删除编辑后的图片
     private boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
+    private float waterMarkTextSize = 12f;
 
 
     @Override
@@ -111,6 +112,7 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
         if (selectConfig != null) {
             isSingleTakePhoto = selectConfig.isSingleTakePhoto();
             number = selectConfig.getWaterMark();
+            waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             numberColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
             isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
@@ -209,9 +211,9 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             if (!TextUtils.isEmpty(number)) {
                 if (imageLocList == null || imageLocList.size() == 0 || !imageLocList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                     if (!TextUtils.isEmpty(numberColor)) {
-                        mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                        mImgView.addStickerText(new IMGText(number, umberColorInt,waterMarkTextSize), true);
                     } else {
-                        mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                        mImgView.addStickerText(new IMGText(number, Color.RED,waterMarkTextSize), true);
                     }
                     noCompleteList.add(0);
                 }
@@ -284,16 +286,16 @@ public class MyIMGEditActivity extends Activity implements View.OnClickListener,
             //编码不为空时并且不是网络图片,并且此图片之前未被编辑过,设置显示编码
             if (isSingleTakePhoto) {
                 if (!TextUtils.isEmpty(numberColor)) {
-                    mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                    mImgView.addStickerText(new IMGText(number, umberColorInt,waterMarkTextSize), true);
                 } else {
-                    mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                    mImgView.addStickerText(new IMGText(number, Color.RED,waterMarkTextSize), true);
                 }
             } else {
                 if (!TextUtils.isEmpty(number) && !imageLocList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                     if (!TextUtils.isEmpty(numberColor)) {
-                        mImgView.addStickerText(new IMGText(number, umberColorInt), true);
+                        mImgView.addStickerText(new IMGText(number, umberColorInt,waterMarkTextSize), true);
                     } else {
-                        mImgView.addStickerText(new IMGText(number, Color.RED), true);
+                        mImgView.addStickerText(new IMGText(number, Color.RED,waterMarkTextSize), true);
                     }
                 }
             }
