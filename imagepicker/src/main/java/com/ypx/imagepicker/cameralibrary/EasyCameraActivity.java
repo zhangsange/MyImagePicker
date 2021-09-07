@@ -28,6 +28,7 @@ import com.ypx.imagepicker.cameralibrary.listener.ErrorListener;
 import com.ypx.imagepicker.cameralibrary.listener.JCameraListener;
 import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.constant.Code;
+import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
 import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
@@ -122,7 +123,7 @@ public class EasyCameraActivity extends AppCompatActivity {
                 bitmapList = bitmaps;
                 if (selectConfig.isCanEditPic()) {
                     MyAppActivity.setBitmapList(bitmaps);
-                    Intent intent = new Intent(EasyCameraActivity.this, MyImgEditVpActivity.class);
+                    Intent intent = new Intent(EasyCameraActivity.this, MyIMGEditActivity.class);
                     intent.putExtra(Config.CONGIG, selectConfig);
                     startActivityForResult(intent, Code.REQUEST_EDIT);
                 } else {

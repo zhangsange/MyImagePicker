@@ -27,6 +27,7 @@ import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.data.ICameraExecutor;
 import com.ypx.imagepicker.data.IReloadExecutor;
 import com.ypx.imagepicker.data.ProgressSceneEnum;
+import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
 import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 import com.ypx.imagepicker.utils.PViewSizeUtils;
@@ -216,7 +217,7 @@ public class WeChatPresenter implements IPickerPresenter {
         if (((MultiSelectConfig)selectConfig).isCanEditPic()) {//
            // tip(activity, "拦截了完成按钮点击" + selectedList.size());
 //            Intent intent = new Intent(activity, IMGEditActivity.class);
-            Intent intent = new Intent(activity, MyImgEditVpActivity.class);
+            Intent intent = new Intent(activity, MyIMGEditActivity.class);
             intent.putExtra(Config.CONGIG_SHOW_NUMBER, ((MultiSelectConfig)selectConfig).getNumber());
             intent.putExtra(Config.CONGIG_NUMBER_COLOR, ((MultiSelectConfig)selectConfig).getNumberColor());
             intent.putExtra(Config.CONGIG, selectConfig);

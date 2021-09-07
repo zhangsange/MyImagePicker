@@ -74,14 +74,14 @@ public class MultiPreviewEditAdapter extends RecyclerView.Adapter<MultiPreviewEd
         }
 
         Glide.with(context).load(bitmap).into(holder.imageView);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MyIMGEditActivity) context).setmImgView(lastSelectPos, position);
-                lastSelectPos = position;
-                notifyDataSetChanged();
-            }
-        });
+//        holder.imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((MyIMGEditActivity) context).setmImgView(lastSelectPos, position);
+//                lastSelectPos = position;
+//                notifyDataSetChanged();
+//            }
+//        });
     }
 
     @Override
