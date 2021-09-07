@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_F5"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_title_photo_edit" />
+
+
+    <LinearLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#000"
+        android:orientation="vertical">
+
+
+        <com.ypx.imagepicker.editLibrary.MyViewPager
+            android:id="@+id/img_vp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ViewSwitcher
+            android:id="@+id/vs_op"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inAnimation="@anim/image_fade_in"
+            android:outAnimation="@anim/image_fade_out">
+
+
+            <include layout="@layout/image_edit_opt_layout" />
+
+
+        </ViewSwitcher>
+    </LinearLayout>
+</LinearLayout>

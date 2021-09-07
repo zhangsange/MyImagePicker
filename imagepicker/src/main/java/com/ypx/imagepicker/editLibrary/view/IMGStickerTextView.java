@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ypx.imagepicker.editLibrary.IMGTextEditDialog;
 import com.ypx.imagepicker.editLibrary.core.IMGText;
+import com.ypx.imagepicker.editLibrary.listener.SelectStatusListener;
 
 
 /**
@@ -30,6 +32,7 @@ public class IMGStickerTextView extends IMGStickerView implements IMGTextEditDia
     public static final int PADDING = 26;
 
     private static final float TEXT_SIZE_SP = 12f;
+
 
     public IMGStickerTextView(Context context) {
         this(context, null, 0);

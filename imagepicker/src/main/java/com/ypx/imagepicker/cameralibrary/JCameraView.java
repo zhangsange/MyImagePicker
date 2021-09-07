@@ -543,6 +543,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         tv_confirm.setText("确认(" + bitmapList.size() + ")");
         tv_confirm.setVisibility(VISIBLE);
         imagesAdapter.setListData(bitmapList);
+        rvImages.scrollToPosition(bitmapList.size()-1);
         resetState(TYPE_DEFAULT); //重置状态
         machine.cancel(mVideoView.getHolder(), screenProp);
 

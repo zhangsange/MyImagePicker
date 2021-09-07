@@ -20,6 +20,7 @@ import com.ypx.imagepicker.editLibrary.core.sticker.IMGSticker;
 import com.ypx.imagepicker.editLibrary.core.sticker.IMGStickerAdjustHelper;
 import com.ypx.imagepicker.editLibrary.core.sticker.IMGStickerHelper;
 import com.ypx.imagepicker.editLibrary.core.sticker.IMGStickerMoveHelper;
+import com.ypx.imagepicker.editLibrary.listener.SelectStatusListener;
 
 import static com.ypx.imagepicker.editLibrary.view.IMGStickerTextView.PADDING;
 
@@ -67,6 +68,8 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
     private Context mContext;
     private int showType = 0;
 
+    private SelectStatusListener selectStatusListener;
+
     {
         PAINT = new Paint(Paint.ANTI_ALIAS_FLAG);
         PAINT.setColor(Color.WHITE);
@@ -85,7 +88,6 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
     public IMGStickerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
-
 
     }
 
@@ -246,6 +248,10 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
         return isShowing() && super.drawChild(canvas, child, drawingTime);
     }
 
+    public void setSelectStatusListener(SelectStatusListener listener) {
+        this.selectStatusListener = listener;
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (!isShowing() && ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -264,8 +270,14 @@ public abstract class IMGStickerView extends ViewGroup implements IMGSticker, Vi
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mDownShowing++;
+                if (null!=selectStatusListener){
+                    selectStatusListener.onSelectedStatus(true);
+                }
                 break;
             case MotionEvent.ACTION_UP:
+                if (null!=selectStatusListener){
+                    selectStatusListener.onChangeMode();
+                }
                 if (!isHideDelete) {
                     if (mDownShowing > 1 && event.getEventTime() - event.getDownTime() < ViewConfiguration.getTapTimeout()) {
                         onContentTap();

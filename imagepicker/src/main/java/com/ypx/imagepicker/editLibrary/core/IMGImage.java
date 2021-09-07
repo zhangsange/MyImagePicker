@@ -25,7 +25,7 @@ import java.util.List;
  * Created by felix on 2017/11/21 下午10:03.
  */
 
-public class IMGImage {
+public class IMGImage  {
 
     private static final String TAG = "IMGImage";
 

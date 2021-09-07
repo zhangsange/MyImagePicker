@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -32,6 +33,7 @@ import com.ypx.imagepicker.editLibrary.core.anim.IMGHomingAnimator;
 import com.ypx.imagepicker.editLibrary.core.homing.IMGHoming;
 import com.ypx.imagepicker.editLibrary.core.sticker.IMGSticker;
 import com.ypx.imagepicker.editLibrary.core.sticker.IMGStickerPortrait;
+import com.ypx.imagepicker.editLibrary.listener.SelectStatusListener;
 
 import static com.ypx.imagepicker.editLibrary.view.IMGStickerTextView.PADDING;
 
@@ -75,7 +77,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
     private boolean isAction_up = false;
     private boolean isAction_move = false;
     private Context mContext;
-
+    private SelectStatusListener selectStatusListener;
 
     {
         // 区域遮罩
@@ -115,6 +117,10 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         super(context, attrs, defStyleAttr);
         mContext = context;
         initialize(context);
+    }
+
+    public void setSelectStatusListener(SelectStatusListener listener){
+        this.selectStatusListener = listener;
     }
 
 
@@ -404,6 +410,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         }
 
         IMGStickerTextView textView = new IMGStickerTextView(getContext());
+        textView.setSelectStatusListener(selectStatusListener);
         textView.setHideDelete(false);
         textView.setShowType(1);
         textView.setShadeText(mPen.getColor(), shadeWidth, shadeHeight);
@@ -415,6 +422,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
 
     public void addStickerText(IMGText text, boolean isHideDelete) {
         IMGStickerTextView textView = new IMGStickerTextView(getContext());
+        textView.setSelectStatusListener(selectStatusListener);
         textView.setHideDelete(isHideDelete);
         textView.setShowType(0);
         textView.setText(text);

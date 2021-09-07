@@ -39,7 +39,7 @@ public class MultiSelectConfig extends CropConfig {
         this.maxSize = maxSize;
     }
 
-    public int maxSize ;//bitmap压缩 大小 kb
+    public int maxSize  = 400;//bitmap压缩 大小 kb
 
     public String getWaterMark() {
         return waterMark;

@@ -12,6 +12,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+
 import com.ypx.imagepicker.R;
 import com.ypx.imagepicker.editLibrary.core.IMGText;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
@@ -33,6 +36,7 @@ public class IMGTextEditDialog extends Dialog implements View.OnClickListener,
     private IMGText mDefaultText;
 
     private IMGColorGroup mColorGroup;
+    private float waterMarkTextSize;
 
     public IMGTextEditDialog(Context context, Callback callback) {
         super(context, R.style.ImageTextDialog);
@@ -78,6 +82,15 @@ public class IMGTextEditDialog extends Dialog implements View.OnClickListener,
         mColorGroup.setCheckColor(mEditText.getCurrentTextColor());
     }
 
+    public  int setAlphaComponent(@ColorInt int color, @IntRange(from = 0L,to = 255L) int alpha) {
+        if (alpha >= 0 && alpha <= 255) {
+            return color & 16777215 | alpha << 24;
+        } else {
+            throw new IllegalArgumentException("alpha must be between 0 and 255.");
+        }
+    }
+
+
     public void setText(IMGText text) {
         mDefaultText = text;
     }
@@ -99,7 +112,7 @@ public class IMGTextEditDialog extends Dialog implements View.OnClickListener,
     private void onDone() {
         String text = mEditText.getText().toString();
         if (!TextUtils.isEmpty(text) && mCallback != null) {
-            mCallback.onText(new IMGText(text, mEditText.getCurrentTextColor()));
+            mCallback.onText(new IMGText(text,setAlphaComponent(mEditText.getCurrentTextColor(),204),waterMarkTextSize));
         }
         dismiss();
     }
@@ -107,6 +120,10 @@ public class IMGTextEditDialog extends Dialog implements View.OnClickListener,
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         mEditText.setTextColor(mColorGroup.getCheckColor());
+    }
+
+    public void setWaterMarkTextSize(float waterMarkTextSize) {
+        this.waterMarkTextSize = waterMarkTextSize;
     }
 
     public interface Callback {

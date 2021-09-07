@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,7 +27,7 @@ import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.data.ICameraExecutor;
 import com.ypx.imagepicker.data.IReloadExecutor;
 import com.ypx.imagepicker.data.ProgressSceneEnum;
-import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
+import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 import com.ypx.imagepicker.utils.PViewSizeUtils;
 import com.ypx.imagepicker.views.PickerUiConfig;
@@ -214,10 +213,10 @@ public class WeChatPresenter implements IPickerPresenter {
     @Override
     public boolean interceptPickerCompleteClick(Activity activity, ArrayList<ImageItem> selectedList, BaseSelectConfig selectConfig) {
 
-        if ( ((MultiSelectConfig)selectConfig).isCanEditPic()) {//
+        if (((MultiSelectConfig)selectConfig).isCanEditPic()) {//
            // tip(activity, "拦截了完成按钮点击" + selectedList.size());
 //            Intent intent = new Intent(activity, IMGEditActivity.class);
-            Intent intent = new Intent(activity, MyIMGEditActivity.class);
+            Intent intent = new Intent(activity, MyImgEditVpActivity.class);
             intent.putExtra(Config.CONGIG_SHOW_NUMBER, ((MultiSelectConfig)selectConfig).getNumber());
             intent.putExtra(Config.CONGIG_NUMBER_COLOR, ((MultiSelectConfig)selectConfig).getNumberColor());
             intent.putExtra(Config.CONGIG, selectConfig);
