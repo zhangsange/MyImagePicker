@@ -65,17 +65,15 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     private ViewSwitcher mOpSwitcher, mOpSubSwitcher;
 
-    private RecyclerView mPreviewRecyclerView;
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
     public ArrayList<ImageItem> imageLocList = new ArrayList<>();
     public ArrayList<String> imageSelectList = new ArrayList<>();
     public ArrayList<ImageItem> imageHttpList = new ArrayList<>();
     public List<Bitmap> bitmapList = new ArrayList<>();
     private TextView tvDone;
-    private String number;
+    private String waterMark;
     private LoadingDialog dialog;
-    private String numberColor;
-    private int umberColorInt;
+    private String waterMarkColor;
     private MultiSelectConfig selectConfig;
     private boolean isDeleteOriginalPic = false; //是否删除原图
     private boolean isDeleteBeforeEditlPic = false;//是否删除编辑后的图片
@@ -94,17 +92,14 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         selectConfig = (MultiSelectConfig) getIntent().getSerializableExtra(Config.CONGIG);
         if (selectConfig != null) {
             isSingleTakePhoto = selectConfig.isSingleTakePhoto();
-            number = selectConfig.getWaterMark();
+            waterMark = selectConfig.getWaterMark();
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
-            numberColor = selectConfig.getWaterMarkColor();
+            waterMarkColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
             isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
         }
-        if (!TextUtils.isEmpty(numberColor)) {
-            umberColorInt = Color.parseColor(numberColor);
-        }
         initViews();
-        if (!isSingleTakePhoto) {
+        if (!isSingleTakePhoto) {//图库进入编辑页面
             imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
             initImage();
             showLoading("正在加载图片中,请稍等...");
@@ -120,7 +115,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
             }).start();
-        } else {
+        } else {//拍照进入编辑页面
             imageItemList = new ArrayList<>();
             bitmapList = MyAppActivity.getBitmapList();
             initImageBitmap();
@@ -209,7 +204,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
         @Override
         public int getCount() {
-            return imgViewList.size();
+            return imgViews.size();
         }
 
         @Override
@@ -225,10 +220,12 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
             imgView.setImageBitmap(bitmapList.get(position));
-            if (!TextUtils.isEmpty(numberColor)) {
-                imgView.addStickerText(new IMGText(number, umberColorInt, waterMarkTextSize), true);
-            } else {
-                imgView.addStickerText(new IMGText(number, Color.RED, waterMarkTextSize), true);
+            if (!TextUtils.isEmpty(waterMark)&&!imageLocList.get(position).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+                if (!TextUtils.isEmpty(waterMarkColor)) {
+                    imgView.addStickerText(new IMGText(waterMark,Color.parseColor(waterMarkColor), waterMarkTextSize), true);
+                } else {
+                    imgView.addStickerText(new IMGText(waterMark, Color.RED, waterMarkTextSize), true);
+                }
             }
             container.addView(imgView);
             return imgView;
