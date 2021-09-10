@@ -483,7 +483,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
 //                }
             }
             for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
-                if (imageSelectList.get(i).contains(FileUtil.PIC_FOLDER_NAME) && isDeleteOriginalPic) {
+                if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
                 }
                 if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {

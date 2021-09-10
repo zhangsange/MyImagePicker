@@ -220,9 +220,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
             imgView.setImageBitmap(bitmapList.get(position));
-            if (!TextUtils.isEmpty(waterMark)&&!imageLocList.get(position).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+            if (!TextUtils.isEmpty(waterMark) && !imageLocList.get(position).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
                 if (!TextUtils.isEmpty(waterMarkColor)) {
-                    imgView.addStickerText(new IMGText(waterMark,Color.parseColor(waterMarkColor), waterMarkTextSize), true);
+                    imgView.addStickerText(new IMGText(waterMark, Color.parseColor(waterMarkColor), waterMarkTextSize), true);
                 } else {
                     imgView.addStickerText(new IMGText(waterMark, Color.RED, waterMarkTextSize), true);
                 }
@@ -476,7 +476,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 //                }
             }
             for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
-                if (imageSelectList.get(i).contains(FileUtil.PIC_FOLDER_NAME) && isDeleteOriginalPic) {
+                if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
                 }
                 if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
