@@ -220,9 +220,9 @@ public class EasyCameraActivity extends AppCompatActivity {
         initImageBitmap();
         for (int i = 0; i < bitmapList.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
-                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_FOLDER_NAME, bitmapList.get(i), this);
             } else {
-                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_FOLDER_NAME, bitmapList.get(i));
             }
         }
         imageItemList = ImagePicker.transitArray(this, imageItemList);

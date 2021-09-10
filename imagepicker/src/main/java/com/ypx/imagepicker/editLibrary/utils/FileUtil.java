@@ -37,11 +37,12 @@ public class FileUtil {
     private static final File parentPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
     private static String storagePath = "";
     public static String PIC_EDIT_FOLDER_NAME = "imagePicker_Edit";
+    public static String PIC_FOLDER_NAME = "imagePicker";
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static String initPath() {
+    private static String initPath(String dir) {
         if (storagePath.equals("")) {
-            storagePath = parentPath.getAbsolutePath() + File.separator + PIC_EDIT_FOLDER_NAME;
+            storagePath = parentPath.getAbsolutePath() + File.separator + dir;
             File f = new File(storagePath);
             if (!f.exists()) {
                 f.mkdir();
@@ -51,8 +52,7 @@ public class FileUtil {
     }
 
     public static String saveBitmap(String dir, Bitmap b, Context context) {
-        PIC_EDIT_FOLDER_NAME = dir;
-        String path = initPath();
+        String path = initPath(dir);
         long dataTake = System.currentTimeMillis();
         String jpegName = path + File.separator + "IMG_" + dataTake + ".jpg";
         try {
