@@ -29,7 +29,6 @@ import com.ypx.imagepicker.cameralibrary.listener.JCameraListener;
 import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.constant.Code;
 import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
-import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 

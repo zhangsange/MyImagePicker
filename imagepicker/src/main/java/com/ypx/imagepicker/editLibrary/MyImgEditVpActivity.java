@@ -88,6 +88,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
     private List<IMGView> imgViewList;
     private SelectStatusListener selectStatusListener;
     private TextView tvPage;
+    private String imageSavePath;
 
 
     @Override
@@ -97,6 +98,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
         selectConfig = (MultiSelectConfig) getIntent().getSerializableExtra(Config.CONGIG);
         if (selectConfig != null) {
             isSingleTakePhoto = selectConfig.isSingleTakePhoto();
+            imageSavePath = selectConfig.getImageSavePath();
             number = selectConfig.getWaterMark();
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             numberColor = selectConfig.getWaterMarkColor();
@@ -131,6 +133,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
+
     private void initViews() {
         mViewPager = findViewById(R.id.img_vp);
         tvDone = findViewById(R.id.tv_done);
@@ -265,7 +268,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
             }
         };
         if (bitmapList != null && bitmapList.size() > 0) {
-            tvPage.setText(1+" / "+bitmapList.size());
+            tvPage.setText(1 + " / " + bitmapList.size());
             imgViewList = new ArrayList<>();
             for (Bitmap bitmap : bitmapList) {
                 IMGView imgView = new IMGView(this);
@@ -286,7 +289,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onPageSelected(int position) {
                     mImgView = imgViewList.get(position);
-                    tvPage.setText(position+1+" / "+bitmapList.size());
+                    tvPage.setText(position + 1 + " / " + bitmapList.size());
                 }
 
                 @Override
@@ -338,8 +341,6 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
-
     public void updateModeUI() {
         IMGMode mode = mImgView.getMode();
         switch (mode) {
@@ -360,9 +361,9 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
             onModeClick(IMGMode.SHADE);
             findViewById(R.id.btn_undo).setVisibility(View.GONE);
         } else if (vid == R.id.btn_text) {
-             //onModeClick(IMGMode.NONE);
+            //onModeClick(IMGMode.NONE);
             onTextModeClick();
-        }  else if (vid == R.id.btn_undo) {
+        } else if (vid == R.id.btn_undo) {
             onUndoClick();
         } else if (vid == R.id.tv_done) {//完成
             //保存时候 保存图片
@@ -439,6 +440,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = Message.obtain();
+
             @Override
             public void run() {
                 saveImageItem();
@@ -459,9 +461,9 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
         if (isSingleTakePhoto) {
             for (int i = 0; i < bitmapList.size(); i++) {
                 if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
                 } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this,imageSavePath, bitmapList.get(i));
                 }
 //                if (selectConfig.isCompress) {//进行压缩
 //                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
@@ -474,9 +476,9 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
             }
             for (int i = 0; i < bitmapList.size(); i++) {
                 if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
                 } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
                 }
 //                if (selectConfig.isCompress) {//进行压缩
 //                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
@@ -547,11 +549,11 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
                         dialog.dismiss();
                     }
                 }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                 @Override
-                 public void onClick(DialogInterface dialog, int which) {
-                     dialog.dismiss();
-                     finish();
-                 }
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
         }).show();
 
     }

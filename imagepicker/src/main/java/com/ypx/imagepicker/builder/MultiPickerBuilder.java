@@ -188,39 +188,57 @@ public class MultiPickerBuilder {
     public MultiPickerBuilder setPreview(boolean isPreview) {
         selectConfig.setPreview(isPreview);
         return this;
-    } /**
+    }
+
+    /**
      * @param isDelete 是否删除原图
      */
     public MultiPickerBuilder setDeleteOriginalPic(boolean isDelete) {
         selectConfig.setDeleteOriginalPic(isDelete);
         return this;
-    } /**
+    }
+
+    /**
      * @param isDelete 是否删除(非原图(曾被编辑过的图片))图片
      */
     public MultiPickerBuilder setDeleteBeforeEditlPic(boolean isDelete) {
         selectConfig.setDeleteBeforeEditlPic(isDelete);
         return this;
     }
+
+    /**
+     * 图片处理后的保存路径
+     */
+    public MultiPickerBuilder setImageSavePath(String path) {
+        selectConfig.setImageSavePath(path);
+        return this;
+    }
+
     /**
      * @param isEdit 是否开启脱敏处理
      */
     public MultiPickerBuilder setCanEditPic(boolean isEdit) {
         selectConfig.setCanEditPic(isEdit);
         return this;
-    }   /**
+    }
+
+    /**
      * @param num 编码
      */
     public MultiPickerBuilder setWaterMark(String num) {
         selectConfig.setWaterMark(num);
         return this;
     }
- /**
+
+    /**
      * @param numColor 编码字体颜色
      */
     public MultiPickerBuilder setWaterMarkColor(String numColor) {
         selectConfig.setWaterMarkColor(numColor);
         return this;
-    } /**
+    }
+
+    /**
      * @param textSize 水印文字大小
      */
     public MultiPickerBuilder setWaterMarkTextSize(float textSize) {
@@ -234,10 +252,12 @@ public class MultiPickerBuilder {
     public MultiPickerBuilder setCompress(boolean compress) {
         selectConfig.setCompress(compress);
         return this;
-    } /**
+    }
+
+    /**
      * @param maxSize 压缩bitmap maxSize  kb 以下
      */
-    public MultiPickerBuilder setMaxSize(int  maxSize) {
+    public MultiPickerBuilder setMaxSize(int maxSize) {
         selectConfig.setMaxSize(maxSize);
         return this;
     }

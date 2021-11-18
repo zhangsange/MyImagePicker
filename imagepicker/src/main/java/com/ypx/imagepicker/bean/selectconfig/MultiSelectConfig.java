@@ -21,6 +21,8 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isDeleteBeforeEditlPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
     public boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
 
+    public String imageSavePath = "";//脱敏图片保存路径
+
     public boolean isCompress() {
         return isCompress;
     }
@@ -105,6 +107,14 @@ public class MultiSelectConfig extends CropConfig {
         isSingleTakePhoto = singleTakePhoto;
     }
 
+
+    public String getImageSavePath() {
+        return imageSavePath;
+    }
+
+    public void setImageSavePath(String imageSavePath) {
+        this.imageSavePath = imageSavePath;
+    }
 
 //    private boolean isSeePreview = false;//仅仅为查看预览
 //

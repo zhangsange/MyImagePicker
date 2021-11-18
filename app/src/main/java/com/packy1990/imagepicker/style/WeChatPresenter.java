@@ -28,7 +28,6 @@ import com.ypx.imagepicker.data.ICameraExecutor;
 import com.ypx.imagepicker.data.IReloadExecutor;
 import com.ypx.imagepicker.data.ProgressSceneEnum;
 import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
-import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 import com.ypx.imagepicker.utils.PViewSizeUtils;
 import com.ypx.imagepicker.views.PickerUiConfig;

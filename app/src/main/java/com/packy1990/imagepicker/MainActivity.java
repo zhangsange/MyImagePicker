@@ -3,6 +3,7 @@ package com.packy1990.imagepicker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
@@ -19,6 +21,7 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.packy1990.imagepicker.style.RedBookPresenter;
 import com.packy1990.imagepicker.style.WeChatPresenter;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private GridLayout mGridLayout;
     private CheckBox checkEdit;
     private boolean isCanEdit = true;
+    private Button btn_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +68,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_1);
         mGridLayout = findViewById(R.id.gridLayout);
         checkEdit = findViewById(R.id.isEdit);
+        btn_delete = findViewById(R.id.btn_delete);
         checkEdit.setVisibility(View.GONE);
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isCanEdit = isChecked;
+            }
+        });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Boolean result =   com.packy1990.imagepicker.FileUtil.deleteAllInDir(FileUtil.storagePath);
+                Log.i("哈哈哈",FileUtil.parentPath.getAbsolutePath() + File.separator+"imagePicker_Edit");
+              Log.i("哈哈哈", String.valueOf(result));
             }
         });
 
@@ -109,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // takePhotoToEdit();
-                      weChatPick(maxCount - picList.size());
+                    // takePhotoToEdit();
+                    weChatPick(maxCount - picList.size());
                 }
             });
             for (int i = 0; i < num; i++) {
@@ -244,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 .setWaterMarkColor("#80FF0000")
                 .setDeleteOriginalPic(true)
                 .setDeleteBeforeEditlPic(false)
+                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator+"imagePicker_Edit")
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage())
                 .filterMimeTypes(MimeType.GIF)
