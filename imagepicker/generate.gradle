@@ -1,5 +1,5 @@
 //应用插件 maven
-apply plugin: 'maven'
+//apply plugin: 'maven'
 
 //声明你的包名
 def groupId = 'com.ypx.yimagepicker'
@@ -27,22 +27,22 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 //Maven本地仓库构建
-uploadArchives {
-    repositories.mavenDeployer {
-        pom.groupId = groupId
-        pom.artifactId = artifactId
-        pom.version = version
-        // Add other pom properties here if you want (developer details / licenses)
-        repository(url: "file://${localReleaseDest}")
-    }
-}
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        pom.groupId = groupId
+//        pom.artifactId = artifactId
+//        pom.version = version
+//        // Add other pom properties here if you want (developer details / licenses)
+//        repository(url: "file://${localReleaseDest}")
+//    }
+//}
 
 //压缩为zip
-task zipRelease(type: Zip) {
-    from localReleaseDest
-    destinationDir buildDir
-    archiveName "release-${version}.zip"
-}
+//task zipRelease(type: Zip) {
+//    from localReleaseDest
+//    destinationDir buildDir
+//    archiveName "release-${version}.zip"
+//}
 
 //输出到本地补录，位于你的模块中的build下
 task generateRelease {
@@ -53,8 +53,8 @@ task generateRelease {
     }
 }
 
-generateRelease.dependsOn(uploadArchives)
-generateRelease.dependsOn(zipRelease)
+//generateRelease.dependsOn(uploadArchives)
+//generateRelease.dependsOn(zipRelease)
 
 artifacts {
     archives androidSourcesJar
