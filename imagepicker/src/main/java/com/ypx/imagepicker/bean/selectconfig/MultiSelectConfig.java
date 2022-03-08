@@ -2,6 +2,7 @@ package com.ypx.imagepicker.bean.selectconfig;
 
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.SelectMode;
+import com.ypx.imagepicker.helper.ToastHelper;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,11 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
 
     public String imageSavePath = "";//脱敏图片保存路径
+
+    public ToastHelper toastHelper;
+    public void setToastHelper(ToastHelper toastHelper){
+        this.toastHelper = toastHelper;
+    }
 
     public boolean isCompress() {
         return isCompress;

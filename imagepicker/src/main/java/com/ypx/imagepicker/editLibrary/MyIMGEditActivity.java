@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -37,7 +36,6 @@ import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
-import com.ypx.imagepicker.utils.ToastUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -290,7 +288,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 }
             });
         } else {
-            ToastUtils.showToastError(this, "抱歉没有图片");
+            if (selectConfig.toastHelper!=null) {
+                selectConfig.toastHelper.showToast("抱歉,没有图片");
+            }
         }
     }
 

@@ -1,11 +1,9 @@
 package com.ypx.imagepicker.editLibrary;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,7 +11,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -40,7 +37,6 @@ import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
-import com.ypx.imagepicker.utils.ToastUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,9 +49,8 @@ import ren.perry.perry.LoadingDialog;
  * author：pachy1990
  * 描述：
  */
-public class MyImgEditVpActivity extends AppCompatActivity implements View.OnClickListener,
-        IMGTextEditDialog.Callback, RadioGroup.OnCheckedChangeListener,
-        DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
+public class MyImgEditVpActivity extends AppCompatActivity implements View.OnClickListener, IMGTextEditDialog.Callback, RadioGroup.OnCheckedChangeListener, DialogInterface.OnShowListener,
+        DialogInterface.OnDismissListener {
 
     protected IMGView mImgView;
 
@@ -225,8 +220,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
         @Override
         public View instantiateItem(ViewGroup container, final int position) {
             IMGView imgView = imgViews.get(position);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                    ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
             imgView.setImageBitmap(bitmapList.get(position));
@@ -298,7 +292,9 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
                 }
             });
         } else {
-            ToastUtils.showToastError(this, "抱歉没有图片");
+            if (selectConfig.toastHelper != null) {
+                selectConfig.toastHelper.showToast("抱歉,没有图片");
+            }
         }
     }
 
@@ -463,7 +459,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
                 if (SystemUtils.beforeAndroidTen()) {
                     imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
                 } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this,imageSavePath, bitmapList.get(i));
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
                 }
 //                if (selectConfig.isCompress) {//进行压缩
 //                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
@@ -540,15 +536,12 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void showBackTip() {
-        new AlertDialog.Builder(this)
-                .setTitle("是否退出")
-                .setMessage("返回后修改的数据将不会自动保存")
-                .setPositiveButton("继续编辑", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle("是否退出").setMessage("返回后修改的数据将不会自动保存").setPositiveButton("继续编辑", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

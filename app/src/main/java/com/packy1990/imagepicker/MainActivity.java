@@ -1,9 +1,10 @@
 package com.packy1990.imagepicker;
 
+import static com.ypx.imagepicker.bean.SelectMode.MODE_MULTI;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,10 +19,10 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.bumptech.glide.Glide;
 import com.packy1990.imagepicker.style.RedBookPresenter;
 import com.packy1990.imagepicker.style.WeChatPresenter;
@@ -36,17 +37,12 @@ import com.ypx.imagepicker.config.Config;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
 import com.ypx.imagepicker.data.PickerActivityCallBack;
-import com.ypx.imagepicker.editLibrary.MyIMGEditActivity;
-import com.ypx.imagepicker.editLibrary.MyImgEditVpActivity;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
+import com.ypx.imagepicker.helper.ToastHelper;
 import com.ypx.imagepicker.helper.launcher.PLauncher;
-
 
 import java.io.File;
 import java.util.ArrayList;
-
-import static com.ypx.imagepicker.bean.SelectMode.MODE_MULTI;
-import static com.ypx.imagepicker.bean.SelectMode.MODE_SINGLE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -261,6 +257,12 @@ public class MainActivity extends AppCompatActivity {
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage())
                 .filterMimeTypes(MimeType.GIF)
+                .setToastHelper(new ToastHelper(){
+                    @Override
+                    public void showToast(String msg) {
+                        Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setCompress(false)
                 .setMaxSize(400)
                 .showCamera(true)

@@ -11,7 +11,6 @@ import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,7 +28,6 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,11 +43,7 @@ import com.ypx.imagepicker.cameralibrary.util.FileUtil;
 import com.ypx.imagepicker.cameralibrary.util.LogUtil;
 import com.ypx.imagepicker.cameralibrary.util.ScreenUtils;
 import com.ypx.imagepicker.cameralibrary.view.CameraView;
-import com.ypx.imagepicker.editLibrary.MultiPreviewEditAdapter;
-import com.ypx.imagepicker.editLibrary.core.util.BitmapUtil;
-import com.ypx.imagepicker.helper.recyclerviewitemhelper.SimpleItemTouchHelperCallback;
 import com.ypx.imagepicker.utils.BitmapUtils;
-import com.ypx.imagepicker.utils.ToastUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -243,7 +237,9 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
                     return;
                 }
                 if (bitmapList.size() >= maxNum) {
-                    ToastUtils.showToastError(context, "最多只能拍(" + maxNum + ")张!");
+                    if (selectConfig.toastHelper!=null) {
+                        selectConfig.toastHelper.showToast("最多只能拍(" + maxNum + ")张!");
+                    }
                     return;
                 }
                 mFoucsView.setEnabled(true);
