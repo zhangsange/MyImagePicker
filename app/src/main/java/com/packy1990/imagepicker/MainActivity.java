@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 .setToastHelper(new ToastHelper(){
                     @Override
                     public void showToast(String msg) {
-                        Toast.makeText(MainActivity.this,"test",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setCompress(false)
