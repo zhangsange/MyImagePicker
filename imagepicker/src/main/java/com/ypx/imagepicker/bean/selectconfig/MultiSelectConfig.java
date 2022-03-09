@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Author: peixing.yang
  * Date: 2019/2/21
  */
-public class MultiSelectConfig extends CropConfig implements Serializable {
+public class MultiSelectConfig extends CropConfig {
     private boolean isShowOriginalCheckBox;
     private boolean isDefaultOriginal;
     public boolean isCanEditPic;

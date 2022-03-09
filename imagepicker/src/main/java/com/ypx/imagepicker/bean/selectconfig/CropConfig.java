@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Author:ypx
  * Description: 单图剪裁配置类
  */
-public class CropConfig extends BaseSelectConfig implements Serializable {
+public class CropConfig extends BaseSelectConfig {
     //充满式剪裁
     public static final int STYLE_FILL = 1;
     //留白式剪裁
