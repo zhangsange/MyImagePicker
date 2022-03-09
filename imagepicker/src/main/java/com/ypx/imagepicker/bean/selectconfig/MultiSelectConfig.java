@@ -4,6 +4,7 @@ import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.SelectMode;
 import com.ypx.imagepicker.helper.ToastHelper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Author: peixing.yang
  * Date: 2019/2/21
  */
-public class MultiSelectConfig extends CropConfig {
+public class MultiSelectConfig extends CropConfig implements Serializable {
     private boolean isShowOriginalCheckBox;
     private boolean isDefaultOriginal;
     public boolean isCanEditPic;

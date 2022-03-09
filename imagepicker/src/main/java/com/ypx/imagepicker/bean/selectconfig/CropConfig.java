@@ -5,12 +5,14 @@ import android.util.Size;
 
 import com.ypx.imagepicker.widget.cropimage.Info;
 
+import java.io.Serializable;
+
 /**
  * Time: 2019/10/27 18:53
  * Author:ypx
  * Description: 单图剪裁配置类
  */
-public class CropConfig extends BaseSelectConfig {
+public class CropConfig extends BaseSelectConfig implements Serializable {
     //充满式剪裁
     public static final int STYLE_FILL = 1;
     //留白式剪裁
