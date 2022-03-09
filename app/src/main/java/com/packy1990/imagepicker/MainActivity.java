@@ -257,12 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage())
                 .filterMimeTypes(MimeType.GIF)
-                .setToastHelper(new ToastHelper(){
-                    @Override
-                    public void showToast(String msg) {
-                        Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setToastHelper(new ToastHelperImpl())
                 .setCompress(false)
                 .setMaxSize(400)
                 .showCamera(true)
