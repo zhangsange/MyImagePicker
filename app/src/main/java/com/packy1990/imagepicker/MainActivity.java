@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isAutoJumpAlohaActivity;
     private GridLayout mGridLayout;
     private CheckBox checkEdit;
-    private boolean isCanEdit = true;
+    private boolean isCanEdit = false;
     private Button btn_delete;
 
     @Override

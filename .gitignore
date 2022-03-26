@@ -8,6 +8,11 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/YPX_ImagePicker_androidx/.idea
+/YPX_ImagePicker_androidx/imagepicker/.idea
+/YPX_ImagePicker_support/.idea
+/YPX_ImagePicker_support/gradle/
+/gradle
 .DS_Store
 /build
 /captures
