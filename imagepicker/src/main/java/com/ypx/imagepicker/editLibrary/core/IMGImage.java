@@ -825,6 +825,8 @@ public class IMGImage  {
             mBackStickers.clear();
             mForeSticker = null;
             mShades .clear();
+            mDoodles.clear();
+            mMosaics.clear();
 
     }
 }

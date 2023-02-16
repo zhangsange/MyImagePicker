@@ -42,8 +42,8 @@ import static com.ypx.imagepicker.editLibrary.view.IMGStickerTextView.PADDING;
  * Created by felix on 2017/11/14 下午6:43.
  */
 // TODO clip外不加入path
-public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetector.OnScaleGestureListener,
-        ValueAnimator.AnimatorUpdateListener, IMGStickerPortrait.Callback, Animator.AnimatorListener {
+public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetector.OnScaleGestureListener, ValueAnimator.AnimatorUpdateListener, IMGStickerPortrait.Callback,
+        Animator.AnimatorListener {
 
     private static final String TAG = "IMGView";
 
@@ -119,16 +119,16 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         initialize(context);
     }
 
-    public void setSelectStatusListener(SelectStatusListener listener){
+    public void setSelectStatusListener(SelectStatusListener listener) {
         this.selectStatusListener = listener;
     }
 
 
-    public void setClearCanvas(){
+    public void setClearCanvas() {
         //mPen.reset();
         this.removeAllViews();
         mImage.setClearBackStickers();
-       // mImage = new IMGImage();
+        // mImage = new IMGImage();
         initialize(mContext);
         invalidate();
     }
@@ -160,15 +160,13 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
      * 是否真正修正归位
      */
     boolean isHoming() {
-        return mHomingAnimator != null
-                && mHomingAnimator.isRunning();
+        return mHomingAnimator != null && mHomingAnimator.isRunning();
     }
 
     private void onHoming() {
         invalidate();
         stopHoming();
-        startHoming(mImage.getStartHoming(getScrollX(), getScrollY()),
-                mImage.getEndHoming(getScrollX(), getScrollY()));
+        startHoming(mImage.getStartHoming(getScrollX(), getScrollY()), mImage.getEndHoming(getScrollX(), getScrollY()));
     }
 
     private void startHoming(IMGHoming sHoming, IMGHoming eHoming) {
@@ -256,7 +254,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         // 图片
         mImage.onDrawImage(canvas);
 
-        // 马赛克
+//        // 马赛克
         if (!mImage.isMosaicEmpty() || (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty())) {
             int count = mImage.onDrawMosaicsPath(canvas);
             if (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty()) {
@@ -273,6 +271,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         if (!mImage.isShadeEmpty() || (mImage.getMode() == IMGMode.SHADE && !mPen.isEmpty())) {
             // 区域遮罩
 //            mImage.onDrawShades(canvas);
+//            mImage.onDrawShade(canvas);
             if (mImage.getMode() == IMGMode.SHADE && !mPen.isEmpty()) {
                 mShadePaint.setColor(mPen.getColor());
                 mShadePaint.setStrokeWidth(IMGPath.BASE_DOODLE_WIDTH * mImage.getScale());
@@ -284,7 +283,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
                 canvas.restore();
             }
             if (isAction_move && isAction_up) {
-                addShadeText();
+                if (mImage.getMode() == IMGMode.SHADE) addShadeText();
                 isAction_move = false;
                 isAction_up = false;
             }
@@ -310,14 +309,14 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
             mImage.onDrawStickers(canvas);
         }
 
-        mImage.onDrawShade(canvas);
+//        mImage.onDrawShade(canvas);
 
         canvas.restore();
 
         // TODO
         if (!mImage.isFreezing()) {
             // 文字贴片
-           // mImage.onDrawStickerClip(canvas);
+            // mImage.onDrawStickerClip(canvas);
             mImage.onDrawStickers(canvas);
         }
 
@@ -346,8 +345,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         m.setScale(scale, scale, frame.left, frame.top);
         m.mapRect(frame);
 
-        Bitmap bitmap = Bitmap.createBitmap(Math.round(frame.width()),
-                Math.round(frame.height()), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(frame.width()), Math.round(frame.height()), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
 
@@ -382,30 +380,27 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
      * @param
      */
     public void addShadeText() {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-        );
-        int padding = PADDING ;
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        int padding = PADDING;
         if (downX < upX) {
             shadeWidth = (int) (upX - downX);
-            layoutParams.leftMargin = (int) downX-padding;//  -Padding 减去IMGStickerView 类中onLayout多+padding
+            layoutParams.leftMargin = (int) downX - padding;//  -Padding 减去IMGStickerView 类中onLayout多+padding
             if (downY < upY) {
                 shadeHeight = (int) (upY - downY);
-                layoutParams.topMargin = (int) downY-padding;
+                layoutParams.topMargin = (int) downY - padding;
             } else {
                 shadeHeight = (int) (downY - upY);
-                layoutParams.topMargin = (int) upY-padding;
+                layoutParams.topMargin = (int) upY - padding;
             }
         } else {
             shadeWidth = (int) (downX - upX);
-            layoutParams.leftMargin = (int) upX-padding;
+            layoutParams.leftMargin = (int) upX - padding;
             if (downY < upY) {
                 shadeHeight = (int) (upY - downY);
-                layoutParams.topMargin = (int) downY-padding;
+                layoutParams.topMargin = (int) downY - padding;
             } else {
                 shadeHeight = (int) (downY - upY);
-                layoutParams.topMargin = (int) upY-padding;
+                layoutParams.topMargin = (int) upY - padding;
             }
         }
 
@@ -426,10 +421,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         textView.setHideDelete(isHideDelete);
         textView.setShowType(0);
         textView.setText(text);
-        LayoutParams layoutParams = new LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-        );
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         // Center of the drawing window.
         layoutParams.gravity = Gravity.CENTER;
@@ -594,9 +586,7 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
         if (mPointerCount > 1) {
-            mImage.onScale(detector.getScaleFactor(),
-                    getScrollX() + detector.getFocusX(),
-                    getScrollY() + detector.getFocusY());
+            mImage.onScale(detector.getScaleFactor(), getScrollX() + detector.getFocusX(), getScrollY() + detector.getFocusY());
             invalidate();
             return true;
         }
