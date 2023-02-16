@@ -48,9 +48,8 @@ import ren.perry.perry.LoadingDialog;
  * author：pachy1990
  * 描述：
  */
-public class MyIMGEditActivity extends AppCompatActivity implements View.OnClickListener,
-        IMGTextEditDialog.Callback, RadioGroup.OnCheckedChangeListener,
-        DialogInterface.OnShowListener, DialogInterface.OnDismissListener {
+public class MyIMGEditActivity extends AppCompatActivity implements View.OnClickListener, IMGTextEditDialog.Callback, RadioGroup.OnCheckedChangeListener, DialogInterface.OnShowListener,
+        DialogInterface.OnDismissListener {
 
     protected IMGView mImgView;
 
@@ -81,6 +80,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     private List<IMGView> imgViewList;
     private SelectStatusListener selectStatusListener;
     private TextView tvPage;
+    private View mLayoutOpSub;
+    public static final int OP_SUB_DOODLE = 0;
+
+    public static final int OP_SUB_MOSAIC = 1;
+    public static final int OP_SUB_SHADE = 0;
 
 
     @Override
@@ -122,6 +126,15 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    public void setOpSubDisplay(int opSub) {
+        if (opSub < 0) {
+            mLayoutOpSub.setVisibility(View.GONE);
+        } else {
+            mOpSubSwitcher.setDisplayedChild(opSub);
+            mLayoutOpSub.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void initViews() {
         mViewPager = findViewById(R.id.img_vp);
         tvDone = findViewById(R.id.tv_done);
@@ -131,6 +144,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         mColorGroup = findViewById(R.id.cg_colors);
         mColorGroup.setOnCheckedChangeListener(this);
         tvPage = findViewById(R.id.tv_page);
+        mLayoutOpSub = findViewById(R.id.layout_op_sub);
+
 //        mPreviewRecyclerView = findViewById(R.id.mPreviewRecyclerView);
 //        initPreviewList();
 
@@ -213,8 +228,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         @Override
         public View instantiateItem(ViewGroup container, final int position) {
             IMGView imgView = imgViews.get(position);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                    ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
             imgView.setImageBitmap(bitmapList.get(position));
@@ -288,7 +302,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 }
             });
         } else {
-            if (selectConfig.toastHelper!=null) {
+            if (selectConfig.toastHelper != null) {
                 selectConfig.toastHelper.showToast("抱歉,没有图片");
             }
         }
@@ -337,12 +351,15 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         switch (mode) {
             case SHADE:
                 mModeGroup.check(R.id.rb_shade);
+                setOpSubDisplay(OP_SUB_SHADE);
                 break;
             case DOODLE:
                 mModeGroup.check(R.id.rb_doodle);
+                setOpSubDisplay(OP_SUB_DOODLE);
                 break;
             case MOSAIC:
                 mModeGroup.check(R.id.rb_mosaic);
+                setOpSubDisplay(OP_SUB_MOSAIC);
                 break;
             case NONE:
                 mModeGroup.clearCheck();
@@ -361,9 +378,10 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             onModeClick(IMGMode.DOODLE);
         } else if (vid == R.id.rb_mosaic) {
             onModeClick(IMGMode.MOSAIC);
-        }  else if (vid == R.id.btn_text) {
+        } else if (vid == R.id.btn_text) {
             //onModeClick(IMGMode.NONE);
             onTextModeClick();
+            findViewById(R.id.btn_undo).setVisibility(View.GONE);
         } else if (vid == R.id.btn_undo) {
             onUndoClick();
         } else if (vid == R.id.tv_done) {//完成
@@ -541,15 +559,12 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void showBackTip() {
-        new AlertDialog.Builder(this)
-                .setTitle("是否退出")
-                .setMessage("返回后修改的数据将不会自动保存")
-                .setPositiveButton("继续编辑", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle("是否退出").setMessage("返回后修改的数据将不会自动保存").setPositiveButton("继续编辑", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
