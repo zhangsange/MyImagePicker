@@ -338,6 +338,12 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             case SHADE:
                 mModeGroup.check(R.id.rb_shade);
                 break;
+            case DOODLE:
+                mModeGroup.check(R.id.rb_doodle);
+                break;
+            case MOSAIC:
+                mModeGroup.check(R.id.rb_mosaic);
+                break;
             case NONE:
                 mModeGroup.clearCheck();
                 break;
@@ -351,7 +357,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (vid == R.id.rb_shade) {
             onModeClick(IMGMode.SHADE);
             findViewById(R.id.btn_undo).setVisibility(View.GONE);
-        } else if (vid == R.id.btn_text) {
+        } else if (vid == R.id.rb_doodle) {
+            onModeClick(IMGMode.DOODLE);
+        } else if (vid == R.id.rb_mosaic) {
+            onModeClick(IMGMode.MOSAIC);
+        }  else if (vid == R.id.btn_text) {
             //onModeClick(IMGMode.NONE);
             onTextModeClick();
         } else if (vid == R.id.btn_undo) {

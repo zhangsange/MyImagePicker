@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
 
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -22,6 +21,7 @@
         android:orientation="horizontal"
         android:visibility="invisible"
         tools:visibility="gone">
+
         <ViewSwitcher
             android:id="@+id/vs_op_sub"
             android:layout_width="wrap_content"
@@ -89,114 +89,120 @@
         </ViewSwitcher>
 
         <ImageButton
-            android:visibility="gone"
             android:id="@+id/btn_undo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:contentDescription="@string/image_undo"
             android:onClick="onClick"
-            android:src="@drawable/image_btn_undo" />
+            android:src="@drawable/image_btn_undo"
+            android:visibility="visible" />
 
     </LinearLayout>
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-    <TextView
-        android:paddingRight="@dimen/dp_30"
-        android:id="@+id/tv_page"
-        android:hint="3/9"
-        android:gravity="right"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/sp_18"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <RadioGroup
-        android:id="@+id/rg_modes"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/image_bg_bottom"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/dp_10">
+        android:orientation="vertical">
 
-        <RadioButton
-            android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_18"
-            android:text=" 脱敏"
-            android:id="@+id/rb_shade"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_page"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/image_btn_doodle"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:textColor="@drawable/image_btn_doodle_text_color" />
+            android:gravity="right"
+            android:hint="3/9"
+            android:paddingRight="@dimen/dp_30"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sp_18" />
 
-        <Space
-            android:layout_width="@dimen/image_mode_space"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:visibility="gone"
-            android:id="@+id/rb_doodle"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rg_modes"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@drawable/image_btn_doodle"
+            android:background="@drawable/image_bg_bottom"
             android:gravity="center"
-            android:onClick="onClick"
-            android:textColor="#FFF" />
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_10">
 
-        <Space
-            android:layout_width="@dimen/image_mode_space"
-            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_shade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/image_btn_doodle"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="@dimen/dp_10"
+                android:text=" 脱敏"
+                android:textColor="@drawable/image_btn_doodle_text_color"
+                android:textSize="@dimen/sp_18" />
 
-        <RadioButton
-            android:padding="@dimen/dp_10"
-            android:textSize="@dimen/sp_18"
-            android:text=" 输入"
-            android:id="@+id/btn_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/image_btn_text"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:textColor="@drawable/image_btn_doodle_text_color" />
+            <Space
+                android:layout_width="@dimen/image_mode_space"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_doodle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/image_btn_doodle"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="@dimen/dp_10"
+                android:text=" 涂鸦"
+                android:textColor="@drawable/image_btn_doodle_text_color"
+                android:textSize="@dimen/sp_18"
+                android:visibility="visible" />
+
+            <Space
+                android:layout_width="@dimen/image_mode_space"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/btn_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/image_btn_text"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:padding="@dimen/dp_10"
+                android:text=" 输入"
+                android:textColor="@drawable/image_btn_doodle_text_color"
+                android:textSize="@dimen/sp_18" />
 
 
-        <!--        <Space-->
-        <!--            android:layout_width="@dimen/image_mode_space"-->
-        <!--            android:layout_height="wrap_content" />-->
+            <Space
+                android:layout_width="@dimen/image_mode_space"
+                android:layout_height="wrap_content" />
 
-        <RadioButton
-            android:visibility="gone"
-            android:id="@+id/rb_mosaic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/image_btn_mosaic"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:textColor="#FFF" />
+            <RadioButton
+                android:id="@+id/rb_mosaic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/image_btn_mosaic"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:textColor="#FFF"
+                android:visibility="visible" />
 
-        <!--        <Space-->
-        <!--            android:layout_width="@dimen/image_mode_space"-->
-        <!--            android:layout_height="wrap_content" />-->
+            <Space
+                android:layout_width="@dimen/image_mode_space"
+                android:layout_height="wrap_content" />
 
-        <ImageButton
-            android:visibility="gone"
-            android:id="@+id/btn_clip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:contentDescription="@string/image_clip"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:src="@drawable/image_btn_clip"
-            android:textColor="#FFF" />
+            <ImageButton
+                android:id="@+id/btn_clip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:contentDescription="@string/image_clip"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:src="@drawable/image_btn_clip"
+                android:textColor="#FFF"
+                android:visibility="gone" />
 
-    </RadioGroup>
+        </RadioGroup>
 
-</LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

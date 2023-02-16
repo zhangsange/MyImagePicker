@@ -256,20 +256,20 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         // 图片
         mImage.onDrawImage(canvas);
 
-//        // 马赛克
-//        if (!mImage.isMosaicEmpty() || (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty())) {
-//            int count = mImage.onDrawMosaicsPath(canvas);
-//            if (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty()) {
-//                mDoodlePaint.setStrokeWidth(IMGPath.BASE_MOSAIC_WIDTH);
-//                canvas.save();
-//                RectF frame = mImage.getClipFrame();
-//                canvas.rotate(-mImage.getRotate(), frame.centerX(), frame.centerY());
-//                canvas.translate(getScrollX(), getScrollY());
-//                canvas.drawPath(mPen.getPath(), mDoodlePaint);
-//                canvas.restore();
-//            }
-//            mImage.onDrawMosaic(canvas, count);
-//        }
+        // 马赛克
+        if (!mImage.isMosaicEmpty() || (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty())) {
+            int count = mImage.onDrawMosaicsPath(canvas);
+            if (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty()) {
+                mDoodlePaint.setStrokeWidth(IMGPath.BASE_MOSAIC_WIDTH);
+                canvas.save();
+                RectF frame = mImage.getClipFrame();
+                canvas.rotate(-mImage.getRotate(), frame.centerX(), frame.centerY());
+                canvas.translate(getScrollX(), getScrollY());
+                canvas.drawPath(mPen.getPath(), mDoodlePaint);
+                canvas.restore();
+            }
+            mImage.onDrawMosaic(canvas, count);
+        }
         if (!mImage.isShadeEmpty() || (mImage.getMode() == IMGMode.SHADE && !mPen.isEmpty())) {
             // 区域遮罩
 //            mImage.onDrawShades(canvas);
@@ -289,20 +289,20 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
                 isAction_up = false;
             }
         }
-//        if (!mImage.isDoodleEmpty() || (mImage.getMode() == IMGMode.DOODLE && !mPen.isEmpty())) {
-//            // 涂鸦
-//            mImage.onDrawDoodles(canvas);
-//            if (mImage.getMode() == IMGMode.DOODLE && !mPen.isEmpty()) {
-//                mDoodlePaint.setColor(mPen.getColor());
-//                mDoodlePaint.setStrokeWidth(IMGPath.BASE_DOODLE_WIDTH * mImage.getScale());
-//                canvas.save();
-//                RectF frame = mImage.getClipFrame();
-//                canvas.rotate(-mImage.getRotate(), frame.centerX(), frame.centerY());
-//                canvas.translate(getScrollX(), getScrollY());
-//                canvas.drawPath(mPen.getPath(), mDoodlePaint);
-//                canvas.restore();
-//            }
-//        }
+        if (!mImage.isDoodleEmpty() || (mImage.getMode() == IMGMode.DOODLE && !mPen.isEmpty())) {
+            // 涂鸦
+            mImage.onDrawDoodles(canvas);
+            if (mImage.getMode() == IMGMode.DOODLE && !mPen.isEmpty()) {
+                mDoodlePaint.setColor(mPen.getColor());
+                mDoodlePaint.setStrokeWidth(IMGPath.BASE_DOODLE_WIDTH * mImage.getScale());
+                canvas.save();
+                RectF frame = mImage.getClipFrame();
+                canvas.rotate(-mImage.getRotate(), frame.centerX(), frame.centerY());
+                canvas.translate(getScrollX(), getScrollY());
+                canvas.drawPath(mPen.getPath(), mDoodlePaint);
+                canvas.restore();
+            }
+        }
 
         // TODO
         if (mImage.isFreezing()) {

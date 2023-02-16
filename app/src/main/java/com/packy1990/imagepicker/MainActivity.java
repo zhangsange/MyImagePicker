@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSelectMode(MODE_MULTI)//拍照模式  图库拍照按钮拍照完返回图库还是直接进入编辑页面
                 .setColumnCount(4)
                 .setOriginal(false)
-                .setCanEditPic(isCanEdit)//是否脱敏
+                .setCanEditPic(true)//是否脱敏
                 .setWaterMark("编号1245789")
                 .setWaterMarkTextSize(20f)
                 .setWaterMarkColor("#80FF0000")
