@@ -1,5 +1,7 @@
 package com.ypx.imagepicker.bean.selectconfig;
 
+import android.graphics.drawable.Drawable;
+
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.SelectMode;
 import com.ypx.imagepicker.helper.ToastHelper;
@@ -16,7 +18,26 @@ import java.util.ArrayList;
 public class MultiSelectConfig extends CropConfig {
     private boolean isShowOriginalCheckBox;
     private boolean isDefaultOriginal;
+    /**
+     * 选完图片后 是否进入编辑
+     * */
     public boolean isCanEditPic;
+
+    public boolean showShadeBtn;
+    public String shadeBtnText;
+    public Drawable shadeBtnDrawable;
+    public boolean showDoodleBtn;
+    public String doodleBtnText;
+    public Drawable doodleBtnDrawable;
+    public boolean showMosaicBtn;
+    public String mosaicBtnText;
+    public Drawable mosaicBtnDrawable;
+
+    public boolean showTextBtn;
+    public String textBtnText;
+    public Drawable textBtnDrawable;
+    public boolean showColorChoose;
+
     public boolean isCanPreviewVideo = true;
     public boolean isPreview = true;
     public boolean isDeleteOriginalPic = true;//是否删除原图
@@ -205,6 +226,109 @@ public class MultiSelectConfig extends CropConfig {
 
     public void setCanEditPic(boolean canEditPic) {
         isCanEditPic = canEditPic;
+    }
+
+    public boolean isShowShadeBtn(){
+        return showShadeBtn;
+    }
+    public void setShowShadeBtn(boolean showShadeBtn){
+        this.showShadeBtn = showShadeBtn;
+    }
+
+    public String getShadeBtnText() {
+        return shadeBtnText;
+    }
+
+    public void setShadeBtnText(String shadeBtnText) {
+        this.shadeBtnText = shadeBtnText;
+    }
+
+    public Drawable getShadeBtnDrawable() {
+        return shadeBtnDrawable;
+    }
+
+    public void setShadeBtnDrawable(Drawable shadeBtnDrawable) {
+        this.shadeBtnDrawable = shadeBtnDrawable;
+    }
+
+    public boolean isShowDoodleBtn() {
+        return showDoodleBtn;
+    }
+
+    public void setShowDoodleBtn(boolean showDoodleBtn) {
+        this.showDoodleBtn = showDoodleBtn;
+    }
+
+    public String getDoodleBtnText() {
+        return doodleBtnText;
+    }
+
+    public void setDoodleBtnText(String doodleBtnText) {
+        this.doodleBtnText = doodleBtnText;
+    }
+
+    public Drawable getDoodleBtnDrawable() {
+        return doodleBtnDrawable;
+    }
+
+    public void setDoodleBtnDrawable(Drawable doodleBtnDrawable) {
+        this.doodleBtnDrawable = doodleBtnDrawable;
+    }
+
+    public boolean isShowMosaicBtn() {
+        return showMosaicBtn;
+    }
+
+    public void setShowMosaicBtn(boolean showMosaicBtn) {
+        this.showMosaicBtn = showMosaicBtn;
+    }
+
+    public String getMosaicBtnText() {
+        return mosaicBtnText;
+    }
+
+    public void setMosaicBtnText(String mosaicBtnText) {
+        this.mosaicBtnText = mosaicBtnText;
+    }
+
+    public Drawable getMosaicBtnDrawable() {
+        return mosaicBtnDrawable;
+    }
+
+    public void setMosaicBtnDrawable(Drawable mosaicBtnDrawable) {
+        this.mosaicBtnDrawable = mosaicBtnDrawable;
+    }
+
+    public boolean isShowTextBtn() {
+        return showTextBtn;
+    }
+
+    public void setShowTextBtn(boolean showTextBtn) {
+        this.showTextBtn = showTextBtn;
+    }
+
+    public String getTextBtnText() {
+        return textBtnText;
+    }
+
+    public void setTextBtnText(String textBtnText) {
+        this.textBtnText = textBtnText;
+    }
+
+    public Drawable getTextBtnDrawable() {
+        return textBtnDrawable;
+    }
+
+    public void setTextBtnDrawable(Drawable textBtnDrawable) {
+        this.textBtnDrawable = textBtnDrawable;
+    }
+
+    public boolean isShowColorChoose() {
+        return showColorChoose;
+    }
+
+    public void setShowColorChoose(boolean showColorChoose) {
+        this.showColorChoose = showColorChoose;
     }
 
     /**

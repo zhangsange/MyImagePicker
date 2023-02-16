@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -130,8 +131,10 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (opSub < 0) {
             mLayoutOpSub.setVisibility(View.GONE);
         } else {
-            mOpSubSwitcher.setDisplayedChild(opSub);
-            mLayoutOpSub.setVisibility(View.VISIBLE);
+            if (selectConfig.isShowColorChoose()) {
+                mOpSubSwitcher.setDisplayedChild(opSub);
+                mLayoutOpSub.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -145,6 +148,34 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         mColorGroup.setOnCheckedChangeListener(this);
         tvPage = findViewById(R.id.tv_page);
         mLayoutOpSub = findViewById(R.id.layout_op_sub);
+
+        RadioButton rbShade = findViewById(R.id.rb_shade);
+        if (selectConfig.isShowShadeBtn()) {
+            rbShade.setVisibility(View.VISIBLE);
+            if (!selectConfig.getShadeBtnText().isEmpty()) rbShade.setText(selectConfig.getShadeBtnText());
+            if (selectConfig.getShadeBtnDrawable() != null) rbShade.setButtonDrawable(selectConfig.getShadeBtnDrawable());
+        } else rbShade.setVisibility(View.GONE);
+
+        RadioButton rbDoodle = findViewById(R.id.rb_doodle);
+        if (selectConfig.isShowDoodleBtn()) {
+            rbDoodle.setVisibility(View.VISIBLE);
+            if (!selectConfig.getDoodleBtnText().isEmpty()) rbDoodle.setText(selectConfig.getDoodleBtnText());
+            if (selectConfig.getDoodleBtnDrawable() != null) rbDoodle.setButtonDrawable(selectConfig.getDoodleBtnDrawable());
+        } else rbDoodle.setVisibility(View.GONE);
+
+        RadioButton rbMosaic = findViewById(R.id.rb_mosaic);
+        if (selectConfig.isShowMosaicBtn()) {
+            rbMosaic.setVisibility(View.VISIBLE);
+            if (!selectConfig.getMosaicBtnText().isEmpty()) rbMosaic.setText(selectConfig.getMosaicBtnText());
+            if (selectConfig.getMosaicBtnDrawable() != null) rbMosaic.setButtonDrawable(selectConfig.getMosaicBtnDrawable());
+        } else rbMosaic.setVisibility(View.GONE);
+
+        RadioButton rbText = findViewById(R.id.btn_text);
+        if (selectConfig.isShowTextBtn()) {
+            rbText.setVisibility(View.VISIBLE);
+            if (!selectConfig.getTextBtnText().isEmpty()) rbText.setText(selectConfig.getTextBtnText());
+            if (selectConfig.getTextBtnDrawable() != null) rbText.setButtonDrawable(selectConfig.getTextBtnDrawable());
+        } else rbText.setVisibility(View.GONE);
 
 //        mPreviewRecyclerView = findViewById(R.id.mPreviewRecyclerView);
 //        initPreviewList();
