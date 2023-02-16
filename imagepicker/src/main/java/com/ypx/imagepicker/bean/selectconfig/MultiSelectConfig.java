@@ -24,17 +24,17 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isCanEditPic;
 
     public boolean showShadeBtn;
-    public String shadeBtnText;
+    public String shadeBtnText = "";
     public Drawable shadeBtnDrawable;
     public boolean showDoodleBtn;
-    public String doodleBtnText;
+    public String doodleBtnText = "";
     public Drawable doodleBtnDrawable;
     public boolean showMosaicBtn;
-    public String mosaicBtnText;
+    public String mosaicBtnText = "";
     public Drawable mosaicBtnDrawable;
 
     public boolean showTextBtn;
-    public String textBtnText;
+    public String textBtnText = "";
     public Drawable textBtnDrawable;
     public boolean showColorChoose;
 

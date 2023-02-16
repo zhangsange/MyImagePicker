@@ -1,6 +1,7 @@
 package com.ypx.imagepicker.builder;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.ypx.imagepicker.R;
@@ -220,6 +221,60 @@ public class MultiPickerBuilder {
      */
     public MultiPickerBuilder setCanEditPic(boolean isEdit) {
         selectConfig.setCanEditPic(isEdit);
+        return this;
+    }
+
+    public MultiPickerBuilder setShowShadeBtn(boolean showShadeBtn){
+        selectConfig.setShowShadeBtn(showShadeBtn);
+        return this;
+    }
+    public MultiPickerBuilder setShadeBtnText(String shadeBtnText){
+        selectConfig.setShadeBtnText(shadeBtnText);
+        return this;
+    }
+    public MultiPickerBuilder setShadeBtnDrawable(Drawable shadeBtnDrawable){
+        selectConfig.setShadeBtnDrawable(shadeBtnDrawable);
+        return this;
+    }
+    public MultiPickerBuilder setShowDoodleBtn(boolean showDoodleBtn){
+        selectConfig.setShowDoodleBtn(showDoodleBtn);
+        return this;
+    }
+    public MultiPickerBuilder setDoodleBtnText(String doodleBtnText){
+        selectConfig.setDoodleBtnText(doodleBtnText);
+        return this;
+    }
+    public MultiPickerBuilder setDoodleBtnDrawable(Drawable doodleBtnDrawable){
+        selectConfig.setDoodleBtnDrawable(doodleBtnDrawable);
+        return this;
+    }
+    public MultiPickerBuilder setShowMosaicBtn(boolean showMosaicBtn){
+        selectConfig.setShowMosaicBtn(showMosaicBtn);
+        return this;
+    }
+    public MultiPickerBuilder setMosaicBtnText(String mosaicBtnText){
+        selectConfig.setMosaicBtnText(mosaicBtnText);
+        return this;
+    }
+    public MultiPickerBuilder setMosaicBtnDrawable(Drawable mosaicBtnDrawable){
+        selectConfig.setMosaicBtnDrawable(mosaicBtnDrawable);
+        return this;
+    }
+    public MultiPickerBuilder setShowInputBtn(boolean showInputBtn){
+        selectConfig.setShowTextBtn(showInputBtn);
+        return this;
+    }
+    public MultiPickerBuilder setInputBtnText(String inputBtnText){
+        selectConfig.setTextBtnText(inputBtnText);
+        return this;
+    }
+    public MultiPickerBuilder setInputBtnDrawable(Drawable inputBtnDrawable){
+        selectConfig.setTextBtnDrawable(inputBtnDrawable);
+        return this;
+    }
+
+    public MultiPickerBuilder setShowColorChoose(boolean showColorChoose){
+        selectConfig.setShowColorChoose(showColorChoose);
         return this;
     }
 

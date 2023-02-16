@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              Boolean result =   com.packy1990.imagepicker.FileUtil.deleteAllInDir(FileUtil.storagePath);
-                Log.i("哈哈哈",FileUtil.parentPath.getAbsolutePath() + File.separator+"imagePicker_Edit");
-              Log.i("哈哈哈", String.valueOf(result));
+                Boolean result = com.packy1990.imagepicker.FileUtil.deleteAllInDir(FileUtil.storagePath);
+                Log.i("哈哈哈", FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit");
+                Log.i("哈哈哈", String.valueOf(result));
             }
         });
 
@@ -175,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private int dp(float dpVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dpVal, getResources().getDisplayMetrics());
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, getResources().getDisplayMetrics());
     }
 
     /**
@@ -248,22 +248,15 @@ public class MainActivity extends AppCompatActivity {
                 .setColumnCount(4)
                 .setOriginal(false)
                 .setCanEditPic(true)//是否脱敏
-                .setWaterMark("编号1245789")
+                .setShowColorChoose(((Switch) findViewById(R.id.si_color_choose)).isChecked())
+                .setShowDoodleBtn(((Switch) findViewById(R.id.si_doodle)).isChecked())
+                .setShowMosaicBtn(((Switch) findViewById(R.id.si_mosaic)).isChecked())
+                .setShowShadeBtn(((Switch) findViewById(R.id.si_shade)).isChecked())
+                .setShowInputBtn(((Switch) findViewById(R.id.si_input)).isChecked())
+                .setWaterMark("")
                 .setWaterMarkTextSize(20f)
-                .setWaterMarkColor("#80FF0000")
-                .setDeleteOriginalPic(true)
-                .setDeleteBeforeEditlPic(false)
-                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator+"imagePicker_Edit")
-                .setOriginal(false)
-                .mimeTypes(MimeType.ofImage())
-                .filterMimeTypes(MimeType.GIF)
-                .setToastHelper(new ToastHelperImpl())
-                .setCompress(false)
-                .setMaxSize(400)
-                .showCamera(true)
-                .setPreview(true)
-                .setLastImageList(picList)
-                .pick(this, new OnImagePickCompleteListener2() {
+                .setWaterMarkColor(
+                        "#80FF0000").setDeleteOriginalPic(true).setDeleteBeforeEditlPic(false).setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit").setOriginal(false).mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF).setToastHelper(new ToastHelperImpl()).setCompress(false).setMaxSize(400).showCamera(true).setPreview(true).setLastImageList(picList).pick(this, new OnImagePickCompleteListener2() {
                     @Override
                     public void onPickFailed(PickerError error) {
 //                        if (error.getCode()!= PickerError.CANCEL.getCode()) {
