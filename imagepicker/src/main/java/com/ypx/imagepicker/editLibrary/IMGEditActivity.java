@@ -1,17 +1,8 @@
 package com.ypx.imagepicker.editLibrary;
 
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
+import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.bean.ImageItem;
@@ -22,7 +13,6 @@ import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +54,9 @@ public class IMGEditActivity extends IMGEditBaseActivity {
             for (int i = 0; i < imageItemList.size(); i++) {
                 Bitmap bitmap = null;
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
-                } catch (IOException e) {
+//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
+                    bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 bitmapList.add(bitmap);

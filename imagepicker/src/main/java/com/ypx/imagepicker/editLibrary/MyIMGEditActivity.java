@@ -3,6 +3,7 @@ package com.ypx.imagepicker.editLibrary;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -362,8 +363,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                     bitmap = FileUtil.getBitmap(imageLocList.get(i).path);
                 } else {
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
-                    } catch (IOException e) {
+//                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //bitmap = new CompressHelper.Builder(this).setQuality(selectConfig.maxSize).build().compressToBitmapByUri(imageLocList.get(i).getUri());
