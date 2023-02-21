@@ -255,8 +255,19 @@ public class MainActivity extends AppCompatActivity {
                 .setShowInputBtn(((Switch) findViewById(R.id.si_input)).isChecked())
                 .setWaterMark("")
                 .setWaterMarkTextSize(20f)
-                .setWaterMarkColor(
-                        "#80FF0000").setDeleteOriginalPic(true).setDeleteBeforeEditlPic(false).setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit").setOriginal(false).mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF).setToastHelper(new ToastHelperImpl()).setCompress(false).setMaxSize(400).showCamera(true).setPreview(true).setLastImageList(picList).pick(this, new OnImagePickCompleteListener2() {
+                .setWaterMarkColor("#80FF0000")
+                .setDeleteOriginalPic(true)
+                .setDeleteBeforeEditlPic(false)
+                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit")
+                .setOriginal(false)
+                .mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF)
+                .setToastHelper(new ToastHelperImpl())
+                .setCompress(false)
+                .setMaxSize(400)
+                .showCamera(true)
+                .setPreview(true)
+                .setLastImageList(picList)
+                .pick(this, new OnImagePickCompleteListener2() {
                     @Override
                     public void onPickFailed(PickerError error) {
 //                        if (error.getCode()!= PickerError.CANCEL.getCode()) {
