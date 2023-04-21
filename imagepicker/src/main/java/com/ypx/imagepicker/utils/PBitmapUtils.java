@@ -166,13 +166,13 @@ public class PBitmapUtils {
         contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/" + compressFormat.toString());
         contentValues.put(MediaStore.Files.FileColumns.WIDTH, bitmap.getWidth());
         contentValues.put(MediaStore.Files.FileColumns.HEIGHT, bitmap.getHeight());
-        String suffix = "." + compressFormat.toString().toLowerCase();
-        String path = getDCIMDirectory().getAbsolutePath() + File.separator + fileName + suffix;
-        try {
-            contentValues.put(MediaStore.Images.Media.DATA, path);
-        } catch (Exception ignored) {
-
-        }
+//        String suffix = "." + compressFormat.toString().toLowerCase();
+//        String path = getDCIMDirectory().getAbsolutePath() + File.separator + fileName + suffix;
+//        try {
+//            contentValues.put(MediaStore.Images.Media.DATA, path);
+//        } catch (Exception ignored) {
+//
+//        }
         //执行insert操作，向系统文件夹中添加文件
         //EXTERNAL_CONTENT_URI代表外部存储器，该值不变
         Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
@@ -221,6 +221,23 @@ public class PBitmapUtils {
         return path;
     }
 
+    public static String getFilePathFromContentUri(Uri selectedVideoUri,
+                                                   ContentResolver contentResolver) {
+        String filePath;
+        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
+
+        Cursor cursor = contentResolver.query(selectedVideoUri, filePathColumn, null, null, null);
+//	    也可用下面的方法拿到cursor
+//	    Cursor cursor = this.context.managedQuery(selectedVideoUri, filePathColumn, null, null, null);
+
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        filePath = cursor.getString(columnIndex);
+        cursor.close();
+        return filePath;
+    }
+
     /**
      * androidQ方式保存一张bitmap到DCIM根目录下
      *
@@ -247,19 +264,19 @@ public class PBitmapUtils {
             long duration = PBitmapUtils.getLocalVideoDuration(sourceFilePath);
             contentValues.put("duration", duration);
         }
-        String suffix = "." + mimeType.getSuffix();
-        String path = getDCIMDirectory().getAbsolutePath() + File.separator + fileName + suffix;
-        try {
-            contentValues.put(MediaStore.Images.Media.DATA, path);
-        } catch (Exception ignored) {
-
-        }
+//        String suffix = "." + mimeType.getSuffix();
+//        String path = getDCIMDirectory().getAbsolutePath() + File.separator + fileName + suffix;
+//        try {
+//            contentValues.put(MediaStore.Images.Media.DATA, path);
+//        } catch (Exception ignored) {
+//            ignored.printStackTrace();
+//        }
         //执行insert操作，向系统文件夹中添加文件
         //EXTERNAL_CONTENT_URI代表外部存储器，该值不变
         Uri uri = context.getContentResolver().insert(isImage ? MediaStore.Images.Media.EXTERNAL_CONTENT_URI :
                 MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
         copyFile(context, sourceFilePath, uri);
-        return new UriPathInfo(uri, path);
+        return new UriPathInfo(uri, getFilePathFromContentUri(uri,context.getContentResolver()));
     }
 
     private static boolean copyFile(Context context, String sourceFilePath, final Uri insertUri) {

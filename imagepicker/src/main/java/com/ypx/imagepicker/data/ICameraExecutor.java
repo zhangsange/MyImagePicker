@@ -6,7 +6,7 @@ import com.ypx.imagepicker.bean.ImageItem;
 
 public interface ICameraExecutor {
 
-    void takePhoto();
+    void takePhoto(boolean isCopyInDCIM);
 
     void takeVideo();
 

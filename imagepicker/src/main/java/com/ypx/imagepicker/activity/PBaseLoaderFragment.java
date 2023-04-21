@@ -142,7 +142,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         if (getSelectConfig().isShowVideo() && !getSelectConfig().isShowImage()) {
             takeVideo();
         } else {
-            takePhoto();
+            takePhoto(true);
         }
     }
 
@@ -150,7 +150,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
      * 拍照
      */
     @Override
-    public void takePhoto() {
+    public void takePhoto(boolean isCopyInDCIM) {
         if (getActivity() == null || isOverMaxCount()) {
             return;
         }
@@ -158,7 +158,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
             requestPermissions(new String[]{Manifest.permission.CAMERA}, REQ_CAMERA);
         } else {
             ImagePicker.takePhoto(getActivity(), null,
-                    true, new OnImagePickCompleteListener() {
+                    isCopyInDCIM, new OnImagePickCompleteListener() {
                         @Override
                         public void onImagePickComplete(ArrayList<ImageItem> items) {
                             if (items != null && items.size() > 0 && items.get(0) != null) {
@@ -262,7 +262,7 @@ public abstract class PBaseLoaderFragment extends Fragment implements ICameraExe
         if (requestCode == REQ_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //申请成功，可以拍照
-                takePhoto();
+                takePhoto(true);
             } else {
                 PPermissionUtils.create(getContext()).showSetPermissionDialog(
                         getString(R.string.picker_str_camera_permission));

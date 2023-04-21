@@ -302,7 +302,7 @@ public class WeChatPresenter implements IPickerPresenter {
             return false;
         }
         //只有拍照
-        takePhoto.takePhoto();
+        takePhoto.takePhoto(true);
 
 //        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 //        builder.setSingleChoiceItems(new String[]{"拍照", "录像"}, -1, new DialogInterface.OnClickListener() {

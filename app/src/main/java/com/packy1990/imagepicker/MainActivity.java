@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSelectMode(MODE_MULTI)//拍照模式  图库拍照按钮拍照完返回图库还是直接进入编辑页面
                 .setColumnCount(4)
                 .setOriginal(false)
-                .setCanEditPic(true)//是否脱敏
+                .setCanEditPic(false)//是否脱敏
                 .setShowColorChoose(((Switch) findViewById(R.id.si_color_choose)).isChecked())
                 .setShowDoodleBtn(((Switch) findViewById(R.id.si_doodle)).isChecked())
                 .setShowMosaicBtn(((Switch) findViewById(R.id.si_mosaic)).isChecked())
