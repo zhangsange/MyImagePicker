@@ -20,7 +20,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,7 +38,6 @@ import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
 import com.ypx.imagepicker.data.PickerActivityCallBack;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
-import com.ypx.imagepicker.helper.ToastHelper;
 import com.ypx.imagepicker.helper.launcher.PLauncher;
 
 import java.io.File;

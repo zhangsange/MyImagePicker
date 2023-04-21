@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
 import com.ypx.imagepicker.activity.MyAppActivity;
@@ -363,8 +364,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                     bitmap = FileUtil.getBitmap(imageLocList.get(i).path);
                 } else {
                     try {
-//                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
-                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
+                        if (FileUtils.isFileExists(imageLocList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
+                        else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
+//                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -559,7 +561,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     protected void onDestroy() {
         super.onDestroy();
         for (Bitmap bitmap : bitmapList) {
-            bitmap.recycle();
+            if (bitmap != null) bitmap.recycle();
         }
         if (imageItemList != null) {
             imageItemList.clear();
