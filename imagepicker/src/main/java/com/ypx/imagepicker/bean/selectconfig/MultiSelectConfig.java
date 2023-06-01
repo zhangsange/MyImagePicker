@@ -26,6 +26,7 @@ public class MultiSelectConfig extends CropConfig {
 
     public boolean showShadeBtn;
 
+    public String defaultShadowColor;
     public List<String> shadowColors;
 
     public String shadeBtnText = "";
@@ -237,6 +238,15 @@ public class MultiSelectConfig extends CropConfig {
     }
     public void setShowShadeBtn(boolean showShadeBtn){
         this.showShadeBtn = showShadeBtn;
+    }
+
+
+    public String getDefaultShadowColor() {
+        return defaultShadowColor;
+    }
+
+    public void setDefaultShadowColor(String defaultShadowColor) {
+        this.defaultShadowColor = defaultShadowColor;
     }
 
     public List<String> getShadowColors() {

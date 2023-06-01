@@ -229,6 +229,10 @@ public class MultiPickerBuilder {
         selectConfig.setShowShadeBtn(showShadeBtn);
         return this;
     }
+    public MultiPickerBuilder setDefaultShadowColor(String defaultShadowColor){
+        selectConfig.setDefaultShadowColor(defaultShadowColor);
+        return this;
+    }
     public MultiPickerBuilder setShadowColors(List<String> shadowColors){
         selectConfig.setShadowColors(shadowColors);
         return this;

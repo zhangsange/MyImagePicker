@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 .setShowDoodleBtn(((Switch) findViewById(R.id.si_doodle)).isChecked())
                 .setShowMosaicBtn(((Switch) findViewById(R.id.si_mosaic)).isChecked())
                 .setShowShadeBtn(((Switch) findViewById(R.id.si_shade)).isChecked())
+                .setDefaultShadowColor("#4b7758")
                 .setShadowColors(shadowColors)
                 .setShowInputBtn(((Switch) findViewById(R.id.si_input)).isChecked())
                 .setWaterMark("")

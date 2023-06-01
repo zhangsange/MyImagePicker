@@ -163,9 +163,10 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     private void resetColorPenChecked() {
         ((IMGColorRadio) mColorGroup.getChildAt(0)).setChecked(true);
+        int defaultShadowColor = Color.parseColor(selectConfig.defaultShadowColor);
         for (int i = 0; i < mColorGroup.getChildCount(); i++) {
             IMGColorRadio colorRadio = ((IMGColorRadio) mColorGroup.getChildAt(i));
-            if (colorRadio.getColor() == ImagePicker.getEditPicPenColor()) {
+            if (colorRadio.getColor() == defaultShadowColor) {
                 colorRadio.setChecked(true);
                 break;
             }
@@ -344,9 +345,16 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (bitmapList != null && bitmapList.size() > 0) {
             tvPage.setText(1 + " / " + bitmapList.size());
             imgViewList = new ArrayList<>();
+            int penColor = Color.WHITE;
+            if (selectConfig.defaultShadowColor!=null&&selectConfig.defaultShadowColor.length()>0){
+                penColor = Color.parseColor(selectConfig.getDefaultShadowColor());
+            }else{
+                penColor = ((IMGColorRadio)mColorGroup.getChildAt(0)).getColor();
+            }
             for (Bitmap bitmap : bitmapList) {
                 IMGView imgView = new IMGView(this);
-                imgView.setPenColor(ImagePicker.getEditPicPenColor());
+//                imgView.setPenColor(ImagePicker.getEditPicPenColor());
+                imgView.setPenColor(penColor);
                 imgView.setSelectStatusListener(selectStatusListener);
                 imgViewList.add(imgView);
             }
