@@ -42,6 +42,7 @@ import com.ypx.imagepicker.helper.launcher.PLauncher;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -240,16 +241,21 @@ public class MainActivity extends AppCompatActivity {
      */
     public void weChatPick(int count) {
         WeChatPresenter weChatPresenter = new WeChatPresenter();
+        List<String> shadowColors = new ArrayList<String>();
+        shadowColors.add("#1b43fd");
+        shadowColors.add("#cc7832");
+        shadowColors.add("#4b7758");
         ImagePicker.withMulti(weChatPresenter)
                 .setMaxCount(count)
                 .setSelectMode(MODE_MULTI)//拍照模式  图库拍照按钮拍照完返回图库还是直接进入编辑页面
                 .setColumnCount(4)
                 .setOriginal(false)
-                .setCanEditPic(false)//是否脱敏
+                .setCanEditPic(true)//是否脱敏
                 .setShowColorChoose(((Switch) findViewById(R.id.si_color_choose)).isChecked())
                 .setShowDoodleBtn(((Switch) findViewById(R.id.si_doodle)).isChecked())
                 .setShowMosaicBtn(((Switch) findViewById(R.id.si_mosaic)).isChecked())
                 .setShowShadeBtn(((Switch) findViewById(R.id.si_shade)).isChecked())
+                .setShadowColors(shadowColors)
                 .setShowInputBtn(((Switch) findViewById(R.id.si_input)).isChecked())
                 .setWaterMark("")
                 .setWaterMarkTextSize(20f)

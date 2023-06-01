@@ -91,7 +91,7 @@ public class WeChatPresenter implements IPickerPresenter {
         //设置主题色
         uiConfig.setThemeColor(Color.parseColor("#09C768"));
         //设置脱敏画笔默认颜色
-        uiConfig.setEditPicPenColor(Color.parseColor("#FF5151"));
+        uiConfig.setEditPicPenColor(Color.parseColor("#cc7832"));
         //设置是否显示状态栏
         uiConfig.setShowStatusBar(true);
         //设置状态栏颜色

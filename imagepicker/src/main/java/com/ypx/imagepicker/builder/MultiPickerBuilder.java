@@ -20,6 +20,7 @@ import com.ypx.imagepicker.presenter.IPickerPresenter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.ypx.imagepicker.activity.multi.MultiImagePickerActivity.INTENT_KEY_SELECT_CONFIG;
@@ -226,6 +227,10 @@ public class MultiPickerBuilder {
 
     public MultiPickerBuilder setShowShadeBtn(boolean showShadeBtn){
         selectConfig.setShowShadeBtn(showShadeBtn);
+        return this;
+    }
+    public MultiPickerBuilder setShadowColors(List<String> shadowColors){
+        selectConfig.setShadowColors(shadowColors);
         return this;
     }
     public MultiPickerBuilder setShadeBtnText(String shadeBtnText){

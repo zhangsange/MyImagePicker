@@ -11,20 +11,20 @@ import androidx.fragment.app.FragmentActivity;
 import com.ypx.imagepicker.activity.PickerActivityManager;
 import com.ypx.imagepicker.activity.preview.MultiImagePreviewActivity;
 import com.ypx.imagepicker.activity.singlecrop.SingleCropActivity;
-import com.ypx.imagepicker.bean.selectconfig.CropConfig;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.ImageSet;
 import com.ypx.imagepicker.bean.MimeType;
 import com.ypx.imagepicker.bean.PickerError;
+import com.ypx.imagepicker.bean.selectconfig.CropConfig;
 import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.builder.CropPickerBuilder;
+import com.ypx.imagepicker.builder.MultiPickerBuilder;
 import com.ypx.imagepicker.data.MediaItemsDataSource;
 import com.ypx.imagepicker.data.MediaSetsDataSource;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
 import com.ypx.imagepicker.helper.CameraCompat;
 import com.ypx.imagepicker.helper.PickerErrorExecutor;
-import com.ypx.imagepicker.builder.MultiPickerBuilder;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 import com.ypx.imagepicker.utils.PBitmapUtils;
 import com.ypx.imagepicker.utils.PPermissionUtils;
@@ -99,12 +99,9 @@ public class ImagePicker {
      * @param isCopyInDCIM 是否copy到DCIM中
      * @param listener     拍照回调
      */
-    public static void takePhoto(Activity activity,
-                                 String imageName,
-                                 boolean isCopyInDCIM,
-                                 OnImagePickCompleteListener listener) {
+    public static void takePhoto(Activity activity, String imageName, boolean isCopyInDCIM, OnImagePickCompleteListener listener) {
         if (imageName == null || imageName.length() == 0) {
-            imageName = DEFAULT_FILE_NAME+"Img_" + System.currentTimeMillis();
+            imageName = DEFAULT_FILE_NAME + "Img_" + System.currentTimeMillis();
         }
         CameraCompat.takePhoto(activity, imageName, isCopyInDCIM, listener);
     }
@@ -119,11 +116,7 @@ public class ImagePicker {
      * @param isCopyInDCIM 是否copy到DCIM中
      * @param listener     视频回调
      */
-    public static void takeVideo(Activity activity,
-                                 String videoName,
-                                 long maxDuration,
-                                 boolean isCopyInDCIM,
-                                 OnImagePickCompleteListener listener) {
+    public static void takeVideo(Activity activity, String videoName, long maxDuration, boolean isCopyInDCIM, OnImagePickCompleteListener listener) {
         if (videoName == null || videoName.length() == 0) {
             videoName = "Video_" + System.currentTimeMillis();
         }
@@ -139,10 +132,7 @@ public class ImagePicker {
      * @param cropConfig 剪裁配置
      * @param listener   剪裁回调
      */
-    public static void takePhotoAndCrop(final Activity activity,
-                                        final IPickerPresenter presenter,
-                                        final CropConfig cropConfig,
-                                        @NonNull final OnImagePickCompleteListener listener) {
+    public static void takePhotoAndCrop(final Activity activity, final IPickerPresenter presenter, final CropConfig cropConfig, @NonNull final OnImagePickCompleteListener listener) {
         if (presenter == null) {
             PickerErrorExecutor.executeError(activity, PickerError.PRESENTER_NOT_FOUND.getCode());
             return;
@@ -171,9 +161,7 @@ public class ImagePicker {
      * @param cropImagePath 需要剪裁的图片路径,可以是uri路径
      * @param listener      剪裁回调
      */
-    public static void crop(final Activity activity, final IPickerPresenter presenter,
-                            final CropConfig cropConfig, String cropImagePath,
-                            final OnImagePickCompleteListener listener) {
+    public static void crop(final Activity activity, final IPickerPresenter presenter, final CropConfig cropConfig, String cropImagePath, final OnImagePickCompleteListener listener) {
         if (presenter == null || cropConfig == null || listener == null) {
             PickerErrorExecutor.executeError(activity, PickerError.PRESENTER_NOT_FOUND.getCode());
             return;
@@ -190,9 +178,7 @@ public class ImagePicker {
      * @param imageItem  需要剪裁的图片信息
      * @param listener   剪裁回调
      */
-    public static void crop(final Activity activity, final IPickerPresenter presenter,
-                            final CropConfig cropConfig, ImageItem imageItem,
-                            final OnImagePickCompleteListener listener) {
+    public static void crop(final Activity activity, final IPickerPresenter presenter, final CropConfig cropConfig, ImageItem imageItem, final OnImagePickCompleteListener listener) {
         if (presenter == null || cropConfig == null || listener == null) {
             PickerErrorExecutor.executeError(activity, PickerError.PRESENTER_NOT_FOUND.getCode());
             return;
@@ -209,27 +195,25 @@ public class ImagePicker {
      * @param listener  编辑回调
      * @param <T>       String or ImageItem
      */
-    public static <T> void preview(Activity context, final IPickerPresenter presenter, ArrayList<T> imageList,
-                                   int pos,boolean isCanEidt,final OnImagePickCompleteListener listener) {
+    public static <T> void preview(Activity context, final IPickerPresenter presenter, ArrayList<T> imageList, int pos, boolean isCanEidt, final OnImagePickCompleteListener listener) {
         if (imageList == null || imageList.size() == 0) {
             return;
         }
         MultiSelectConfig selectConfig = new MultiSelectConfig();
         selectConfig.setMaxCount(imageList.size());
         selectConfig.setCanEditPic(isCanEidt);
-        MultiImagePreviewActivity.intent(context, null, transitArray(context, imageList),
-                selectConfig, presenter, pos, new MultiImagePreviewActivity.PreviewResult() {
-                    @Override
-                    public void onResult(ArrayList<ImageItem> imageItems, boolean isCancel) {
-                        if (listener != null) {
-                            if (isCancel && listener instanceof OnImagePickCompleteListener2) {
-                                ((OnImagePickCompleteListener2) listener).onPickFailed(PickerError.CANCEL);
-                            } else {
-                                listener.onImagePickComplete(imageItems);
-                            }
-                        }
+        MultiImagePreviewActivity.intent(context, null, transitArray(context, imageList), selectConfig, presenter, pos, new MultiImagePreviewActivity.PreviewResult() {
+            @Override
+            public void onResult(ArrayList<ImageItem> imageItems, boolean isCancel) {
+                if (listener != null) {
+                    if (isCancel && listener instanceof OnImagePickCompleteListener2) {
+                        ((OnImagePickCompleteListener2) listener).onPickFailed(PickerError.CANCEL);
+                    } else {
+                        listener.onImagePickComplete(imageItems);
                     }
-                });
+                }
+            }
+        });
     }
 
     /**
@@ -244,7 +228,7 @@ public class ImagePicker {
                 ImageItem imageItem = ImageItem.withPath(activity, (String) t);
                 items.add(imageItem);
             } else if (t instanceof ImageItem) {
-                ImageItem imageItem = ImageItem.withPath(activity,  ((ImageItem) t).path);
+                ImageItem imageItem = ImageItem.withPath(activity, ((ImageItem) t).path);
                 items.add(imageItem);
 //                items.add((ImageItem) t);
             } else if (t instanceof Uri) {
@@ -269,9 +253,7 @@ public class ImagePicker {
      * @param mimeTypeSet 指定相册文件类型
      * @param provider    相回调
      */
-    public static void provideMediaSets(FragmentActivity activity,
-                                        Set<MimeType> mimeTypeSet,
-                                        MediaSetsDataSource.MediaSetProvider provider) {
+    public static void provideMediaSets(FragmentActivity activity, Set<MimeType> mimeTypeSet, MediaSetsDataSource.MediaSetProvider provider) {
         if (PPermissionUtils.hasStoragePermissions(activity)) {
             MediaSetsDataSource.create(activity).setMimeTypeSet(mimeTypeSet).loadMediaSets(provider);
         }
@@ -285,10 +267,7 @@ public class ImagePicker {
      * @param mimeTypeSet 加载类型
      * @param provider    媒体文件回调
      */
-    public static void provideMediaItemsFromSet(FragmentActivity activity,
-                                                ImageSet set,
-                                                Set<MimeType> mimeTypeSet,
-                                                MediaItemsDataSource.MediaItemProvider provider) {
+    public static void provideMediaItemsFromSet(FragmentActivity activity, ImageSet set, Set<MimeType> mimeTypeSet, MediaItemsDataSource.MediaItemProvider provider) {
         if (PPermissionUtils.hasStoragePermissions(activity)) {
             MediaItemsDataSource.create(activity, set).setMimeTypeSet(mimeTypeSet).loadMediaItems(provider);
         }
@@ -304,16 +283,10 @@ public class ImagePicker {
      * @param preloadProvider 预加载回调
      * @param provider        所有文件回调
      */
-    public static void provideMediaItemsFromSetWithPreload(FragmentActivity activity,
-                                                           ImageSet set,
-                                                           Set<MimeType> mimeTypeSet,
-                                                           int preloadSize,
-                                                           MediaItemsDataSource.MediaItemPreloadProvider preloadProvider,
-                                                           MediaItemsDataSource.MediaItemProvider provider) {
+    public static void provideMediaItemsFromSetWithPreload(FragmentActivity activity, ImageSet set, Set<MimeType> mimeTypeSet, int preloadSize,
+                                                           MediaItemsDataSource.MediaItemPreloadProvider preloadProvider, MediaItemsDataSource.MediaItemProvider provider) {
         if (PPermissionUtils.hasStoragePermissions(activity)) {
-            MediaItemsDataSource dataSource = MediaItemsDataSource.create(activity, set)
-                    .setMimeTypeSet(mimeTypeSet)
-                    .preloadSize(preloadSize);
+            MediaItemsDataSource dataSource = MediaItemsDataSource.create(activity, set).setMimeTypeSet(mimeTypeSet).preloadSize(preloadSize);
             dataSource.setPreloadProvider(preloadProvider);
             dataSource.loadMediaItems(provider);
         }
@@ -327,9 +300,7 @@ public class ImagePicker {
      * @param mimeTypeSet 加载文件类型
      * @param provider    文件列表回调
      */
-    public static void provideAllMediaItems(FragmentActivity activity,
-                                            Set<MimeType> mimeTypeSet,
-                                            MediaItemsDataSource.MediaItemProvider provider) {
+    public static void provideAllMediaItems(FragmentActivity activity, Set<MimeType> mimeTypeSet, MediaItemsDataSource.MediaItemProvider provider) {
         ImageSet set = new ImageSet();
         set.id = ImageSet.ID_ALL_MEDIA;
         provideMediaItemsFromSet(activity, set, mimeTypeSet, provider);
@@ -382,14 +353,13 @@ public class ImagePicker {
     }
 
 
-       public static int getEditPicPenColor() {
+    public static int getEditPicPenColor() {
         return editPicPenColor;
     }
 
     public static void setEditPicPenColor(int penColor) {
         ImagePicker.editPicPenColor = penColor;
     }
-
 
 
 }

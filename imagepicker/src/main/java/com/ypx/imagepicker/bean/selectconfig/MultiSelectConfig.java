@@ -8,6 +8,7 @@ import com.ypx.imagepicker.helper.ToastHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description: 多选配置项
@@ -24,6 +25,9 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isCanEditPic;
 
     public boolean showShadeBtn;
+
+    public List<String> shadowColors;
+
     public String shadeBtnText = "";
     public Drawable shadeBtnDrawable;
     public boolean showDoodleBtn;
@@ -233,6 +237,14 @@ public class MultiSelectConfig extends CropConfig {
     }
     public void setShowShadeBtn(boolean showShadeBtn){
         this.showShadeBtn = showShadeBtn;
+    }
+
+    public List<String> getShadowColors() {
+        return shadowColors;
+    }
+
+    public void setShadowColors(List<String> shadowColors) {
+        this.shadowColors = shadowColors;
     }
 
     public String getShadeBtnText() {

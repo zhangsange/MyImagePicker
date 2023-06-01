@@ -38,9 +38,9 @@ import com.ypx.imagepicker.editLibrary.listener.SelectStatusListener;
 import com.ypx.imagepicker.editLibrary.utils.FileUtil;
 import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
+import com.ypx.imagepicker.editLibrary.view.IMGColorRadio;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,6 +140,38 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    public int dp(float dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dp * density + 0.5);
+    }
+
+    private void resetShadowColors() {
+        mColorGroup.removeAllViews();
+        int dp28 = dp(28);
+        int dp6 = dp(6);
+        for (String shadowColor : selectConfig.shadowColors) {
+            IMGColorRadio radio = new IMGColorRadio(this);
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(dp28, dp28);
+            params.setMargins(dp6, dp6, dp6, dp6);
+            radio.setId(View.generateViewId());
+            radio.setLayoutParams(params);
+            radio.setClickable(true);
+            radio.setColor(Color.parseColor(shadowColor));
+            mColorGroup.addView(radio);
+        }
+    }
+
+    private void resetColorPenChecked() {
+        ((IMGColorRadio) mColorGroup.getChildAt(0)).setChecked(true);
+        for (int i = 0; i < mColorGroup.getChildCount(); i++) {
+            IMGColorRadio colorRadio = ((IMGColorRadio) mColorGroup.getChildAt(i));
+            if (colorRadio.getColor() == ImagePicker.getEditPicPenColor()) {
+                colorRadio.setChecked(true);
+                break;
+            }
+        }
+    }
+
     private void initViews() {
         mViewPager = findViewById(R.id.img_vp);
         tvDone = findViewById(R.id.tv_done);
@@ -148,6 +180,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         mOpSubSwitcher = findViewById(R.id.vs_op_sub);
         mColorGroup = findViewById(R.id.cg_colors);
         mColorGroup.setOnCheckedChangeListener(this);
+        if (selectConfig.shadowColors != null && selectConfig.shadowColors.size() > 0) {
+            resetShadowColors();
+        }
+        resetColorPenChecked();
+
         tvPage = findViewById(R.id.tv_page);
         mLayoutOpSub = findViewById(R.id.layout_op_sub);
 
@@ -554,7 +591,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
 
     public void onColorChanged(int checkedColor) {
-        mImgView.setPenColor(checkedColor);
+        if (mImgView != null) mImgView.setPenColor(checkedColor);
     }
 
     @Override
