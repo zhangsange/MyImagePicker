@@ -240,6 +240,9 @@ public class MainActivity extends AppCompatActivity {
      * @param count
      */
     public void weChatPick(int count) {
+
+        String dir = "imageEdit_test";
+
         WeChatPresenter weChatPresenter = new WeChatPresenter();
         List<String> shadowColors = new ArrayList<String>();
         shadowColors.add("#1b43fd");
@@ -263,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 .setWaterMarkColor("#80FF0000")
                 .setDeleteOriginalPic(false)
                 .setDeleteBeforeEditlPic(false)
-                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "ABCimagePicker_Edit123")
+                .setImageSavePath(dir)
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF)
                 .setToastHelper(new ToastHelperImpl())
