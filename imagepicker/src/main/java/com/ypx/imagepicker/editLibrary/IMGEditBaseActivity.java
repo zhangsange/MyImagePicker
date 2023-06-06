@@ -70,6 +70,7 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
     private int newSelectPos = 0;
     private TextView tvDone;
     private String btnContent;
+    private String imageSavePath = FileUtil.PIC_EDIT_FOLDER_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
             mImgView.setImageBitmap(bitmapList.get(lastSelectPos));
             selectPosList.add(lastSelectPos);
             if (!TextUtils.isEmpty(getNumber())) {
-                if (!imageItemList.get(lastSelectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME) && !imageItemList.get(0).path.startsWith("http")) {
+                if (!imageItemList.get(lastSelectPos).path.contains(imageSavePath) && !imageItemList.get(0).path.startsWith("http")) {
                     mImgView.addStickerText(new IMGText(getNumber(), Color.RED), true);
                 }
             }
@@ -115,7 +116,7 @@ abstract class IMGEditBaseActivity extends Activity implements View.OnClickListe
         mImgView.setImageBitmap(bitmapList.get(selectPos));
         if (!selectPosList.contains(selectPos)) {
             if (!TextUtils.isEmpty(getNumber())
-                    && !imageItemList.get(selectPos).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)
+                    && !imageItemList.get(selectPos).path.contains(imageSavePath)
                     && !imageItemList.get(selectPos).path.startsWith("http")) {
                 mImgView.addStickerText(new IMGText(getNumber(), Color.RED), true);
             }

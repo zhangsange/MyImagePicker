@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     public void takePhotoToEdit() {
         MultiSelectConfig selectConfig = new MultiSelectConfig();
         selectConfig.setDeleteOriginalPic(true);
-        selectConfig.setDeleteBeforeEditlPic(false);
+        selectConfig.setDeleteBeforeEditPic(false);
         selectConfig.setSingleTakePhoto(true);
         selectConfig.setImgMaxNum(maxCount - picList.size());
         selectConfig.setCompress(false);
@@ -261,9 +261,9 @@ public class MainActivity extends AppCompatActivity {
                 .setWaterMark("")
                 .setWaterMarkTextSize(20f)
                 .setWaterMarkColor("#80FF0000")
-                .setDeleteOriginalPic(true)
+                .setDeleteOriginalPic(false)
                 .setDeleteBeforeEditlPic(false)
-                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit")
+                .setImageSavePath(FileUtil.parentPath.getAbsolutePath() + File.separator + "ABCimagePicker_Edit123")
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF)
                 .setToastHelper(new ToastHelperImpl())

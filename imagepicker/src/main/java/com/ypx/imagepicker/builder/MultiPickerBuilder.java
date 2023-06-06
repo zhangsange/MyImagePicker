@@ -205,7 +205,7 @@ public class MultiPickerBuilder {
      * @param isDelete 是否删除(非原图(曾被编辑过的图片))图片
      */
     public MultiPickerBuilder setDeleteBeforeEditlPic(boolean isDelete) {
-        selectConfig.setDeleteBeforeEditlPic(isDelete);
+        selectConfig.setDeleteBeforeEditPic(isDelete);
         return this;
     }
 

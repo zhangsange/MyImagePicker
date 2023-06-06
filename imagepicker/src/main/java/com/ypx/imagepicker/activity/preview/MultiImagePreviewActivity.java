@@ -64,6 +64,8 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
     private DialogInterface dialogInterface;
     private PreviewControllerView controllerView;
 
+    private String imageSavePath = FileUtil.PIC_EDIT_FOLDER_NAME;
+
     /**
      * 预览回调
      */
@@ -177,7 +179,7 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
             if (mSelectList.size()==0){
                 for(int i=0;i<mIgnoreSelectList.size();i++){
                     //如果是脱敏照片就直接删除
-                    if (mIgnoreSelectList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
+                    if (mIgnoreSelectList.get(i).path.contains(imageSavePath)){
                         FileUtil.deletePic(getApplication(),mIgnoreSelectList.get(i).path);
                     }
                 }
@@ -186,7 +188,7 @@ public class MultiImagePreviewActivity extends FragmentActivity implements Media
                 if (mIgnoreSelectList.size()>0){
                     for(int i=0;i<mIgnoreSelectList.size();i++){
                         //如果是脱敏照片就直接删除
-                        if (mIgnoreSelectList.get(i).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)){
+                        if (mIgnoreSelectList.get(i).path.contains(imageSavePath)){
                             FileUtil.deletePic(getApplication(),mIgnoreSelectList.get(i).path);
                         }
                     }

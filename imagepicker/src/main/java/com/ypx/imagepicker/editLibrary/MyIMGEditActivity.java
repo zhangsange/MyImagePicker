@@ -89,6 +89,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     public static final int OP_SUB_MOSAIC = 1;
     public static final int OP_SUB_SHADE = 0;
 
+    private String imageSavePath = FileUtil.PIC_EDIT_FOLDER_NAME;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,10 +100,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (selectConfig != null) {
             isSingleTakePhoto = selectConfig.isSingleTakePhoto();
             waterMark = selectConfig.getWaterMark();
+            imageSavePath = selectConfig.getImageSavePath();
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             waterMarkColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
-            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
+            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditPic();
         }
         initViews();
         if (!isSingleTakePhoto) {//图库进入编辑页面
@@ -303,7 +306,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
             imgView.setImageBitmap(bitmapList.get(position));
-            if (!TextUtils.isEmpty(waterMark) && !imageLocList.get(position).path.contains(FileUtil.PIC_EDIT_FOLDER_NAME)) {
+            if (!TextUtils.isEmpty(waterMark) && !imageLocList.get(position).path.contains(imageSavePath)) {
                 if (!TextUtils.isEmpty(waterMarkColor)) {
                     imgView.addStickerText(new IMGText(waterMark, Color.parseColor(waterMarkColor), waterMarkTextSize), true);
                 } else {
@@ -560,9 +563,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (isSingleTakePhoto) {
             for (int i = 0; i < bitmapList.size(); i++) {
                 if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
                 } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
                 }
 //                if (selectConfig.isCompress) {//进行压缩
 //                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
@@ -575,19 +578,19 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             }
             for (int i = 0; i < bitmapList.size(); i++) {
                 if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i), this);
+                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
                 } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_EDIT_FOLDER_NAME, bitmapList.get(i));
+                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
                 }
 //                if (selectConfig.isCompress) {//进行压缩
 //                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
 //                }
             }
             for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
-                if (!imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
+                if (!imageSelectList.get(i).contains(imageSavePath) && isDeleteOriginalPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
                 }
-                if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
+                if (imageSelectList.get(i).contains(imageSavePath) && isDeleteBeforeEditlPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
                 }
             }

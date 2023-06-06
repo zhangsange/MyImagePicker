@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,6 @@ import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +82,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
     private List<IMGView> imgViewList;
     private SelectStatusListener selectStatusListener;
     private TextView tvPage;
-    private String imageSavePath;
+    private String imageSavePath = FileUtil.PIC_EDIT_FOLDER_NAME;
 
 
     @Override
@@ -99,7 +97,7 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             numberColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
-            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditlPic();
+            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditPic();
         }
         if (!TextUtils.isEmpty(numberColor)) {
             umberColorInt = Color.parseColor(numberColor);
@@ -483,10 +481,10 @@ public class MyImgEditVpActivity extends AppCompatActivity implements View.OnCli
 //                }
             }
             for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
-                if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteOriginalPic) {
+                if (imageSelectList.get(i).contains(imageSavePath) && isDeleteOriginalPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
                 }
-                if (imageSelectList.get(i).contains(FileUtil.PIC_EDIT_FOLDER_NAME) && isDeleteBeforeEditlPic) {
+                if (imageSelectList.get(i).contains(imageSavePath) && isDeleteBeforeEditlPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
                 }
             }

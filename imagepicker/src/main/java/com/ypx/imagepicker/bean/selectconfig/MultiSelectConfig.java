@@ -6,7 +6,6 @@ import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.SelectMode;
 import com.ypx.imagepicker.helper.ToastHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class MultiSelectConfig extends CropConfig {
     public boolean isCanPreviewVideo = true;
     public boolean isPreview = true;
     public boolean isDeleteOriginalPic = true;//是否删除原图
-    public boolean isDeleteBeforeEditlPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
+    public boolean isDeleteBeforeEditPic = true;//是否删除编辑前(非原图(曾被编辑过的图片))的图片
     public boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
 
     public String imageSavePath = "";//脱敏图片保存路径
@@ -124,12 +123,12 @@ public class MultiSelectConfig extends CropConfig {
         isDeleteOriginalPic = deleteOriginalPic;
     }
 
-    public boolean isDeleteBeforeEditlPic() {
-        return isDeleteBeforeEditlPic;
+    public boolean isDeleteBeforeEditPic() {
+        return isDeleteBeforeEditPic;
     }
 
-    public void setDeleteBeforeEditlPic(boolean deleteBeforeEditlPic) {
-        isDeleteBeforeEditlPic = deleteBeforeEditlPic;
+    public void setDeleteBeforeEditPic(boolean deleteBeforeEditPic) {
+        isDeleteBeforeEditPic = deleteBeforeEditPic;
     }
 
     public boolean isSingleTakePhoto() {
