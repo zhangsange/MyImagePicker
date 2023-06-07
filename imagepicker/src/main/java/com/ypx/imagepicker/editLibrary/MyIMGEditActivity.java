@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,7 +41,9 @@ import com.ypx.imagepicker.editLibrary.utils.SystemUtils;
 import com.ypx.imagepicker.editLibrary.view.IMGColorGroup;
 import com.ypx.imagepicker.editLibrary.view.IMGColorRadio;
 import com.ypx.imagepicker.editLibrary.view.IMGView;
+import com.ypx.imagepicker.utils.BitmapUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +94,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     private String imageSavePath = FileUtil.PIC_EDIT_FOLDER_NAME;
 
+    private boolean save2DCIM = true;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,6 +106,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             isSingleTakePhoto = selectConfig.isSingleTakePhoto();
             waterMark = selectConfig.getWaterMark();
             imageSavePath = selectConfig.getImageSavePath();
+            save2DCIM = selectConfig.isSave2DCIM();
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             waterMarkColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
@@ -349,10 +355,10 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             tvPage.setText(1 + " / " + bitmapList.size());
             imgViewList = new ArrayList<>();
             int penColor = Color.WHITE;
-            if (selectConfig.defaultShadowColor!=null&&selectConfig.defaultShadowColor.length()>0){
+            if (selectConfig.defaultShadowColor != null && selectConfig.defaultShadowColor.length() > 0) {
                 penColor = Color.parseColor(selectConfig.getDefaultShadowColor());
-            }else{
-                penColor = ((IMGColorRadio)mColorGroup.getChildAt(0)).getColor();
+            } else {
+                penColor = ((IMGColorRadio) mColorGroup.getChildAt(0)).getColor();
             }
             for (Bitmap bitmap : bitmapList) {
                 IMGView imgView = new IMGView(this);
@@ -555,12 +561,13 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    /**
-     * 删除原图片 保存编辑后的图片
-     */
-    private void saveImageItem() {
-        imageSelectList.clear();
-        if (isSingleTakePhoto) {
+    private String getImageSavePath() {
+        if (imageSavePath.endsWith(File.separator)) return imageSavePath;
+        else return imageSavePath + File.separator;
+    }
+
+    private void saveImage() {
+        if (save2DCIM) {
             for (int i = 0; i < bitmapList.size(); i++) {
                 if (SystemUtils.beforeAndroidTen()) {
                     imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
@@ -572,20 +579,32 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 //                }
             }
         } else {
+            for (int i = 0; i < bitmapList.size(); i++) {
+                String filePath = getImageSavePath() + System.currentTimeMillis() + ".jpg";
+                imageLocList.get(i).path = filePath;
+                BitmapUtils.saveFile(filePath, bitmapList.get(i));
+                updateFileFromDatabase(filePath);
+            }
+        }
+    }
+
+    private void updateFileFromDatabase(String filepath) {
+        MediaScannerConnection.scanFile(this, new String[]{filepath}, null, null);
+    }
+
+    /**
+     * 删除原图片 保存编辑后的图片
+     */
+    private void saveImageItem() {
+        imageSelectList.clear();
+        if (isSingleTakePhoto) {
+            saveImage();
+        } else {
             imageItemList.clear();
             for (int i = 0; i < imageLocList.size(); i++) {
                 imageSelectList.add(imageLocList.get(i).path);
             }
-            for (int i = 0; i < bitmapList.size(); i++) {
-                if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
-                } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
-                }
-//                if (selectConfig.isCompress) {//进行压缩
-//                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
-//                }
-            }
+            saveImage();
             for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
                 if (!imageSelectList.get(i).contains(imageSavePath) && isDeleteOriginalPic) {
                     FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)

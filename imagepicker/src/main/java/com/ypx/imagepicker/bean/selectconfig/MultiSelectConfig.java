@@ -50,6 +50,8 @@ public class MultiSelectConfig extends CropConfig {
 
     public String imageSavePath = "";//脱敏图片保存路径
 
+    public boolean save2DCIM = true;//保存到图库
+
     public ToastHelper toastHelper;
     public void setToastHelper(ToastHelper toastHelper){
         this.toastHelper = toastHelper;
@@ -148,7 +150,15 @@ public class MultiSelectConfig extends CropConfig {
         this.imageSavePath = imageSavePath;
     }
 
-//    private boolean isSeePreview = false;//仅仅为查看预览
+    public boolean isSave2DCIM() {
+        return save2DCIM;
+    }
+
+    public void setSave2DCIM(boolean save2DCIM) {
+        this.save2DCIM = save2DCIM;
+    }
+
+    //    private boolean isSeePreview = false;//仅仅为查看预览
 //
 //    public boolean isSeePreview() {
 //        return isSeePreview;

@@ -211,9 +211,19 @@ public class MultiPickerBuilder {
 
     /**
      * 图片处理后的保存路径
+     * 需在Environment.getExternalStorageDirectory()文件夹下，否则保存后通知图库更新扫描不到，图库不会显示编辑后的图片
      */
     public MultiPickerBuilder setImageSavePath(String path) {
         selectConfig.setImageSavePath(path);
+        return this;
+    }
+
+    public boolean isSave2DCIM() {
+        return selectConfig.isSave2DCIM();
+    }
+
+    public MultiPickerBuilder setSave2DCIM(boolean save2DCIM) {
+        selectConfig.setSave2DCIM(save2DCIM);
         return this;
     }
 

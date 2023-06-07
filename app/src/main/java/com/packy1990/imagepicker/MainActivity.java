@@ -5,6 +5,7 @@ import static com.ypx.imagepicker.bean.SelectMode.MODE_MULTI;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         checkEdit = findViewById(R.id.isEdit);
         btn_delete = findViewById(R.id.btn_delete);
         checkEdit.setVisibility(View.GONE);
+        savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"imageEdit_test";
+//        savePath = this.getExternalCacheDir().getAbsolutePath()+File.separator+"images"+File.separator+"desensitize123"+File.separator;
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean result = com.packy1990.imagepicker.FileUtil.deleteAllInDir(FileUtil.storagePath);
+                Boolean result = com.packy1990.imagepicker.FileUtil.deleteAllInDir(savePath);
                 Log.i("哈哈哈", FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit");
                 Log.i("哈哈哈", String.valueOf(result));
             }
@@ -233,15 +236,13 @@ public class MainActivity extends AppCompatActivity {
         }));
     }
 
-
+    private String savePath = "";
     /**
      * 图库选择图片
      *
      * @param count
      */
     public void weChatPick(int count) {
-
-        String dir = "imageEdit_test";
 
         WeChatPresenter weChatPresenter = new WeChatPresenter();
         List<String> shadowColors = new ArrayList<String>();
@@ -266,7 +267,8 @@ public class MainActivity extends AppCompatActivity {
                 .setWaterMarkColor("#80FF0000")
                 .setDeleteOriginalPic(false)
                 .setDeleteBeforeEditlPic(false)
-                .setImageSavePath(dir)
+                .setSave2DCIM(false)
+                .setImageSavePath(savePath)
                 .setOriginal(false)
                 .mimeTypes(MimeType.ofImage()).filterMimeTypes(MimeType.GIF)
                 .setToastHelper(new ToastHelperImpl())
