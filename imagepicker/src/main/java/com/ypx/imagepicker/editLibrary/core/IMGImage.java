@@ -25,7 +25,7 @@ import java.util.List;
  * Created by felix on 2017/11/21 下午10:03.
  */
 
-public class IMGImage  {
+public class IMGImage {
 
     private static final String TAG = "IMGImage";
 
@@ -157,7 +157,7 @@ public class IMGImage  {
             return;
         }
 
-        this.mImage = bitmap;
+        this.mImage = getBitmap(1, bitmap);
 
         // 清空马赛克图层
         if (mMosaicImage != null) {
@@ -168,6 +168,23 @@ public class IMGImage  {
         makeMosaicBitmap();
 
         onImageChanged();
+    }
+
+
+    private Bitmap getBitmap(int inSampleSize, Bitmap r) {
+        //检查是否需要压缩
+        int max = 100 * 1024 * 1024;
+
+        if (r.getByteCount() > max) {
+            Matrix m2 = new Matrix();
+            m2.setScale(1 / (float) inSampleSize, 1 / (float) inSampleSize);
+            r = Bitmap.createBitmap(r, 0, 0, r.getWidth(), r.getHeight(), m2, false);
+            if (r.getByteCount() < max) {
+                return r;
+            } else return getBitmap(inSampleSize * 2, r);
+        } else {
+            return r;
+        }
     }
 
     public IMGMode getMode() {
@@ -433,9 +450,9 @@ public class IMGImage  {
             mForeSticker = sticker;
             // 从BackStickers中移除
             mBackStickers.remove(sticker);
-        } else{
+        } else {
 
-                sticker.show();
+            sticker.show();
         }
 
     }
@@ -543,9 +560,9 @@ public class IMGImage  {
 
         try {
             // 绘制图片
-            canvas.drawBitmap(mImage, null, mFrame, null);
-        }catch (Exception e){
-
+            if (!mImage.isRecycled()) canvas.drawBitmap(mImage, null, mFrame, null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -594,6 +611,7 @@ public class IMGImage  {
             canvas.restore();
         }
     }
+
     public void onDrawShades(Canvas canvas) {
         if (!isShadeEmpty()) {
             canvas.save();
@@ -822,11 +840,11 @@ public class IMGImage  {
     }
 
     public void setClearBackStickers() {
-            mBackStickers.clear();
-            mForeSticker = null;
-            mShades .clear();
-            mDoodles.clear();
-            mMosaics.clear();
+        mBackStickers.clear();
+        mForeSticker = null;
+        mShades.clear();
+        mDoodles.clear();
+        mMosaics.clear();
 
     }
 }
