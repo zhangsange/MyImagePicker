@@ -302,12 +302,26 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 imgView.setSelectStatusListener(selectStatusListener);
                 imgViewList.add(imgView);
             }
-            imgViewList.get(0).setTag(getBitmap(0));
+            preInitBitmap(0);
             mImgView = imgViewList.get(0);
             mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
+
+
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    for (int i = 0; i < imgViewList.size(); i++) {
+//                        if (imgViewList.get(i).getTag() == null) {
+//                            imgViewList.get(i).setTag(getBitmap(i));
+//                        }
+//                    }
+//                }
+//            }).start();
+
+
             MyAdapter vpAdapter = new MyAdapter(imgViewList);
             mViewPager.setAdapter(vpAdapter);
-            mViewPager.setOffscreenPageLimit(imgViewList.size()+1);
+            mViewPager.setOffscreenPageLimit(imgViewList.size() + 1);
             mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -317,14 +331,17 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onPageSelected(int position) {
                     mImgView = imgViewList.get(position);
-                    long time = System.currentTimeMillis();
-                    if (mImgView.getTag() == null) {
-                        mImgView.setTag(getBitmap(position));
-                    }
+                    preInitBitmap(position);
                     mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
-                    System.out.println("okgo====cost:" + (System.currentTimeMillis() - time));
 
-                    tvPage.setText(position + 1 + " / " + imageItemList.size());
+                    preInitBitmap(position + 1);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvPage.setText(position + 1 + " / " + imageItemList.size());
+                        }
+                    });
                 }
 
                 @Override
@@ -337,6 +354,12 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             if (selectConfig.toastHelper != null) {
                 selectConfig.toastHelper.showToast("抱歉,没有图片");
             }
+        }
+    }
+
+    private void preInitBitmap(int position) {
+        if (imgViewList.size() > position && imgViewList.get(position).getTag() == null) {
+            imgViewList.get(position).setTag(getBitmap(position));
         }
     }
 
@@ -486,8 +509,14 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 //保存时候 保存图片
                 for (int i = 0; i < imgViewList.size(); i++) {
                     mViewPager.setCurrentItem(i);
+                    if (imgViewList.get(i).getTag() == null) {
+                        imgViewList.get(i).setTag(getBitmap(i));
+                    }
+                    /*被回收的说明已经保存过*/
+//                    if (!((Bitmap) imgViewList.get(i).getTag()).isRecycled()) {
                     saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
                     imgViewList.get(i).mImage.release();
+//                    }
                 }
                 deleteFile();
                 msg.what = 0x102;
