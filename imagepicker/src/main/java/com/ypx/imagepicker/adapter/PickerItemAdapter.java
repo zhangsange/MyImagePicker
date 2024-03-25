@@ -1,5 +1,6 @@
 package com.ypx.imagepicker.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -89,7 +90,7 @@ public class PickerItemAdapter extends RecyclerView.Adapter<PickerItemAdapter.It
 
 
     @Override
-    public void onBindViewHolder(@NonNull final PickerItemAdapter.ItemViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull final PickerItemAdapter.ItemViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
         int itemViewType = getItemViewType(position);
         final ImageItem imageItem = getItem(position);
         if (itemViewType == ITEM_TYPE_CAMERA || imageItem == null) {
@@ -130,6 +131,16 @@ public class PickerItemAdapter extends RecyclerView.Adapter<PickerItemAdapter.It
                     isPreformClick = false;
                     onActionResult.onClickItem(imageItem, position, finalDisableCode);
                 }
+            }
+        });
+
+        pickerItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onActionResult != null) {
+                    onActionResult.onLongItemClick(v, position);
+                }
+                return false;
             }
         });
 
@@ -240,5 +251,7 @@ public class PickerItemAdapter extends RecyclerView.Adapter<PickerItemAdapter.It
          * @param imageItem 当前item
          */
         void onCheckItem(ImageItem imageItem, int disableItemCode);
+
+        void onLongItemClick(View view, int position);
     }
 }

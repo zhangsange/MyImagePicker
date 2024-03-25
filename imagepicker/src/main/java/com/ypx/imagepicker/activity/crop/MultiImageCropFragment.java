@@ -372,6 +372,11 @@ public class MultiImageCropFragment extends PBaseLoaderFragment implements View.
     }
 
     @Override
+    public void onLongItemClick(View view, int position) {
+
+    }
+
+    @Override
     public void folderSelected(ImageSet set, int pos) {
         selectImageSet(pos, true);
     }
