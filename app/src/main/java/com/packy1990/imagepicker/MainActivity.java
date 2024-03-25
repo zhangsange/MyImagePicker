@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private WeChatPresenter weChatPresenter;
     private RedBookPresenter redBookPresenter;
     private CustomImgPickerPresenter customImgPickerPresenter;
-    final int maxCount = 30;
+    final int maxCount = 50;
     private ArrayList<ImageItem> picList = new ArrayList<>();
     public static boolean isAutoJumpAlohaActivity;
     private GridLayout mGridLayout;
@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         checkEdit = findViewById(R.id.isEdit);
         btn_delete = findViewById(R.id.btn_delete);
         checkEdit.setVisibility(View.GONE);
-        savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"imageEdit_test";
-//        savePath = this.getExternalCacheDir().getAbsolutePath()+File.separator+"images"+File.separator+"desensitize123"+File.separator;
+//        savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"imageEdit_test";
+        savePath = this.getExternalCacheDir().getAbsolutePath()+File.separator+"images"+File.separator+"desensitize123"+File.separator;
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

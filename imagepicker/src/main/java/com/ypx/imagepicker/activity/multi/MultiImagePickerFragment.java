@@ -1,8 +1,6 @@
 package com.ypx.imagepicker.activity.multi;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
 import com.ypx.imagepicker.activity.PBaseLoaderFragment;
-import com.ypx.imagepicker.activity.PickerActivityManager;
 import com.ypx.imagepicker.activity.preview.MultiImagePreviewActivity;
 import com.ypx.imagepicker.adapter.PickerFolderAdapter;
 import com.ypx.imagepicker.bean.PickerItemDisableCode;
@@ -38,7 +35,6 @@ import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,12 +237,12 @@ public class MultiImagePickerFragment extends PBaseLoaderFragment implements Vie
         }
         currentImageSet.isSelected = true;
         mImageSetAdapter.notifyDataSetChanged();
-        if(currentImageSet.isAllMedia()){
-            if(selectConfig.isShowCameraInAllMedia()){
+        if (currentImageSet.isAllMedia()) {
+            if (selectConfig.isShowCameraInAllMedia()) {
                 selectConfig.setShowCamera(true);
             }
-        }else {
-            if(selectConfig.isShowCameraInAllMedia()){
+        } else {
+            if (selectConfig.isShowCameraInAllMedia()) {
                 selectConfig.setShowCamera(false);
             }
         }
@@ -486,7 +482,7 @@ public class MultiImagePickerFragment extends PBaseLoaderFragment implements Vie
      */
     @Override
     protected void notifyPickerComplete() {
-        if (presenter == null||presenter.interceptPickerCompleteClick(getWeakActivity(), selectList, selectConfig)) {
+        if (presenter == null || presenter.interceptPickerCompleteClick(getWeakActivity(), selectList, selectConfig)) {
             return;
         }
         if (onImagePickCompleteListener != null) {
