@@ -50,9 +50,6 @@ public class EasyCameraActivity extends AppCompatActivity {
     private String cameraPath = null;
     private static String storagePath = "";
     private static final File parentPath = Environment.getExternalStorageDirectory();
-    public static Bitmap bitmapImg;
-    private String number;
-    private int maxNum = 4;
     private MultiSelectConfig selectConfig;
     private List<Bitmap> bitmapList;
     private LoadingDialog dialog;
@@ -118,31 +115,27 @@ public class EasyCameraActivity extends AppCompatActivity {
         jCameraView.setJCameraListener(new JCameraListener() {
             @Override
             public void captureSuccess(List<Bitmap> bitmaps) {
+                showLoading("正在处理图片中,请稍等...");
+                new Thread(new Runnable() {
+                    Message msg = Message.obtain();
 
-                bitmapList = bitmaps;
-                if (selectConfig.isCanEditPic()) {
-                    MyAppActivity.setBitmapList(bitmaps);
-                    Intent intent = new Intent(EasyCameraActivity.this, MyIMGEditActivity.class);
-                    intent.putExtra(Config.CONGIG, selectConfig);
-                    startActivityForResult(intent, Code.REQUEST_EDIT);
-                } else {
-                    showLoading("正在处理图片中,请稍等...");
-                    new Thread(new Runnable() {
-                        Message msg = Message.obtain();
-
-                        @Override
-                        public void run() {
-                            saveImageItem();
+                    @Override
+                    public void run() {
+                        saveImageItem(bitmaps);
+                        if (selectConfig.isCanEditPic()) {
+//                            MyAppActivity.setBitmapList(bitmaps);
+                            Intent intent = new Intent(EasyCameraActivity.this, MyIMGEditActivity.class);
+                            intent.putExtra(Config.CONGIG, selectConfig);
+                            intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT,imageItemList);
+                            startActivityForResult(intent, Code.REQUEST_EDIT);
+                        } else {
                             msg.what = 0x102;
                             if (mHandler != null) {
                                 mHandler.sendMessage(msg);
                             }
                         }
-                    }).start();
-
-                }
-
-
+                    }
+                }).start();
             }
 
             @Override
@@ -204,9 +197,7 @@ public class EasyCameraActivity extends AppCompatActivity {
                 intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
                 setResult(ImagePicker.REQ_PICKER_RESULT_CODE, intent);
                 finish();
-
             }
-
             return false;
         }
     });
@@ -214,28 +205,22 @@ public class EasyCameraActivity extends AppCompatActivity {
     /**
      * 删除原图片 保存编辑后的图片
      */
-    private void saveImageItem() {
+    private void saveImageItem(List<Bitmap> bitmaps) {
         imageItemList = new ArrayList<>();
-        initImageBitmap();
-        for (int i = 0; i < bitmapList.size(); i++) {
+        for (Bitmap imageItem : bitmaps) {
+            imageItemList.add(new ImageItem(""));
+        }
+        for (int i = 0; i < bitmaps.size(); i++) {
             if (SystemUtils.beforeAndroidTen()) {
-                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_FOLDER_NAME, bitmapList.get(i), this);
+                imageItemList.get(i).path = FileUtil.saveBitmap(FileUtil.PIC_FOLDER_NAME, bitmaps.get(i), this);
             } else {
-                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_FOLDER_NAME, bitmapList.get(i));
+                imageItemList.get(i).path = FileUtil.saveBitmapAndroidQ(this, FileUtil.PIC_FOLDER_NAME, bitmaps.get(i));
             }
+            if (!bitmaps.get(i).isRecycled()) bitmaps.get(i).recycle();
         }
         imageItemList = ImagePicker.transitArray(this, imageItemList);
     }
 
-
-    /**
-     *
-     */
-    private void initImageBitmap() {
-        for (Bitmap imageItem : bitmapList) {
-            imageItemList.add(new ImageItem(""));
-        }
-    }
 
     public void showLoading(String tip) {
         dialog = new LoadingDialog(EasyCameraActivity.this);

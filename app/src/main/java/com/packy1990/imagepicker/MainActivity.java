@@ -168,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
         if (imageItem.getCropUrl() != null && imageItem.getCropUrl().length() > 0) {
             Glide.with(this).load(imageItem.getCropUrl()).into(imageView);
         } else {
-            if (imageItem.getUri() != null) {
-                Glide.with(this).load(imageItem.getUri()).into(imageView);
-            } else {
+//            if (imageItem.getUri() != null) {
+//                Glide.with(this).load(imageItem.getUri()).into(imageView);
+//            } else {
                 Glide.with(this).load(imageItem.path).into(imageView);
-            }
+//            }
         }
     }
 
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDefaultShadowColor("#4b7758")
                 .setShadowColors(shadowColors)
                 .setShowInputBtn(((Switch) findViewById(R.id.si_input)).isChecked())
-                .setWaterMark("")
+                .setWaterMark("编号122921")
                 .setWaterMarkTextSize(20f)
                 .setWaterMarkColor("#80FF0000")
                 .setDeleteOriginalPic(false)

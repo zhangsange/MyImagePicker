@@ -28,7 +28,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.blankj.utilcode.util.FileUtils;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
-import com.ypx.imagepicker.activity.MyAppActivity;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.config.Config;
@@ -69,17 +68,13 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     private ViewSwitcher mOpSwitcher, mOpSubSwitcher;
 
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
-    public ArrayList<ImageItem> imageLocList = new ArrayList<>();
-    public ArrayList<String> imageSelectList = new ArrayList<>();
-    public ArrayList<ImageItem> imageHttpList = new ArrayList<>();
-    public List<Bitmap> bitmapList = new ArrayList<>();
     private TextView tvDone;
     private String waterMark;
     private LoadingDialog dialog;
     private String waterMarkColor;
     private MultiSelectConfig selectConfig;
     private boolean isDeleteOriginalPic = false; //是否删除原图
-    private boolean isDeleteBeforeEditlPic = false;//是否删除编辑后的图片
+    private boolean isDeleteBeforeEditPic = false;//是否删除编辑后的图片
     private boolean isSingleTakePhoto = false;//是否为拍照后直接脱敏
     private float waterMarkTextSize = 12f;
     private MyViewPager mViewPager;
@@ -110,32 +105,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             waterMarkTextSize = selectConfig.getWaterMarkTextSize();
             waterMarkColor = selectConfig.getWaterMarkColor();
             isDeleteOriginalPic = selectConfig.isDeleteOriginalPic();
-            isDeleteBeforeEditlPic = selectConfig.isDeleteBeforeEditPic();
+            isDeleteBeforeEditPic = selectConfig.isDeleteBeforeEditPic();
         }
         initViews();
-        if (!isSingleTakePhoto) {//图库进入编辑页面
-            imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
-            initImage();
-            showLoading("正在加载图片中,请稍等...");
-            new Thread(new Runnable() {
-                Message msg = Message.obtain();
-
-                @Override
-                public void run() {
-                    bitmapList = getBitmapList();
-                    msg.what = 0x101;
-                    if (mHandler != null) {
-                        mHandler.sendMessage(msg);
-                    }
-                }
-            }).start();
-        } else {//拍照进入编辑页面
-            imageItemList = new ArrayList<>();
-            bitmapList = MyAppActivity.getBitmapList();
-            initImageBitmap();
-            initData();
-        }
-
+        imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
+        initData();
     }
 
     public void setOpSubDisplay(int opSub) {
@@ -231,62 +205,24 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    /**
-     *
-     */
-    private void initImageBitmap() {
-        for (Bitmap imageItem : bitmapList) {
-            imageLocList.add(new ImageItem(""));
-        }
-    }
-
-    /**
-     * 处理排除网络图片
-     */
-    private void initImage() {
-        if (null != imageItemList) {
-            for (ImageItem imageItem : imageItemList) {
-                if (imageItem.path.startsWith("http")) {
-                    imageHttpList.add(imageItem);
-                } else {
-                    imageLocList.add(imageItem);
-                }
-            }
-        }
-    }
-
-    Handler mHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            hideLoading();
-            if (msg.what == 0x101) {
-                initData();
-            } else if (msg.what == 0x102) {
-                if (isSingleTakePhoto) {
-                    Intent intent = new Intent();
-                    intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
-                    setResult(Code.REQUEST_EDIT, intent);
-                    finish();
-                } else {
-                    ImagePicker.closePickerWithCallback(imageItemList);
-                }
+    Handler mHandler = new Handler(msg -> {
+        hideLoading();
+        if (msg.what == 0x101) {
+            initData();
+        } else if (msg.what == 0x102) {
+            if (isSingleTakePhoto) {
+                Intent intent = new Intent();
+                intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
+                setResult(Code.REQUEST_EDIT, intent);
                 finish();
+            } else {
+                ImagePicker.closePickerWithCallback(imageItemList);
             }
-
-            return false;
+            finish();
         }
+
+        return false;
     });
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     class MyAdapter extends PagerAdapter {
         List<IMGView> imgViews = new ArrayList<>();
@@ -311,8 +247,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
-            imgView.setImageBitmap(bitmapList.get(position));
-            if (!TextUtils.isEmpty(waterMark) && !imageLocList.get(position).path.contains(imageSavePath)) {
+
+            if (!TextUtils.isEmpty(waterMark) && !imageItemList.get(position).path.contains(imageSavePath)) {
                 if (!TextUtils.isEmpty(waterMarkColor)) {
                     imgView.addStickerText(new IMGText(waterMark, Color.parseColor(waterMarkColor), waterMarkTextSize), true);
                 } else {
@@ -326,7 +262,6 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
-
         }
 
         //解决ViewPager不刷新的问题
@@ -351,8 +286,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 mImgView.setMode(IMGMode.SHADE);
             }
         };
-        if (bitmapList != null && bitmapList.size() > 0) {
-            tvPage.setText(1 + " / " + bitmapList.size());
+        if (imageItemList != null && imageItemList.size() > 0) {
+            tvPage.setText(1 + " / " + imageItemList.size());
             imgViewList = new ArrayList<>();
             int penColor = Color.WHITE;
             if (selectConfig.defaultShadowColor != null && selectConfig.defaultShadowColor.length() > 0) {
@@ -360,17 +295,19 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             } else {
                 penColor = ((IMGColorRadio) mColorGroup.getChildAt(0)).getColor();
             }
-            for (Bitmap bitmap : bitmapList) {
+            for (ImageItem item : imageItemList) {
                 IMGView imgView = new IMGView(this);
 //                imgView.setPenColor(ImagePicker.getEditPicPenColor());
                 imgView.setPenColor(penColor);
                 imgView.setSelectStatusListener(selectStatusListener);
                 imgViewList.add(imgView);
             }
+            imgViewList.get(0).setTag(getBitmap(0));
             mImgView = imgViewList.get(0);
+            mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
             MyAdapter vpAdapter = new MyAdapter(imgViewList);
             mViewPager.setAdapter(vpAdapter);
-            mViewPager.setOffscreenPageLimit(51);
+            mViewPager.setOffscreenPageLimit(imgViewList.size()+1);
             mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -380,7 +317,14 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onPageSelected(int position) {
                     mImgView = imgViewList.get(position);
-                    tvPage.setText(position + 1 + " / " + bitmapList.size());
+                    long time = System.currentTimeMillis();
+                    if (mImgView.getTag() == null) {
+                        mImgView.setTag(getBitmap(position));
+                    }
+                    mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
+                    System.out.println("okgo====cost:" + (System.currentTimeMillis() - time));
+
+                    tvPage.setText(position + 1 + " / " + imageItemList.size());
                 }
 
                 @Override
@@ -388,6 +332,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
                 }
             });
+            mViewPager.setCurrentItem(0);
         } else {
             if (selectConfig.toastHelper != null) {
                 selectConfig.toastHelper.showToast("抱歉,没有图片");
@@ -409,29 +354,21 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-    public List<Bitmap> getBitmapList() {
-        if (imageLocList != null && imageLocList.size() > 0) {
-            for (int i = 0; i < imageLocList.size(); i++) {
-                Bitmap bitmap = null;
-                if (SystemUtils.beforeAndroidTen()) {
-                    bitmap = FileUtil.getBitmap(imageLocList.get(i).path);
-                } else {
-                    try {
-                        if (FileUtils.isFileExists(imageLocList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
-                        else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageLocList.get(i).getUri());
-//                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    //bitmap = new CompressHelper.Builder(this).setQuality(selectConfig.maxSize).build().compressToBitmapByUri(imageLocList.get(i).getUri());
-                }
-                bitmapList.add(bitmap);
-            }
-            return bitmapList;
+    public Bitmap getBitmap(int i) {
+        Bitmap bitmap = null;
+        if (SystemUtils.beforeAndroidTen()) {
+            bitmap = FileUtil.getBitmap(imageItemList.get(i).path);
         } else {
-            return null;
+            try {
+                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
+                else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
+//                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //bitmap = new CompressHelper.Builder(this).setQuality(selectConfig.maxSize).build().compressToBitmapByUri(imageLocList.get(i).getUri());
         }
+        return bitmap;
     }
 
 
@@ -474,12 +411,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         } else if (vid == R.id.btn_undo) {
             onUndoClick();
         } else if (vid == R.id.tv_done) {//完成
-            //保存时候 保存图片
-            for (int i = 0; i < imgViewList.size(); i++) {
-                bitmapList.set(i, imgViewList.get(i).saveBitmap());
-            }
             onDoneClick();
-
         } else if (vid == R.id.tv_cancel) {
             onCancelClick();
         }
@@ -551,7 +483,13 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
             @Override
             public void run() {
-                saveImageItem();
+                //保存时候 保存图片
+                for (int i = 0; i < imgViewList.size(); i++) {
+                    mViewPager.setCurrentItem(i);
+                    saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
+                    imgViewList.get(i).mImage.release();
+                }
+                deleteFile();
                 msg.what = 0x102;
                 if (mHandler != null) {
                     mHandler.sendMessage(msg);
@@ -566,27 +504,21 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         else return imageSavePath + File.separator;
     }
 
-    private void saveImage() {
+    private void saveBitmap2File(ImageItem item, Bitmap bitmap) {
         if (save2DCIM) {
-            for (int i = 0; i < bitmapList.size(); i++) {
-                if (SystemUtils.beforeAndroidTen()) {
-                    imageLocList.get(i).path = FileUtil.saveBitmap(imageSavePath, bitmapList.get(i), this);
-                } else {
-                    imageLocList.get(i).path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmapList.get(i));
-                }
-//                if (selectConfig.isCompress) {//进行压缩
-//                    BitmapUtils.doRecycledIfNot(bitmapList.get(i));
-//                }
+            if (SystemUtils.beforeAndroidTen()) {
+                item.path = FileUtil.saveBitmap(imageSavePath, bitmap, this);
+            } else {
+                item.path = FileUtil.saveBitmapAndroidQ(this, imageSavePath, bitmap);
             }
         } else {
-            for (int i = 0; i < bitmapList.size(); i++) {
-                String filePath = getImageSavePath() + System.currentTimeMillis() + ".jpg";
-                imageLocList.get(i).path = filePath;
-                BitmapUtils.saveFile(filePath, bitmapList.get(i));
-                updateFileFromDatabase(filePath);
-            }
+            String filePath = getImageSavePath() + System.currentTimeMillis() + ".jpg";
+            item.path = filePath;
+            BitmapUtils.saveFile(filePath, bitmap);
+            updateFileFromDatabase(filePath);
         }
     }
+
 
     private void updateFileFromDatabase(String filepath) {
         MediaScannerConnection.scanFile(this, new String[]{filepath}, null, null);
@@ -595,28 +527,15 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     /**
      * 删除原图片 保存编辑后的图片
      */
-    private void saveImageItem() {
-        imageSelectList.clear();
-        if (isSingleTakePhoto) {
-            saveImage();
-        } else {
-            imageItemList.clear();
-            for (int i = 0; i < imageLocList.size(); i++) {
-                imageSelectList.add(imageLocList.get(i).path);
+    private void deleteFile() {
+        for (int i = 0; i < imageItemList.size(); i++) {//将新拍摄的图片
+            if (!imageItemList.get(i).path.contains(imageSavePath) && isDeleteOriginalPic) {
+                FileUtil.deletePic(getApplication(), imageItemList.get(i).path);//删除原图(未被编辑过的)
             }
-            saveImage();
-            for (int i = 0; i < imageSelectList.size(); i++) {//将新拍摄的图片
-                if (!imageSelectList.get(i).contains(imageSavePath) && isDeleteOriginalPic) {
-                    FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(未被编辑过的)
-                }
-                if (imageSelectList.get(i).contains(imageSavePath) && isDeleteBeforeEditlPic) {
-                    FileUtil.deletePic(getApplication(), imageSelectList.get(i));//删除原图(曾经被编辑过的)
-                }
+            if (imageItemList.get(i).path.contains(imageSavePath) && isDeleteBeforeEditPic) {
+                FileUtil.deletePic(getApplication(), imageItemList.get(i).path);//删除原图(曾经被编辑过的)
             }
-            imageItemList.addAll(imageHttpList);
         }
-        imageItemList.addAll(imageLocList);
-        imageItemList = ImagePicker.transitArray(this, imageItemList);
     }
 
 
@@ -627,8 +546,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (Bitmap bitmap : bitmapList) {
-            if (bitmap != null) bitmap.recycle();
+        for (IMGView imgView : imgViewList) {
+            imgView.mImage.release();
         }
         if (imageItemList != null) {
             imageItemList.clear();
@@ -661,17 +580,9 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void showBackTip() {
-        new AlertDialog.Builder(this).setTitle("是否退出").setMessage("返回后修改的数据将不会自动保存").setPositiveButton("继续编辑", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).setNegativeButton("退出", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
+        new AlertDialog.Builder(this).setTitle("是否退出").setMessage("返回后修改的数据将不会自动保存").setPositiveButton("继续编辑", (dialog, which) -> dialog.dismiss()).setNegativeButton("退出", (dialog, which) -> {
+            dialog.dismiss();
+            finish();
         }).show();
 
     }

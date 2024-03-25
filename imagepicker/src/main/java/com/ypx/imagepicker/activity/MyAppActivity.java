@@ -1,6 +1,5 @@
 package com.ypx.imagepicker.activity;
 
-import android.app.Application;
 import android.graphics.Bitmap;
 
 import java.util.List;
