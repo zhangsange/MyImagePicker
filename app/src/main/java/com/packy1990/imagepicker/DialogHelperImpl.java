@@ -1,6 +1,6 @@
 package com.packy1990.imagepicker;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.ypx.imagepicker.helper.EditDialogHelper;
 
@@ -12,17 +12,17 @@ import com.ypx.imagepicker.helper.EditDialogHelper;
  */
 class DialogHelperImpl implements EditDialogHelper {
    @Override
-   public void onPicSave(int curIndex, int total, String msg) {
-      System.out.println(msg+"======"+curIndex+"/"+total);
+   public void onPicSave(Activity activity, int curIndex, int total) {
+      System.out.println("======"+curIndex+"/"+total);
    }
 
    @Override
-   public void saveFinished() {
+   public void saveFinished(Activity activity) {
       System.out.println("=======保存成功");
    }
 
    @Override
-   public boolean onBackPressed(Context context) {
+   public boolean onBackPressed(Activity activity) {
       System.out.println("=======返回");
       return true;
    }

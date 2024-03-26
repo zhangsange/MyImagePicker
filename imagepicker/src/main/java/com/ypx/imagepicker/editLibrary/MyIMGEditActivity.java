@@ -202,7 +202,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     Handler mHandler = new Handler(msg -> {
-        selectConfig.dialogHelper.saveFinished();
+        selectConfig.dialogHelper.saveFinished(MyIMGEditActivity.this);
         if (msg.what == 0x102) {
             if (isSingleTakePhoto) {
                 Intent intent = new Intent();
@@ -349,7 +349,8 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         } else {
             try {
 //                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
-                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = ImageUtils.getBitmap(imageItemList.get(i).path,selectConfig.getEditBitmapMaxWidth(),selectConfig.getEditBitmapMaxHeight());
+                if (FileUtils.isFileExists(imageItemList.get(i).path))
+                    bitmap = ImageUtils.getBitmap(imageItemList.get(i).path, selectConfig.getEditBitmapMaxWidth(), selectConfig.getEditBitmapMaxHeight());
                 else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
 //                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
             } catch (Exception e) {
@@ -476,7 +477,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 scrollBySave = true;
                 //保存时候 保存图片
                 for (int i = 0; i < imgViewList.size(); i++) {
-                    selectConfig.dialogHelper.onPicSave(i,imgViewList.size(),"保存中");
+                    selectConfig.dialogHelper.onPicSave(MyIMGEditActivity.this, i, imgViewList.size());
                     mViewPager.setCurrentItem(i);
                     saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
                 }

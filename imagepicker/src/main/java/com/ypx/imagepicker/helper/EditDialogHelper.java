@@ -1,6 +1,6 @@
 package com.ypx.imagepicker.helper;
 
-import android.content.Context;
+import android.app.Activity;
 
 import java.io.Serializable;
 
@@ -11,11 +11,11 @@ import java.io.Serializable;
  * 描述：
  */
 public interface EditDialogHelper extends Serializable {
-    void onPicSave(int curIndex, int total, String msg);
+    void onPicSave(Activity activity,int curIndex, int total);
 
-    void saveFinished();
+    void saveFinished(Activity activity);
 
     /**
      * 返回true，库直接finish editActivity*/
-    boolean onBackPressed(Context context);
+    boolean onBackPressed(Activity activity);
 }
