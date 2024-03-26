@@ -26,6 +26,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.R;
 import com.ypx.imagepicker.bean.ImageItem;
@@ -207,9 +208,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     Handler mHandler = new Handler(msg -> {
         hideLoading();
-        if (msg.what == 0x101) {
-            initData();
-        } else if (msg.what == 0x102) {
+        if (msg.what == 0x102) {
             if (isSingleTakePhoto) {
                 Intent intent = new Intent();
                 intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
@@ -247,12 +246,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewPager.LayoutParams.WRAP_CONTENT, ViewPager.LayoutParams.WRAP_CONTENT);
             imgView.setLayoutParams(params);
             imgView.setBackgroundColor(Color.BLACK);
-
             if (!TextUtils.isEmpty(waterMark) && !imageItemList.get(position).path.contains(imageSavePath)) {
                 if (!TextUtils.isEmpty(waterMarkColor)) {
-                    imgView.addStickerText(new IMGText(waterMark, Color.parseColor(waterMarkColor), waterMarkTextSize), true);
+                    imgViewList.get(position).addStickerText(new IMGText(waterMark, Color.parseColor(waterMarkColor), waterMarkTextSize), true);
                 } else {
-                    imgView.addStickerText(new IMGText(waterMark, Color.RED, waterMarkTextSize), true);
+                    imgViewList.get(position).addStickerText(new IMGText(waterMark, Color.RED, waterMarkTextSize), true);
                 }
             }
             container.addView(imgView);
@@ -302,27 +300,13 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 imgView.setSelectStatusListener(selectStatusListener);
                 imgViewList.add(imgView);
             }
-            preInitBitmap(0);
+            preInitBitmap(0, 2);
             mImgView = imgViewList.get(0);
-            mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
-
-
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    for (int i = 0; i < imgViewList.size(); i++) {
-//                        if (imgViewList.get(i).getTag() == null) {
-//                            imgViewList.get(i).setTag(getBitmap(i));
-//                        }
-//                    }
-//                }
-//            }).start();
-
 
             MyAdapter vpAdapter = new MyAdapter(imgViewList);
             mViewPager.setAdapter(vpAdapter);
             mViewPager.setOffscreenPageLimit(imgViewList.size() + 1);
-            mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -331,17 +315,11 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onPageSelected(int position) {
                     mImgView = imgViewList.get(position);
-                    preInitBitmap(position);
-                    mImgView.setImageBitmap(((Bitmap) mImgView.getTag()));
+                    int length = 5;
+                    if (scrollBySave) length = 1;
+                    preInitBitmap(position, length);
 
-                    preInitBitmap(position + 1);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tvPage.setText(position + 1 + " / " + imageItemList.size());
-                        }
-                    });
+                    runOnUiThread(() -> tvPage.setText(position + 1 + " / " + imageItemList.size()));
                 }
 
                 @Override
@@ -357,9 +335,14 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void preInitBitmap(int position) {
-        if (imgViewList.size() > position && imgViewList.get(position).getTag() == null) {
-            imgViewList.get(position).setTag(getBitmap(position));
+    private void preInitBitmap(int start, int length) {
+        int end = start + length;
+        if (imgViewList.size() <= end) end = imgViewList.size();
+        for (int i = start; i < end; i++) {
+            if (imgViewList.get(i).getTag() == null) {
+                imgViewList.get(i).setTag(getBitmap(i));
+                imgViewList.get(i).setImageBitmap(((Bitmap) imgViewList.get(i).getTag()));
+            }
         }
     }
 
@@ -378,12 +361,14 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     public Bitmap getBitmap(int i) {
+        System.gc();
         Bitmap bitmap = null;
         if (SystemUtils.beforeAndroidTen()) {
             bitmap = FileUtil.getBitmap(imageItemList.get(i).path);
         } else {
             try {
-                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
+//                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
+                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = ImageUtils.getBitmap(imageItemList.get(i).path,2000,2000);
                 else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
 //                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
             } catch (Exception e) {
@@ -496,27 +481,23 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         showBackTip();
     }
 
+    private boolean scrollBySave = false;
+
     /**
      * 保存
      */
     public void onDoneClick() {
         showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
-            Message msg = Message.obtain();
+            Message msg = new Message();
 
             @Override
             public void run() {
+                scrollBySave = true;
                 //保存时候 保存图片
                 for (int i = 0; i < imgViewList.size(); i++) {
                     mViewPager.setCurrentItem(i);
-                    if (imgViewList.get(i).getTag() == null) {
-                        imgViewList.get(i).setTag(getBitmap(i));
-                    }
-                    /*被回收的说明已经保存过*/
-//                    if (!((Bitmap) imgViewList.get(i).getTag()).isRecycled()) {
                     saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
-                    imgViewList.get(i).mImage.release();
-//                    }
                 }
                 deleteFile();
                 msg.what = 0x102;

@@ -560,7 +560,7 @@ public class IMGImage {
 
         try {
             // 绘制图片
-            if (!mImage.isRecycled()) canvas.drawBitmap(mImage, null, mFrame, null);
+            if (mImage != null && !mImage.isRecycled() && mImage.getRowBytes() > 0) canvas.drawBitmap(mImage, null, mFrame, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -828,6 +828,7 @@ public class IMGImage {
     public void release() {
         if (mImage != null && !mImage.isRecycled()) {
             mImage.recycle();
+            mImage = null;
         }
     }
 

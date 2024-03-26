@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private WeChatPresenter weChatPresenter;
     private RedBookPresenter redBookPresenter;
     private CustomImgPickerPresenter customImgPickerPresenter;
-    final int maxCount = 50;
+    final int maxCount = 200;
     private ArrayList<ImageItem> picList = new ArrayList<>();
     public static boolean isAutoJumpAlohaActivity;
     private GridLayout mGridLayout;
