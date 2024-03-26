@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         mGridLayout = findViewById(R.id.gridLayout);
         checkEdit = findViewById(R.id.isEdit);
         btn_delete = findViewById(R.id.btn_delete);
-        checkEdit.setVisibility(View.GONE);
 //        savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+"imageEdit_test";
         savePath = this.getExternalCacheDir().getAbsolutePath()+File.separator+"images"+File.separator+"desensitize123"+File.separator;
         checkEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -75,12 +74,20 @@ public class MainActivity extends AppCompatActivity {
                 isCanEdit = isChecked;
             }
         });
+        isCanEdit = checkEdit.isChecked();
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Boolean result = com.packy1990.imagepicker.FileUtil.deleteAllInDir(savePath);
                 Log.i("哈哈哈", FileUtil.parentPath.getAbsolutePath() + File.separator + "imagePicker_Edit");
                 Log.i("哈哈哈", String.valueOf(result));
+            }
+        });
+        findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                picList.clear();
+                refreshGridLayout();
             }
         });
 
@@ -254,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSelectMode(MODE_MULTI)//拍照模式  图库拍照按钮拍照完返回图库还是直接进入编辑页面
                 .setColumnCount(4)
                 .setOriginal(false)
-                .setCanEditPic(true)//是否脱敏
+                .setCanEditPic(isCanEdit)//是否脱敏
                 .setShowColorChoose(((Switch) findViewById(R.id.si_color_choose)).isChecked())
                 .setShowDoodleBtn(((Switch) findViewById(R.id.si_doodle)).isChecked())
                 .setShowMosaicBtn(((Switch) findViewById(R.id.si_mosaic)).isChecked())

@@ -9,11 +9,23 @@
     tools:ignore="MissingDefaultResource">
 
 
-    <Button
-        android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="删除脱敏图片" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除脱敏图片" />
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,14 +52,13 @@
             android:id="@+id/si_shade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:text="显示脱敏" />
+            android:text="显示脱敏"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <Switch
             android:id="@+id/si_doodle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_40"
             android:text="显示涂鸦"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -55,9 +66,8 @@
             android:id="@+id/si_color_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_40"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:text="显示调色盘" />
+            android:text="显示调色盘"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     </LinearLayout>
 
@@ -72,25 +82,29 @@
             android:id="@+id/si_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:text="显示输入" />
+            android:text="显示输入"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <Switch
             android:id="@+id/si_mosaic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_40"
-            tools:ignore="UseSwitchCompatOrMaterialXml"
-            android:text="显示马赛克" />
+            android:text="显示马赛克"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </LinearLayout>
 
-    <GridLayout
-        android:id="@+id/gridLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="4"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp" />
+        android:layout_height="wrap_content">
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+    </ScrollView>
 
 
 </LinearLayout>
