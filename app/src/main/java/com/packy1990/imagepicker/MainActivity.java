@@ -272,6 +272,8 @@ public class MainActivity extends AppCompatActivity {
                 .setWaterMark("编号122921")
                 .setWaterMarkTextSize(20f)
                 .setWaterMarkColor("#80FF0000")
+                .setEditBitmapMaxWidth(200)
+                .setEditBitmapMaxHeight(200)
                 .setDeleteOriginalPic(false)
                 .setDeleteBeforeEditlPic(false)
                 .setSave2DCIM(false)

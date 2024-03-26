@@ -121,6 +121,22 @@ public class MultiSelectConfig extends CropConfig {
     }
 
     public int imgMaxNum =50;//添加图片最大数量
+    public int editBitmapMaxWidth = 2000;
+    public void setEditBitmapMaxWidth(int bitmapMaxWidth){
+        this.editBitmapMaxWidth = bitmapMaxWidth;
+    }
+    public int getEditBitmapMaxWidth(){
+        return this.editBitmapMaxWidth;
+    }
+
+
+    public int editBitmapMaxHeight = 2000;
+    public void setEditBitmapMaxHeight(int editBitmapMaxHeight){
+        this.editBitmapMaxHeight = editBitmapMaxHeight;
+    }
+    public int getEditBitmapMaxHeight(){
+        return this.editBitmapMaxHeight;
+    }
 
 
     public boolean isDeleteOriginalPic() {

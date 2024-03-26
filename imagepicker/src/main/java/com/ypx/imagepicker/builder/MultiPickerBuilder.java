@@ -314,6 +314,15 @@ public class MultiPickerBuilder {
         return this;
     }
 
+    public MultiPickerBuilder setEditBitmapMaxWidth(int editBitmapMaxWidth){
+        selectConfig.setEditBitmapMaxWidth(editBitmapMaxWidth);
+        return this;
+    }
+    public MultiPickerBuilder setEditBitmapMaxHeight(int editBitmapMaxHeight){
+        selectConfig.setEditBitmapMaxHeight(editBitmapMaxHeight);
+        return this;
+    }
+
     /**
      * @param textSize 水印文字大小
      */

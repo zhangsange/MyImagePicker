@@ -349,7 +349,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         } else {
             try {
 //                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = BitmapFactory.decodeFile(imageItemList.get(i).path);
-                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = ImageUtils.getBitmap(imageItemList.get(i).path,2000,2000);
+                if (FileUtils.isFileExists(imageItemList.get(i).path)) bitmap = ImageUtils.getBitmap(imageItemList.get(i).path,selectConfig.getEditBitmapMaxWidth(),selectConfig.getEditBitmapMaxHeight());
                 else bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageItemList.get(i).getUri());
 //                        bitmap = BitmapFactory.decodeFile(imageLocList.get(i).path);
             } catch (Exception e) {
