@@ -3,7 +3,6 @@ package com.ypx.imagepicker.editLibrary;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -47,8 +45,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ren.perry.perry.LoadingDialog;
-
 /**
  * time：2021-09-03
  * author：pachy1990
@@ -71,7 +67,6 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     public ArrayList<ImageItem> imageItemList = new ArrayList<>();
     private TextView tvDone;
     private String waterMark;
-    private LoadingDialog dialog;
     private String waterMarkColor;
     private MultiSelectConfig selectConfig;
     private boolean isDeleteOriginalPic = false; //是否删除原图
@@ -207,7 +202,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     Handler mHandler = new Handler(msg -> {
-        hideLoading();
+        selectConfig.dialogHelper.saveFinished();
         if (msg.what == 0x102) {
             if (isSingleTakePhoto) {
                 Intent intent = new Intent();
@@ -346,20 +341,6 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void showLoading(String tip) {
-        dialog = new LoadingDialog(MyIMGEditActivity.this);
-        dialog.setMsg(tip);
-        dialog.setNotCancel();  //设置dialog不自动消失
-        dialog.setCancelable(false);
-        dialog.show();
-    }
-
-    public void hideLoading() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
     public Bitmap getBitmap(int i) {
         System.gc();
         Bitmap bitmap = null;
@@ -478,7 +459,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
      */
     public void onCancelClick() {
         // deletePic();//删除图片
-        showBackTip();
+        onBackPressed();
     }
 
     private boolean scrollBySave = false;
@@ -487,7 +468,6 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
      * 保存
      */
     public void onDoneClick() {
-        showLoading("正在处理图片中,请稍等...");
         new Thread(new Runnable() {
             Message msg = new Message();
 
@@ -496,6 +476,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
                 scrollBySave = true;
                 //保存时候 保存图片
                 for (int i = 0; i < imgViewList.size(); i++) {
+                    selectConfig.dialogHelper.onPicSave(i,imgViewList.size(),"保存中");
                     mViewPager.setCurrentItem(i);
                     saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
                 }
@@ -562,9 +543,6 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         if (imageItemList != null) {
             imageItemList.clear();
         }
-        if (dialog != null) {
-            dialog = null;
-        }
     }
 
     @Override
@@ -586,17 +564,10 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
-        showBackTip();
-    }
-
-    public void showBackTip() {
-        new AlertDialog.Builder(this).setTitle("是否退出").setMessage("返回后修改的数据将不会自动保存").setPositiveButton("继续编辑", (dialog, which) -> dialog.dismiss()).setNegativeButton("退出", (dialog, which) -> {
-            dialog.dismiss();
+        if (selectConfig.dialogHelper.onBackPressed(this)) {
             finish();
-        }).show();
-
+        }
     }
-
 
 }
 

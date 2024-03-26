@@ -13,6 +13,7 @@ import com.ypx.imagepicker.bean.PickerError;
 import com.ypx.imagepicker.bean.SelectMode;
 import com.ypx.imagepicker.bean.selectconfig.MultiSelectConfig;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
+import com.ypx.imagepicker.helper.EditDialogHelper;
 import com.ypx.imagepicker.helper.PickerErrorExecutor;
 import com.ypx.imagepicker.helper.ToastHelper;
 import com.ypx.imagepicker.presenter.IPickerPresenter;
@@ -323,6 +324,10 @@ public class MultiPickerBuilder {
 
     public MultiPickerBuilder setToastHelper(ToastHelper toastHelper){
         selectConfig.setToastHelper(toastHelper);
+        return this;
+    }
+    public MultiPickerBuilder setEditDialogHelper(EditDialogHelper dialogHelper){
+        selectConfig.setDialogHelper(dialogHelper);
         return this;
     }
 

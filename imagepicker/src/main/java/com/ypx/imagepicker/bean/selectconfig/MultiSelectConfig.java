@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.SelectMode;
+import com.ypx.imagepicker.helper.EditDialogHelper;
 import com.ypx.imagepicker.helper.ToastHelper;
 
 import java.util.ArrayList;
@@ -55,6 +56,11 @@ public class MultiSelectConfig extends CropConfig {
     public ToastHelper toastHelper;
     public void setToastHelper(ToastHelper toastHelper){
         this.toastHelper = toastHelper;
+    }
+
+    public EditDialogHelper dialogHelper;
+    public void setDialogHelper(EditDialogHelper dialogHelper){
+        this.dialogHelper = dialogHelper;
     }
 
     public boolean isCompress() {
