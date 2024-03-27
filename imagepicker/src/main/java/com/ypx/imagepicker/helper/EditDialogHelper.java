@@ -2,6 +2,8 @@ package com.ypx.imagepicker.helper;
 
 import android.app.Activity;
 
+import com.ypx.imagepicker.bean.ImageItem;
+
 import java.io.Serializable;
 
 /**
@@ -11,9 +13,10 @@ import java.io.Serializable;
  * 描述：
  */
 public interface EditDialogHelper extends Serializable {
-    void onPicSave(Activity activity,int curIndex, int total);
+    void onSaveStart(Activity activity);
+    void onSaveProgress(Activity activity, ImageItem savedItem, int curIndex, int total);
 
-    void saveFinished(Activity activity);
+    void onSaveFinished(Activity activity);
 
     /**
      * 返回true，库直接finish editActivity*/

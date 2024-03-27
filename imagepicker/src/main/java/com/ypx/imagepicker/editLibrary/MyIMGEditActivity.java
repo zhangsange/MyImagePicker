@@ -202,7 +202,7 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     }
 
     Handler mHandler = new Handler(msg -> {
-        selectConfig.dialogHelper.saveFinished(MyIMGEditActivity.this);
+        selectConfig.dialogHelper.onSaveFinished(MyIMGEditActivity.this);
         if (msg.what == 0x102) {
             if (isSingleTakePhoto) {
                 Intent intent = new Intent();
@@ -475,11 +475,12 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void run() {
                 scrollBySave = true;
+                selectConfig.dialogHelper.onSaveStart(MyIMGEditActivity.this);
                 //保存时候 保存图片
                 for (int i = 0; i < imgViewList.size(); i++) {
-                    selectConfig.dialogHelper.onPicSave(MyIMGEditActivity.this, i, imgViewList.size());
                     mViewPager.setCurrentItem(i);
                     saveBitmap2File(imageItemList.get(i), imgViewList.get(i).saveBitmap());
+                    selectConfig.dialogHelper.onSaveProgress(MyIMGEditActivity.this, imageItemList.get(i), i, imgViewList.size());
                 }
                 deleteFile();
                 msg.what = 0x102;
