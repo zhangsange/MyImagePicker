@@ -18,6 +18,7 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.packy1990.imagepicker.R;
+import com.packy1990.imagepicker.style.custom.CustomPickerItem;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.adapter.PickerItemAdapter;
 import com.ypx.imagepicker.bean.ImageItem;
@@ -130,9 +131,9 @@ public class WeChatPresenter implements IPickerPresenter {
             //定制选择器item,默认实现为 WXItemView
             @Override
             public PickerItemView getItemView(Context context) {
-                WXItemView itemView = (WXItemView) super.getItemView(context);
-                itemView.setBackgroundColor(Color.parseColor("#303030"));
-                return itemView;
+//                WXItemView itemView = (WXItemView) super.getItemView(context);
+//                itemView.setBackgroundColor(Color.parseColor("#303030"));
+                return new CustomPickerItem(context);
             }
 
             //定制选择器文件夹列表item,默认实现为 WXFolderItemView
