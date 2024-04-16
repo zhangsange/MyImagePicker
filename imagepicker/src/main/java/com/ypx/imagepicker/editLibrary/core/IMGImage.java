@@ -157,7 +157,7 @@ public class IMGImage {
             return;
         }
 
-        this.mImage = getBitmap(1, bitmap);
+        this.mImage = bitmap;
 
         // 清空马赛克图层
         if (mMosaicImage != null) {
@@ -736,7 +736,8 @@ public class IMGImage {
     }
 
     public float getScale() {
-        return 1f * mFrame.width() / mImage.getWidth();
+        if (mImage == null) return mFrame.width();
+        else return 1f * mFrame.width() / mImage.getWidth();
     }
 
     public void setScale(float scale) {
