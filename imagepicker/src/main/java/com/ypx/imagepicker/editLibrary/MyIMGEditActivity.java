@@ -105,7 +105,25 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
         }
         initViews();
         imageItemList = (ArrayList<ImageItem>) getIntent().getSerializableExtra(ImagePicker.INTENT_KEY_PICKER_RESULT);
+        handleImageItemList();
         initData();
+    }
+
+
+    public ArrayList<ImageItem> netImageItemList = new ArrayList<>();
+    public ArrayList<ImageItem> tempImageItemList = new ArrayList<>();
+
+    private void handleImageItemList() {
+        tempImageItemList.clear();
+        tempImageItemList.addAll(imageItemList);
+        imageItemList.clear();
+        for (ImageItem item : tempImageItemList) {
+            if (item.path.startsWith("http") || item.path.contains(selectConfig.getImageSavePath())) {
+                netImageItemList.add(item);
+            } else {
+                imageItemList.add(item);
+            }
+        }
     }
 
     public void setOpSubDisplay(int opSub) {
@@ -204,13 +222,16 @@ public class MyIMGEditActivity extends AppCompatActivity implements View.OnClick
     Handler mHandler = new Handler(msg -> {
         selectConfig.dialogHelper.onSaveFinished(MyIMGEditActivity.this);
         if (msg.what == 0x102) {
+            ArrayList<ImageItem> tempList = new ArrayList<>();
+            tempList.addAll(netImageItemList);
+            tempList.addAll(imageItemList);
             if (isSingleTakePhoto) {
                 Intent intent = new Intent();
-                intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, imageItemList);
+                intent.putExtra(ImagePicker.INTENT_KEY_PICKER_RESULT, tempList);
                 setResult(Code.REQUEST_EDIT, intent);
                 finish();
             } else {
-                ImagePicker.closePickerWithCallback(imageItemList);
+                ImagePicker.closePickerWithCallback(tempList);
             }
             finish();
         }
